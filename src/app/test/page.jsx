@@ -1,14 +1,11 @@
-import React from 'react'
-import Button from '@mui/material/Button';
+import React from "react";
 
 function TestPage() {
   return (
     <div>
-      <Button variant="text" >Text</Button>
-      <Button variant="contained">Contained</Button>
-      <Button variant="outlined">Outlined</Button>
+      <h1>Test</h1>
     </div>
-  )
+  );
 }
 
-export default TestPage
+export default TestPage;
