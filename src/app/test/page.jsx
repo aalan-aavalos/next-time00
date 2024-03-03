@@ -4,6 +4,7 @@ function TestPage() {
   return (
     <div>
       <h1>Test</h1>
+      <h2>Josue</h2>
     </div>
   );
 }
