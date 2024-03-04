@@ -6,6 +6,7 @@ function TestPage() {
       <h1>Test</h1>
       <h1>Software developer in this project:</h1>
       <h2>Alan</h2>
+      <h2>Karime</h2>
     </div>
   );
 }
