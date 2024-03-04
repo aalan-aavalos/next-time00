@@ -8,6 +8,7 @@ function TestPage() {
       <h2>Alan</h2>
       <h2>Karime</h2>
       <h2>Josue</h2>
+      <h2>Fernando</h2>
     </div>
   );
 }
