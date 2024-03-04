@@ -8,7 +8,7 @@ function LayoutPage() {
         <Grid item xs={3}>
           <Paper
             sx={{
-              height: "15%",
+              height: "15vh",
               background: "red",
             }}
           />
@@ -16,7 +16,7 @@ function LayoutPage() {
         <Grid item xs={9}>
           <Paper
             sx={{
-              height: "15%",
+              height: "15vh",
               background: "green",
             }}
           />
@@ -24,7 +24,7 @@ function LayoutPage() {
         <Grid item xs={12}>
           <Paper
             sx={{
-              height: "85%",
+              height: "85vh",
               background: "blue",
             }}
           />
