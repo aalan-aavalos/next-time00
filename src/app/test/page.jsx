@@ -4,7 +4,7 @@ function TestPage() {
   return (
     <div>
       <h1>Test</h1>
-      <h2>Karime</h2>
+      <h2>Karime holo</h2>
     </div>
   );
 }
