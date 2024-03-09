@@ -3,7 +3,9 @@ import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 
 import { ThemeProvider } from "@mui/material/styles";
-import theme from "../theme.jsx";
+import darkTheme from "../theme.jsx";
+
+import CssBaseline from "@mui/material/CssBaseline";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -22,7 +24,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <ThemeProvider theme={darkTheme}>
+            <CssBaseline />
+            {children}
+          </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>

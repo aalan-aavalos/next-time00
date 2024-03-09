@@ -9,34 +9,12 @@ const roboto = Roboto({
   display: "swap",
 });
 
-const theme = createTheme({
-  typography: {
-    fontFamily: roboto.style.fontFamily,
-  },
+const darkTheme = createTheme({
   palette: {
-    mode: "dark",
-    primary: {
-      main: "#fff",
-    },
-    secondary: {
-      main: "#fff",
-    },
-    background: {
-      default: "#93A2B9",
-      paper: "#2F3D5D",
-    },
-    text: {
-      primary: "#ffffff",
-      secondary: "rgba(22,19,19,0.7)",
-      hint: "#eeedf3",
-    },
-    info: {
-      main: "#D8DFE9",
-    },
+    mode: 'dark',
   },
-  shape: {
-    borderRadius: 10,
-  },
+  
 });
 
-export default theme;
+
+export default darkTheme;
