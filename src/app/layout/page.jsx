@@ -1,35 +1,88 @@
-import { Button, Container, Grid, Paper, Item } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import React from "react";
 
 function LayoutPage() {
   return (
     <div>
-      <Grid container spacing={1}>
-        <Grid
-          item
-          xs={3}
-          sx={{
-            height: "15vh",
-            background: "red",
-          }}
-          
-        ></Grid>
-        <Grid
-          item
-          xs={9}
-          sx={{
-            height: "15vh",
-            background: "green",
-          }}
-        ></Grid>
-        <Grid
-          item
-          xs={12}
-          sx={{
-            height: "85vh",
-            background: "blue",
-          }}
-        ></Grid>
+      <Grid container columnSpacing={1} rowSpacing={1} p={1}>
+        <Grid item>
+          <Box
+            height={"50vh"}
+            width={"50vh"}
+            display="flex"
+            alignItems="center"
+            gap={4}
+            p={2}
+            sx={{ border: "2px solid grey" }}
+          >
+            This Box uses MUI System props for quick customization.
+          </Box>
+        </Grid>
+        <Grid item>
+          <Box
+            height={"50vh"}
+            width={"50vh"}
+            display="flex"
+            alignItems="center"
+            gap={4}
+            p={2}
+            sx={{ border: "2px solid grey" }}
+          >
+            This Box uses MUI System props for quick customization.
+          </Box>
+        </Grid>
+        <Grid item>
+          <Box
+            height={"50vh"}
+            width={"50vh"}
+            display="flex"
+            alignItems="center"
+            gap={4}
+            p={2}
+            sx={{ border: "2px solid grey" }}
+          >
+            This Box uses MUI System props for quick customization.
+          </Box>
+        </Grid>
+        <Grid item>
+          <Box
+            height={"50vh"}
+            width={"50vh"}
+            display="flex"
+            alignItems="center"
+            gap={4}
+            p={2}
+            sx={{ border: "2px solid grey" }}
+          >
+            This Box uses MUI System props for quick customization.
+          </Box>
+        </Grid>
+        <Grid item>
+          <Box
+            height={"50vh"}
+            width={"50vh"}
+            display="flex"
+            alignItems="center"
+            gap={4}
+            p={2}
+            sx={{ border: "2px solid grey" }}
+          >
+            This Box uses MUI System props for quick customization.
+          </Box>
+        </Grid>
+        <Grid item>
+          <Box
+            height={"50vh"}
+            width={"50vh"}
+            display="flex"
+            alignItems="center"
+            gap={4}
+            p={2}
+            sx={{ border: "2px solid grey" }}
+          >
+            This Box uses MUI System props for quick customization.
+          </Box>
+        </Grid>
       </Grid>
     </div>
   );
