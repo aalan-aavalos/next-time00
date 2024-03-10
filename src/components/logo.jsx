@@ -14,12 +14,7 @@ function Logo() {
       sx={{ borderRadius: 3 }}
     >
       <div style={{ position: "relative", width: "100%", height: "100%" }}>
-        <Image
-          src="/logo.svg"
-          fill
-          objectFit="contain"
-          alt="Picture of the author"
-        />
+        <Image src="/logo.svg" fill alt="Picture of the author" />
       </div>
     </Box>
   );
