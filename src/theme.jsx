@@ -13,6 +13,9 @@ const darkTheme = createTheme({
   palette: {
     mode: 'dark',
   },
+  shape: {
+    borderRadius: 20,
+  },
 });
 
 

@@ -1,18 +1,20 @@
 import React from "react";
 import Box from "@mui/material/Box";
 
-function NavBar() {
+function Lienzo({ children }) {
   return (
     <Box
-      height={"15vh"}
+      height={"80vh"}
+      bgcolor={"#2F3D5D"}
       display="flex"
       alignItems="center"
-      bgcolor={"#2F3D5D"}
       justifyContent={"center"}
       p={2}
       sx={{ borderRadius: 3 }}
-    ></Box>
+    >
+      {children}
+    </Box>
   );
 }
 
-export default NavBar;
+export default Lienzo;
