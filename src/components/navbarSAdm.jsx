@@ -14,7 +14,7 @@ import {
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-function NavBar() {
+function NavBarSAdm() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -39,7 +39,7 @@ function NavBar() {
         spacing={5}
       >
         <Link href="/adm/area" underline="none" color="inherit">
-          <h2>Agregar Areas</h2>
+          <h2>Agregar SAreas</h2>
         </Link>
         <Link href="/adm/usrs" underline="none" color="inherit">
           <h2>Usuarios</h2>
@@ -80,4 +80,4 @@ function NavBar() {
   );
 }
 
-export default NavBar;
+export default NavBarSAdm;

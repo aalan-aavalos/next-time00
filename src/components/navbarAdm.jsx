@@ -14,7 +14,7 @@ import {
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-function NavBar() {
+function NavBarAdm() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -80,4 +80,4 @@ function NavBar() {
   );
 }
 
-export default NavBar;
+export default NavBarAdm;

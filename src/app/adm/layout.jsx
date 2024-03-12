@@ -1,6 +1,6 @@
 import Lienzo from "@/components/lienzo";
 import Logo from "@/components/logo";
-import NavBar from "@/components/navbar";
+import NavBarAdm from "@/components/navbarAdm";
 import { Grid } from "@mui/material";
 
 export default function AdminLayout({ children }) {
@@ -12,7 +12,7 @@ export default function AdminLayout({ children }) {
             <Logo />
           </Grid>
           <Grid item xs={9}>
-            <NavBar />
+            <NavBarAdm />
           </Grid>
           <Grid item xs={12}>
             <Lienzo>{children}</Lienzo>
