@@ -13,7 +13,7 @@ import {
 import React from "react";
 
 import Logo from "@/components/logo";
-import NavBar from "@/components/navbar";
+import NavBarAdm from "@/components/navbarAdm";
 import Lienzo from "@/components/lienzo";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
@@ -65,7 +65,7 @@ function SedePage() {
           <Logo />
         </Grid>
         <Grid item xs={9}>
-          <NavBar />
+          <NavBarAdm />
         </Grid>
         <Grid item xs={12} style={{ fontSize: 20 }}>
           <Lienzo>
