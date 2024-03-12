@@ -9,22 +9,52 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 
 function SedePage() {
   const [open, setOpen] = React.useState(false);
 
+  // Funcion para abrir el dialog
   const handleClickOpen = () => {
     setOpen(true);
   };
 
+  // Funcion para cerrar el dialog
   const handleClose = () => {
+    setOpen(false);
+  };
+
+  const [newUsr, setNewUsr] = useState({
+    eNombre: "",
+    eApeP: "",
+    eApeM: "",
+  });
+
+  const handleChange = (e) => {
+    // ChangeEvent<HTMLInputElement. Asi se pone en typescript
+    setNewUsr({ ...newUsr, [e.target.name]: e.target.value });
+  };
+
+  const createUsers = async () => {
+    const res = await fetch("/api/usrs", {
+      method: "POST",
+      body: JSON.stringify(newUsr),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json()
+    console.log(data);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await createUsers();
     setOpen(false);
   };
 
   return (
     <div>
-      <h2>Buscar</h2>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -35,7 +65,7 @@ function SedePage() {
           },
           component: "form",
           onSubmit: () => {
-            handleClose();
+            handleSubmit();
           },
         }}
       >
@@ -45,31 +75,37 @@ function SedePage() {
             <Grid item xs={4}>
               <TextField
                 autoFocus
+                name="eNombre"
                 required
                 label="Nombre/s"
                 type="text"
                 fullWidth
                 variant="outlined"
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
                 autoFocus
+                name="eApeP"
                 required
                 label="Apellido paterno"
                 type="text"
                 fullWidth
                 variant="outlined"
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
                 autoFocus
+                name="eApeM"
                 required
                 label="Apellido materno"
                 type="text"
                 fullWidth
                 variant="outlined"
+                onChange={handleChange}
               />
             </Grid>
             <Grid item></Grid>
@@ -79,7 +115,7 @@ function SedePage() {
           <Button variant="contained" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" onClick={handleSubmit}>
             Registrar
           </Button>
         </DialogActions>

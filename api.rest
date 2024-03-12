@@ -1,5 +1,13 @@
-### Obteniendo tareas
-GET http://localhost:3000/api/task
+### Obteniendo usuarios
+GET http://localhost:3000/api/usrs
 
-### Creando tareas
-POST http://localhost:3000/api/task
+### Obteniendo usuario
+GET http://localhost:3000/api/usrs/Alan
+
+### Creando usuario
+POST http://localhost:3000/api/usrs
+Content-Type: application/json
+
+{
+    message: "hola"
+}
