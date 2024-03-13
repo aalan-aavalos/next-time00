@@ -1,5 +1,8 @@
 "use client";
-
+import React, { useState, useEffect } from "react";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import {
   Button,
   Dialog,
@@ -9,52 +12,119 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
 
-function SedePage() {
-  const [open, setOpen] = React.useState(false);
+const UsersPage = () => {
+  const [open, setOpen] = useState(false);
 
-  // Funcion para abrir el dialog
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const [datos, setDatos] = useState([]);
 
-  // Funcion para cerrar el dialog
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const [newUsr, setNewUsr] = useState({
+  const [newUser, setNewUser] = useState({
     eNombre: "",
     eApeP: "",
     eApeM: "",
   });
 
-  const handleChange = (e) => {
-    // ChangeEvent<HTMLInputElement. Asi se pone en typescript
-    setNewUsr({ ...newUsr, [e.target.name]: e.target.value });
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        const respuesta = await fetch("/api/usrs");
+        if (!respuesta.ok) {
+          throw new Error("Error al obtener los datos");
+        }
+        const datosJson = await respuesta.json();
+        setDatos(datosJson);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    loadUsers();
+  }, []);
+
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
-  const createUsers = async () => {
-    const res = await fetch("/api/usrs", {
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleChange = (event) => {
+    setNewUser({ ...newUser, [event.target.name]: event.target.value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await createUser(newUser);
+    setOpen(false);
+    window.location.reload();
+  };
+
+  const createUser = async (user) => {
+    const response = await fetch("/api/usrs", {
       method: "POST",
-      body: JSON.stringify(newUsr),
+      body: JSON.stringify(user),
       headers: {
         "Content-Type": "application/json",
       },
     });
-    const data = await res.json()
-    console.log(data);
+    const data = await response.json();
+    console.log("New user created:", data);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await createUsers();
-    setOpen(false);
-  };
+  const columns = [
+    { field: "eNombre", headerName: "Nombre", width: 400 },
+    { field: "eApeP", headerName: "Apellido Paterno", width: 400 },
+    { field: "eApeM", headerName: "Apellido Materno", width: 400 },
+  ];
+
+  const [filterModel, setFilterModel] = React.useState({
+    items: [],
+    quickFilterValues: [""],
+  });
 
   return (
     <div>
+      <Fab
+        color="dark"
+        aria-label="add"
+        onClick={handleClickOpen}
+        p={1}
+        style={{ fontSize: 20 }}
+      >
+        <AddIcon />
+      </Fab>
+      {/*<DataGrid
+        getRowId={(row) => row._id}
+        rows={datos}
+        columns={columns}
+        style={{ fontSize: 20 }}
+        initialState={{
+          pagination: {
+            paginationModel: { page: 0, pageSize: 5 },
+          },
+        }}
+        pageSizeOptions={[5, 10]}
+        checkboxSelection
+      />*/}
+      <div style={{ width: "100%" }}>
+        <div style={{ height: "60vh", width: "100%" }}>
+          <DataGrid
+            getRowId={(row) => row._id}
+            rows={datos}
+            columns={columns}
+            filterModel={filterModel}
+            onFilterModelChange={setFilterModel}
+            disableColumnSelector
+            disableDensitySelector
+            hideFooter
+            slots={{ toolbar: GridToolbar }}
+            slotProps={{ toolbar: { showQuickFilter: true } }}
+            checkboxSelection
+          />
+        </div>
+      </div>
+
       <Dialog
         open={open}
         onClose={handleClose}
@@ -62,10 +132,6 @@ function SedePage() {
         PaperProps={{
           style: {
             background: "#93A2B9",
-          },
-          component: "form",
-          onSubmit: () => {
-            handleSubmit();
           },
         }}
       >
@@ -108,7 +174,6 @@ function SedePage() {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item></Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
@@ -120,11 +185,8 @@ function SedePage() {
           </Button>
         </DialogActions>
       </Dialog>
-      <Button variant="contained" onClick={handleClickOpen}>
-        Agregar
-      </Button>
     </div>
   );
-}
+};
 
-export default SedePage;
+export default UsersPage;

@@ -10,12 +10,11 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
-  MenuList,
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-function NavBar() {
+function NavBarSAdm() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -39,16 +38,13 @@ function NavBar() {
         divider={<Divider orientation="vertical" flexItem />}
         spacing={5}
       >
-        <Link href="/adm/sede" underline="none" color="inherit">
-          <h2>Agregar Sedes</h2>
+        <Link href="/sadm/adm" underline="none" color="inherit">
+          <h2>Administradores</h2>
         </Link>
-        <Link href="/adm/usrs" underline="none" color="inherit">
-          <h2>Usuarios</h2>
-        </Link>
-        <Link href="/adm/solic" underline="none" color="inherit">
+        <Link href="/sadm/solic" underline="none" color="inherit">
           <h2>Solicitudes</h2>
         </Link>
-        <Link href="/adm/train" underline="none" color="inherit">
+        <Link href="/sadm/train" underline="none" color="inherit">
           <h2>Training</h2>
         </Link>
         <PersonIcon
@@ -81,4 +77,4 @@ function NavBar() {
   );
 }
 
-export default NavBar;
+export default NavBarSAdm;

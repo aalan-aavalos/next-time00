@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
-function SedePage() {
-  return (
-    <div>Solicitudes</div>
-  )
+function SolicitudPage() {
+  return <div>Solicitudes</div>;
 }
 
-export default SedePage
+export default SolicitudPage;
