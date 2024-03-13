@@ -13,7 +13,7 @@ import {
 import React from "react";
 
 import Logo from "@/components/logo";
-import NavBar from "@/components/navbar";
+import NavBarAdm from "@/components/navbarAdm";
 import Lienzo from "@/components/lienzo";
 
 function LayoutPage() {
@@ -34,7 +34,7 @@ function LayoutPage() {
           <Logo />
         </Grid>
         <Grid item xs={9}>
-          <NavBar />
+          <NavBarAdm />
         </Grid>
         <Grid item xs={12}>
           <Lienzo>

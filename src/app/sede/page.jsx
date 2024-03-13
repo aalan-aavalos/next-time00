@@ -13,15 +13,14 @@ import {
 import React from "react";
 
 import Logo from "@/components/logo";
-import NavBar from "@/components/navbar";
+import NavBarAdm from "@/components/navbarAdm";
 import Lienzo from "@/components/lienzo";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
 import { Fragment } from "react";
-import Box from '@mui/material/Box';
-import { InputAdornment } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import Box from "@mui/material/Box";
+import { InputAdornment } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 
@@ -37,9 +36,14 @@ function SedePage() {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 80, fontSize: 90},
+    { field: "id", headerName: "ID", width: 80, fontSize: 90 },
     { field: "ubicacion", headerName: "Ubicacion", width: 400 },
-    { field: "fecharegistro", headerName: "Fecha de Registro", type: "date", width: 400 },
+    {
+      field: "fecharegistro",
+      headerName: "Fecha de Registro",
+      type: "date",
+      width: 400,
+    },
     {
       field: "administradores",
       headerName: "Administradores",
@@ -48,22 +52,10 @@ function SedePage() {
       width: 400,
       valueGetter: (params) =>
         `${params.row.firstName || ""} ${params.row.lastName || ""}`,
-     
     },
-];
-
-  const rows = [
-    { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-    { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-    { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-    { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-    { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-    { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-    { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-    { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-    { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
   ];
-  
+
+  const rows = [];
 
   return (
     <div style={{ background: "#93A2B9" }}>
@@ -72,9 +64,9 @@ function SedePage() {
           <Logo />
         </Grid>
         <Grid item xs={9}>
-          <NavBar />
+          <NavBarAdm />
         </Grid>
-        <Grid item xs={12}  style={{fontSize:20}}>
+        <Grid item xs={12} style={{ fontSize: 20 }}>
           <Lienzo>
             <Dialog
               open={open}
@@ -94,10 +86,10 @@ function SedePage() {
                 },
               }}
             >
-              <DialogTitle style={{ textAlign: 'center' }} >Registrar Sede</DialogTitle>
-              <DialogContent style={{fontSize:50}}>
-                
-
+              <DialogTitle style={{ textAlign: "center" }}>
+                Registrar Sede
+              </DialogTitle>
+              <DialogContent style={{ fontSize: 50 }}>
                 <Fragment>
                   <TextField
                     autoFocus
@@ -140,7 +132,6 @@ function SedePage() {
                     fullWidth
                     variant="standard"
                   />
-                  
                 </Fragment>
               </DialogContent>
               <DialogActions>
@@ -151,67 +142,65 @@ function SedePage() {
                   Agregar
                 </Button>
               </DialogActions>
-              
             </Dialog>
             <Grid container spacing={2} alignItems="center">
+              <Grid item>
+                <Fab
+                  color="dark"
+                  aria-label="add"
+                  onClick={handleClickOpen}
+                  style={{ marginTop: "2px", fontSize: 20, margin: "30px" }}
+                >
+                  <AddIcon />
+                </Fab>
+              </Grid>
 
-  <Grid item>
-    <Fab
-      color="dark"
-      aria-label="add"
-      onClick={handleClickOpen}
-      style={{ marginTop: "2px", fontSize: 20, margin:"30px" }}
-      
-      
-    >
-      <AddIcon />
-    </Fab>
-  </Grid>
- 
-<Grid item>
-  <Box
-    component="form"
-    sx={{
-      '& > :not(style)': { m: 1, width: '25ch' },
-    }}
-    noValidate
-    autoComplete="off"
-  >
-    <TextField
-      id="outlined-basic"
-      label="Nombre de la sede"
-      variant="outlined"
-      
-      InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            <SearchIcon color="action" />
-          </InputAdornment>
-        ),
-      }}
-    />
-  </Box>
-</Grid>
-</Grid>
-           
-    
-
+              <Grid item>
+                <Box
+                  component="form"
+                  sx={{
+                    "& > :not(style)": { m: 1, width: "25ch" },
+                  }}
+                  noValidate
+                  autoComplete="off"
+                >
+                  <TextField
+                    id="outlined-basic"
+                    label="Nombre de la sede"
+                    variant="outlined"
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <SearchIcon color="action" />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Box>
+              </Grid>
+            </Grid>
 
             <div></div>
 
-            <div style={{ height: 400, width: "100%", marginTop: "40px", fontSize:500 }}>
+            <div
+              style={{
+                height: "52vh",
+                width: "100%",
+                marginTop: "4hv",
+                fontSize: 500,
+              }}
+            >
               <DataGrid
                 rows={rows}
                 columns={columns}
-                style={{fontSize:20}}
+                style={{ fontSize: 20 }}
                 initialState={{
                   pagination: {
                     paginationModel: { page: 0, pageSize: 5 },
                   },
                 }}
-                pageSizeOptions={[5, 11]}
+                pageSizeOptions={[5, 10]}
                 checkboxSelection
-                
               />
             </div>
           </Lienzo>
