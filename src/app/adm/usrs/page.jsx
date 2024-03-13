@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
-
-import { DataGrid } from "@mui/x-data-grid";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import {
   Button,
   Dialog,
@@ -13,20 +14,18 @@ import {
 } from "@mui/material";
 
 const UsersPage = () => {
-  // State for the dialog
   const [open, setOpen] = useState(false);
 
-  // State for new user data
+  const [datos, setDatos] = useState([]);
+
   const [newUser, setNewUser] = useState({
     eNombre: "",
     eApeP: "",
     eApeM: "",
   });
 
-  const [datos, setDatos] = useState([]);
-
   useEffect(() => {
-    const obtenerDatos = async () => {
+    const loadUsers = async () => {
       try {
         const respuesta = await fetch("/api/usrs");
         if (!respuesta.ok) {
@@ -39,40 +38,28 @@ const UsersPage = () => {
       }
     };
 
-    obtenerDatos();
+    loadUsers();
   }, []);
 
-  // Function to fetch users from the API
-  const loadUsers = async () => {
-    const response = await fetch("/api/usrs");
-    const data = await response.json();
-    return data;
-  };
-
-  // Function to handle opening the dialog
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  // Function to handle closing the dialog
   const handleClose = () => {
     setOpen(false);
   };
 
-  // Function to handle changes in the new user form
   const handleChange = (event) => {
     setNewUser({ ...newUser, [event.target.name]: event.target.value });
   };
 
-  // Function to submit the new user form
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await createUser(newUser); // Call the function to create a new user
-    setOpen(false); // Close the dialog after successful creation
+    await createUser(newUser);
+    setOpen(false);
     window.location.reload();
   };
 
-  // Function to create a new user (likely implemented in a separate file)
   const createUser = async (user) => {
     const response = await fetch("/api/usrs", {
       method: "POST",
@@ -82,19 +69,32 @@ const UsersPage = () => {
       },
     });
     const data = await response.json();
-    console.log("New user created:", data); // Handle the response as needed
+    console.log("New user created:", data);
   };
 
-  // Fetch users on component mount
   const columns = [
     { field: "eNombre", headerName: "Nombre", width: 400 },
     { field: "eApeP", headerName: "Apellido Paterno", width: 400 },
     { field: "eApeM", headerName: "Apellido Materno", width: 400 },
   ];
 
+  const [filterModel, setFilterModel] = React.useState({
+    items: [],
+    quickFilterValues: [""],
+  });
+
   return (
     <div>
-      <DataGrid
+      <Fab
+        color="dark"
+        aria-label="add"
+        onClick={handleClickOpen}
+        p={1}
+        style={{ fontSize: 20 }}
+      >
+        <AddIcon />
+      </Fab>
+      {/*<DataGrid
         getRowId={(row) => row._id}
         rows={datos}
         columns={columns}
@@ -106,10 +106,25 @@ const UsersPage = () => {
         }}
         pageSizeOptions={[5, 10]}
         checkboxSelection
-      />
-      <Button variant="contained" onClick={handleClickOpen}>
-        Agregar
-      </Button>
+      />*/}
+      <div style={{ width: "100%" }}>
+        <div style={{ height: "60vh", width: "100%" }}>
+          <DataGrid
+            getRowId={(row) => row._id}
+            rows={datos}
+            columns={columns}
+            filterModel={filterModel}
+            onFilterModelChange={setFilterModel}
+            disableColumnSelector
+            disableDensitySelector
+            hideFooter
+            slots={{ toolbar: GridToolbar }}
+            slotProps={{ toolbar: { showQuickFilter: true } }}
+            checkboxSelection
+          />
+        </div>
+      </div>
+
       <Dialog
         open={open}
         onClose={handleClose}
