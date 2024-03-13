@@ -1,5 +1,7 @@
 "use client";
+import React, { useState, useEffect } from "react";
 
+import { DataGrid } from "@mui/x-data-grid";
 import {
   Button,
   Dialog,
@@ -9,52 +11,105 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
 
-function SedePage() {
-  const [open, setOpen] = React.useState(false);
+const UsersPage = () => {
+  // State for the dialog
+  const [open, setOpen] = useState(false);
 
-  // Funcion para abrir el dialog
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  // Funcion para cerrar el dialog
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const [newUsr, setNewUsr] = useState({
+  // State for new user data
+  const [newUser, setNewUser] = useState({
     eNombre: "",
     eApeP: "",
     eApeM: "",
   });
 
-  const handleChange = (e) => {
-    // ChangeEvent<HTMLInputElement. Asi se pone en typescript
-    setNewUsr({ ...newUsr, [e.target.name]: e.target.value });
+  const [datos, setDatos] = useState([]);
+
+  useEffect(() => {
+    const obtenerDatos = async () => {
+      try {
+        const respuesta = await fetch("/api/usrs");
+        if (!respuesta.ok) {
+          throw new Error("Error al obtener los datos");
+        }
+        const datosJson = await respuesta.json();
+        setDatos(datosJson);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    obtenerDatos();
+  }, []);
+
+  // Function to fetch users from the API
+  const loadUsers = async () => {
+    const response = await fetch("/api/usrs");
+    const data = await response.json();
+    return data;
   };
 
-  const createUsers = async () => {
-    const res = await fetch("/api/usrs", {
+  // Function to handle opening the dialog
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  // Function to handle closing the dialog
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  // Function to handle changes in the new user form
+  const handleChange = (event) => {
+    setNewUser({ ...newUser, [event.target.name]: event.target.value });
+  };
+
+  // Function to submit the new user form
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await createUser(newUser); // Call the function to create a new user
+    setOpen(false); // Close the dialog after successful creation
+    window.location.reload();
+  };
+
+  // Function to create a new user (likely implemented in a separate file)
+  const createUser = async (user) => {
+    const response = await fetch("/api/usrs", {
       method: "POST",
-      body: JSON.stringify(newUsr),
+      body: JSON.stringify(user),
       headers: {
         "Content-Type": "application/json",
       },
     });
-    const data = await res.json()
-    console.log(data);
+    const data = await response.json();
+    console.log("New user created:", data); // Handle the response as needed
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await createUsers();
-    setOpen(false);
-  };
+  // Fetch users on component mount
+  const columns = [
+    { field: "eNombre", headerName: "Nombre", width: 400 },
+    { field: "eApeP", headerName: "Apellido Paterno", width: 400 },
+    { field: "eApeM", headerName: "Apellido Materno", width: 400 },
+  ];
 
   return (
     <div>
+      <DataGrid
+        getRowId={(row) => row._id}
+        rows={datos}
+        columns={columns}
+        style={{ fontSize: 20 }}
+        initialState={{
+          pagination: {
+            paginationModel: { page: 0, pageSize: 5 },
+          },
+        }}
+        pageSizeOptions={[5, 10]}
+        checkboxSelection
+      />
+      <Button variant="contained" onClick={handleClickOpen}>
+        Agregar
+      </Button>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -62,10 +117,6 @@ function SedePage() {
         PaperProps={{
           style: {
             background: "#93A2B9",
-          },
-          component: "form",
-          onSubmit: () => {
-            handleSubmit();
           },
         }}
       >
@@ -108,7 +159,6 @@ function SedePage() {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item></Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
@@ -120,11 +170,8 @@ function SedePage() {
           </Button>
         </DialogActions>
       </Dialog>
-      <Button variant="contained" onClick={handleClickOpen}>
-        Agregar
-      </Button>
     </div>
   );
-}
+};
 
-export default SedePage;
+export default UsersPage;

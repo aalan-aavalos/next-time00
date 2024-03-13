@@ -1,9 +1,9 @@
 import React from 'react'
 
-function SedePage() {
+function AreaPage() {
   return (
-    <div>SedePage</div>
+    <div>AreaPage</div>
   )
 }
 
-export default SedePage
+export default AreaPage

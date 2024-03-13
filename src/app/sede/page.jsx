@@ -17,7 +17,6 @@ import NavBarAdm from "@/components/navbarAdm";
 import Lienzo from "@/components/lienzo";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
 import { Fragment } from "react";
 import Box from "@mui/material/Box";
 import { InputAdornment } from "@mui/material";
