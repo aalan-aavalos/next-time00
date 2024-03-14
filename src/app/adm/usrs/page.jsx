@@ -1,4 +1,5 @@
-"use client";
+"use client"
+
 import React, { useState, useEffect } from "react";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
@@ -16,6 +17,7 @@ import {
 
 const UsersPage = () => {
   const [open, setOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null); // Estado para almacenar el ID del usuario seleccionado para eliminar
 
   const [datos, setDatos] = useState([]);
 
@@ -58,7 +60,7 @@ const UsersPage = () => {
     event.preventDefault();
     await createUser(newUser);
     setOpen(false);
-    window.location.reload();
+    //window.location.reload();
   };
 
   const createUser = async (user) => {
@@ -71,6 +73,22 @@ const UsersPage = () => {
     });
     const data = await response.json();
     console.log("New user created:", data);
+    setDatos([...datos, data]);
+  };
+
+  const deleteUser = async () => {
+    if (!selectedUserId) return;
+
+    const response = await fetch(`/api/usrs/${selectedUserId}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      // Actualizar datos después de eliminar el usuario
+      const updatedUsers = datos.filter((user) => user._id !== selectedUserId);
+      setDatos(updatedUsers);
+      setSelectedUserId(null); // Limpiar el ID del usuario seleccionado después de eliminar
+    }
   };
 
   const columns = [
@@ -85,8 +103,7 @@ const UsersPage = () => {
   });
 
   const handleRowClick = (params) => {
-    console.log(params.row)
-    return params.row
+    setSelectedUserId(params.row._id); // Establecer el ID del usuario seleccionado al hacer clic en la fila
   };
 
   return (
@@ -103,26 +120,13 @@ const UsersPage = () => {
       <Fab
         color="secondary"
         aria-label="delete"
-        //onClick={}
+        onClick={deleteUser} // Asignar la función de eliminación al evento onClick
         p={1}
         style={{ fontSize: 20, marginBottom: "1vh", marginLeft: "1rem" }}
-        //disabled={!selectedUserId} // Cambiado a !selectedUserId
+        disabled={!selectedUserId} // Deshabilitar el botón de eliminación si no hay ningún usuario seleccionado
       >
         <DeleteIcon />
       </Fab>
-      {/*<DataGrid
-        getRowId={(row) => row._id}
-        rows={datos}
-        columns={columns}
-        style={{ fontSize: 20 }}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
-        }}
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
-      />*/}
       <div style={{ width: "100%" }}>
         <div style={{ height: "60vh", width: "100%" }}>
           <DataGrid
