@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Fab from "@mui/material/Fab";
@@ -18,6 +18,7 @@ import {
 const UsersPage = () => {
   const [open, setOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null); // Estado para almacenar el ID del usuario seleccionado para eliminar
+  const [confirmOpen, setConfirmOpen] = useState(false); // Estado para controlar la apertura del diálogo de confirmación
 
   const [datos, setDatos] = useState([]);
 
@@ -52,6 +53,14 @@ const UsersPage = () => {
     setOpen(false);
   };
 
+  const handleConfirmOpen = () => {
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmClose = () => {
+    setConfirmOpen(false);
+  };
+
   const handleChange = (event) => {
     setNewUser({ ...newUser, [event.target.name]: event.target.value });
   };
@@ -60,7 +69,6 @@ const UsersPage = () => {
     event.preventDefault();
     await createUser(newUser);
     setOpen(false);
-    //window.location.reload();
   };
 
   const createUser = async (user) => {
@@ -73,6 +81,8 @@ const UsersPage = () => {
     });
     const data = await response.json();
     console.log("New user created:", data);
+
+    // Actualizar datos después de agregar el nuevo usuario
     setDatos([...datos, data]);
   };
 
@@ -89,6 +99,8 @@ const UsersPage = () => {
       setDatos(updatedUsers);
       setSelectedUserId(null); // Limpiar el ID del usuario seleccionado después de eliminar
     }
+
+    setConfirmOpen(false); // Cerrar el diálogo de confirmación después de eliminar
   };
 
   const columns = [
@@ -120,7 +132,7 @@ const UsersPage = () => {
       <Fab
         color="secondary"
         aria-label="delete"
-        onClick={deleteUser} // Asignar la función de eliminación al evento onClick
+        onClick={handleConfirmOpen} // Asignar la función para abrir el diálogo de confirmación
         p={1}
         style={{ fontSize: 20, marginBottom: "1vh", marginLeft: "1rem" }}
         disabled={!selectedUserId} // Deshabilitar el botón de eliminación si no hay ningún usuario seleccionado
@@ -202,6 +214,30 @@ const UsersPage = () => {
           </Button>
           <Button variant="contained" type="submit" onClick={handleSubmit}>
             Registrar
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={confirmOpen}
+        onClose={handleConfirmClose}
+        fullWidth
+        PaperProps={{
+          style: {
+            background: "#93A2B9",
+          },
+        }}
+      >
+        <DialogTitle alignSelf="center">Confirmar Eliminación</DialogTitle>
+        <DialogContent>
+          ¿Está seguro de que desea eliminar este usuario?
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={handleConfirmClose}>
+            Cancelar
+          </Button>
+          <Button variant="contained" onClick={deleteUser} autoFocus>
+            Eliminar
           </Button>
         </DialogActions>
       </Dialog>
