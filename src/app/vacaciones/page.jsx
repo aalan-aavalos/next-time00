@@ -1,5 +1,4 @@
 "use client"
-
 import React from "react";
 import {
   Grid,
@@ -20,6 +19,8 @@ import Lienzo from "@/components/lienzo";
 import { DataGrid } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function VacacionesPage() {
   const [open, setOpen] = React.useState(false);
@@ -63,18 +64,47 @@ function VacacionesPage() {
     handleClose();
   };
 
+  const handleUpdate = () => {
+    // Lógica para manejar la actualización de la solicitud de vacaciones
+  };
+
+  const handleDelete = () => {
+    // Lógica para manejar la eliminación de la solicitud de vacaciones
+  };
+
   const columns = [
-    { field: "fechaI", headerName: "Fecha de Inicio", width:300 },
-    { field: "fechaF", headerName: "Fecha de Fin", width: 300},
-    { field: "motivo", headerName: "Motivo", width: 300},
+    { field: "fechaI", headerName: "Fecha de Inicio", width: 300 },
+    { field: "fechaF", headerName: "Fecha de Fin", width: 300 },
+    { field: "motivo", headerName: "Motivo", width: 300 },
     { field: "dias", headerName: "Dias totales", width: 300 },
     { field: "edo", headerName: "Estado", width: 200 },
   ];
 
   const rows = [
-    { id: 1, fechaI: "15/05/2024", fechaF: "22/05/2024", motivo: "Semana Santa", dias: "7", edo: "Aprobada - Rechazada"  },
-    { id: 2, fechaI: "02/10/72024", fechaF: "7/10/2024", motivo: "Descanso", dias: "5", edo: "Aprobada - Rechazada"  },
-    { id: 3, fechaI: "07/12/2024", fechaF: "13/02/2024", motivo: "Navidad", dias: "6", edo: "Aprobada - Rechazada"  },
+    {
+      id: 1,
+      fechaI: "15/05/2024",
+      fechaF: "22/05/2024",
+      motivo: "Semana Santa",
+      dias: "7",
+      edo: "Aprobada - Rechazada",
+    },
+    {
+      id: 2,
+      fechaI: "02/10/72024",
+      fechaF: "7/10/2024",
+      motivo: "Descanso",
+      dias: "5",
+      edo: "Aprobada - Rechazada",
+    },
+    {
+      id: 3,
+      fechaI: "07/12/2024",
+      fechaF: "13/02/2024",
+      motivo: "Navidad",
+      dias: "6",
+      edo: "Aprobada - Rechazada",
+    },
     // Agrega más filas según sea necesario
   ];
 
@@ -101,7 +131,7 @@ function VacacionesPage() {
               }}
             >
               <DialogTitle>Solicitud de Vacaciones</DialogTitle>
-              <DialogContent style={{ marginTop: '20px' }}>
+              <DialogContent style={{ marginTop: "20px" }}>
                 <TextField
                   autoFocus
                   required
@@ -113,7 +143,7 @@ function VacacionesPage() {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  style={{ marginBottom: '20px' }}
+                  style={{ marginBottom: "20px" }}
                 />
                 <TextField
                   required
@@ -125,7 +155,7 @@ function VacacionesPage() {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  style={{ marginBottom: '20px' }}
+                  style={{ marginBottom: "20px" }}
                 />
                 <TextField
                   required
@@ -135,7 +165,7 @@ function VacacionesPage() {
                   multiline
                   rows={4}
                   fullWidth
-                  style={{ marginBottom: '20px' }}
+                  style={{ marginBottom: "20px" }}
                 />
               </DialogContent>
 
@@ -146,6 +176,12 @@ function VacacionesPage() {
                 <Button variant="contained" type="submit">
                   Solicitar
                 </Button>
+                <Button variant="contained" onClick={handleUpdate} color="primary">
+                  Actualizar
+                </Button>
+                <Button variant="contained" onClick={handleDelete} color="secondary">
+                  Eliminar
+                </Button>
               </DialogActions>
             </Dialog>
             <Fab
@@ -155,6 +191,22 @@ function VacacionesPage() {
               style={{ marginTop: "2px", fontSize: 20, margin: "30px" }}
             >
               <AddIcon />
+            </Fab>
+            <Fab
+              color="primary"
+              aria-label="edit"
+              onClick={handleUpdate}
+              style={{ marginTop: "2px", fontSize: 20, margin: "30px" }}
+            >
+              <EditIcon />
+            </Fab>
+            <Fab
+              color="secondary"
+              aria-label="delete"
+              onClick={handleDelete}
+              style={{ marginTop: "2px", fontSize: 20, margin: "30px" }}
+            >
+              <DeleteIcon />
             </Fab>
             <div style={{ height: 400, width: "100%" }}>
               <DataGrid
