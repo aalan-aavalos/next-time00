@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import {
   Button,
@@ -17,16 +18,16 @@ import {
 
 const UsersPage = () => {
   const [open, setOpen] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState(null); // Estado para almacenar el ID del usuario seleccionado para eliminar
-  const [confirmOpen, setConfirmOpen] = useState(false); // Estado para controlar la apertura del diálogo de confirmación
-
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const [datos, setDatos] = useState([]);
-
   const [newUser, setNewUser] = useState({
     eNombre: "",
     eApeP: "",
     eApeM: "",
   });
+  const [updateMode, setUpdateMode] = useState(false);
+  const [selectedUserData, setSelectedUserData] = useState(null);
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -47,10 +48,13 @@ const UsersPage = () => {
 
   const handleClickOpen = () => {
     setOpen(true);
+    setUpdateMode(false);
+    setNewUser({ eNombre: "", eApeP: "", eApeM: "" });
   };
 
   const handleClose = () => {
     setOpen(false);
+    setNewUser({ eNombre: "", eApeP: "", eApeM: "" });
   };
 
   const handleConfirmOpen = () => {
@@ -67,8 +71,13 @@ const UsersPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await createUser(newUser);
+    if (updateMode) {
+      await updateUser(selectedUserId, newUser);
+    } else {
+      await createUser(newUser);
+    }
     setOpen(false);
+    setNewUser({ eNombre: "", eApeP: "", eApeM: "" });
   };
 
   const createUser = async (user) => {
@@ -81,9 +90,25 @@ const UsersPage = () => {
     });
     const data = await response.json();
     console.log("New user created:", data);
-
-    // Actualizar datos después de agregar el nuevo usuario
     setDatos([...datos, data]);
+  };
+
+  const updateUser = async (userId, userData) => {
+    const response = await fetch(`/api/usrs/${userId}`, {
+      method: "PUT",
+      body: JSON.stringify(userData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      const updatedUsers = datos.map((user) =>
+        user._id === userId ? { ...user, ...userData } : user
+      );
+      setDatos(updatedUsers);
+      setSelectedUserId(null);
+      setUpdateMode(false);
+    }
   };
 
   const deleteUser = async () => {
@@ -94,13 +119,23 @@ const UsersPage = () => {
     });
 
     if (response.ok) {
-      // Actualizar datos después de eliminar el usuario
       const updatedUsers = datos.filter((user) => user._id !== selectedUserId);
       setDatos(updatedUsers);
-      setSelectedUserId(null); // Limpiar el ID del usuario seleccionado después de eliminar
+      setSelectedUserId(null);
     }
 
-    setConfirmOpen(false); // Cerrar el diálogo de confirmación después de eliminar
+    setConfirmOpen(false);
+  };
+
+  const handleRowClick = (params) => {
+    setSelectedUserId(params.row._id);
+    setSelectedUserData(params.row);
+    setNewUser(params.row);
+  };
+
+  const handleEditClick = () => {
+    setUpdateMode(true);
+    setOpen(true);
   };
 
   const columns = [
@@ -109,15 +144,6 @@ const UsersPage = () => {
     { field: "eApeM", headerName: "Apellido Materno", width: 400 },
   ];
 
-  const [filterModel, setFilterModel] = React.useState({
-    items: [],
-    quickFilterValues: [""],
-  });
-
-  const handleRowClick = (params) => {
-    setSelectedUserId(params.row._id); // Establecer el ID del usuario seleccionado al hacer clic en la fila
-  };
-
   return (
     <div>
       <Fab
@@ -125,17 +151,27 @@ const UsersPage = () => {
         aria-label="add"
         onClick={handleClickOpen}
         p={1}
-        style={{ fontSize: 20 }}
+        style={{ fontSize: 20, marginBottom: "2vh", marginRight: "1vw" }}
       >
         <AddIcon />
       </Fab>
       <Fab
+        color="primary"
+        aria-label="edit"
+        onClick={handleEditClick}
+        p={1}
+        style={{ fontSize: 20, marginBottom: "2vh", marginRight: "1vw" }}
+        disabled={!selectedUserId}
+      >
+        <EditIcon />
+      </Fab>
+      <Fab
         color="secondary"
         aria-label="delete"
-        onClick={handleConfirmOpen} // Asignar la función para abrir el diálogo de confirmación
+        onClick={handleConfirmOpen}
         p={1}
-        style={{ fontSize: 20, marginBottom: "1vh", marginLeft: "1rem" }}
-        disabled={!selectedUserId} // Deshabilitar el botón de eliminación si no hay ningún usuario seleccionado
+        style={{ fontSize: 20, marginBottom: "2vh"}}
+        disabled={!selectedUserId}
       >
         <DeleteIcon />
       </Fab>
@@ -145,13 +181,10 @@ const UsersPage = () => {
             getRowId={(row) => row._id}
             rows={datos}
             columns={columns}
-            filterModel={filterModel}
-            onFilterModelChange={setFilterModel}
             disableColumnSelector
             disableDensitySelector
             hideFooter
             slots={{ toolbar: GridToolbar }}
-            slotProps={{ toolbar: { showQuickFilter: true } }}
             onRowClick={handleRowClick}
           />
         </div>
@@ -167,7 +200,9 @@ const UsersPage = () => {
           },
         }}
       >
-        <DialogTitle alignSelf="center">Registro de usuarios</DialogTitle>
+        <DialogTitle alignSelf="center">
+          {updateMode ? "Actualizar usuario" : "Registro de usuarios"}
+        </DialogTitle>
         <DialogContent>
           <Grid container columnSpacing={1} p={1} rowSpacing={2}>
             <Grid item xs={4}>
@@ -179,6 +214,7 @@ const UsersPage = () => {
                 type="text"
                 fullWidth
                 variant="outlined"
+                value={newUser.eNombre}
                 onChange={handleChange}
               />
             </Grid>
@@ -191,6 +227,7 @@ const UsersPage = () => {
                 type="text"
                 fullWidth
                 variant="outlined"
+                value={newUser.eApeP}
                 onChange={handleChange}
               />
             </Grid>
@@ -203,6 +240,7 @@ const UsersPage = () => {
                 type="text"
                 fullWidth
                 variant="outlined"
+                value={newUser.eApeM}
                 onChange={handleChange}
               />
             </Grid>
@@ -213,7 +251,7 @@ const UsersPage = () => {
             Cancelar
           </Button>
           <Button variant="contained" type="submit" onClick={handleSubmit}>
-            Registrar
+            {updateMode ? "Actualizar" : "Registrar"}
           </Button>
         </DialogActions>
       </Dialog>
