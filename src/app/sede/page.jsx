@@ -36,7 +36,7 @@ function SedePage() {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 80, fontSize: 90 },
+    { field: "id", headerName: "ID", width: 80, fontSize: 8 },
     { field: "ubicacion", headerName: "Ubicacion", width: 400 },
     {
       field: "fecharegistro",
@@ -91,17 +91,7 @@ function SedePage() {
               </DialogTitle>
               <DialogContent style={{ fontSize: 50 }}>
                 <Fragment>
-                  <TextField
-                    autoFocus
-                    required
-                    margin="dense"
-                    id="name"
-                    name="email"
-                    label="Email Address"
-                    type="email"
-                    fullWidth
-                    variant="standard"
-                  />
+               
                   <TextField
                     autoFocus
                     required
@@ -143,13 +133,13 @@ function SedePage() {
                 </Button>
               </DialogActions>
             </Dialog>
-            <Grid container spacing={2} alignItems="center">
+            <Grid container spacing={3} alignItems="center">
               <Grid item>
                 <Fab
                   color="dark"
                   aria-label="add"
                   onClick={handleClickOpen}
-                  style={{ marginTop: "2px", fontSize: 20, margin: "30px" }}
+                  style={{ marginTop: "2px", fontSize: 20, margin: "40px" }}
                 >
                   <AddIcon />
                 </Fab>
@@ -184,7 +174,7 @@ function SedePage() {
 
             <div
               style={{
-                height: "52vh",
+                height: "59vh",
                 width: "100%",
                 marginTop: "4hv",
                 fontSize: 500,
