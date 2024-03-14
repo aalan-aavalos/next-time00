@@ -144,6 +144,11 @@ const UsersPage = () => {
     { field: "eApeM", headerName: "Apellido Materno", width: 400 },
   ];
 
+  const [filterModel, setFilterModel] = React.useState({
+    items: [],
+    quickFilterValues: [""],
+  });
+
   return (
     <div>
       <Fab
@@ -170,7 +175,7 @@ const UsersPage = () => {
         aria-label="delete"
         onClick={handleConfirmOpen}
         p={1}
-        style={{ fontSize: 20, marginBottom: "2vh"}}
+        style={{ fontSize: 20, marginBottom: "2vh" }}
         disabled={!selectedUserId}
       >
         <DeleteIcon />
@@ -183,8 +188,11 @@ const UsersPage = () => {
             columns={columns}
             disableColumnSelector
             disableDensitySelector
+            filterModel={filterModel}
+            onFilterModelChange={setFilterModel}
             hideFooter
             slots={{ toolbar: GridToolbar }}
+            slotProps={{ toolbar: { showQuickFilter: true } }}
             onRowClick={handleRowClick}
           />
         </div>
@@ -195,6 +203,12 @@ const UsersPage = () => {
         onClose={handleClose}
         fullWidth
         PaperProps={{
+          component: "form",
+
+          onSubmit: () => {
+            handleSubmit();
+          },
+
           style: {
             background: "#93A2B9",
           },
