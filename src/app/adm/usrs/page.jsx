@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import {
   Button,
@@ -83,6 +84,11 @@ const UsersPage = () => {
     quickFilterValues: [""],
   });
 
+  const handleRowClick = (params) => {
+    console.log(params.row)
+    return params.row
+  };
+
   return (
     <div>
       <Fab
@@ -93,6 +99,16 @@ const UsersPage = () => {
         style={{ fontSize: 20 }}
       >
         <AddIcon />
+      </Fab>
+      <Fab
+        color="secondary"
+        aria-label="delete"
+        //onClick={}
+        p={1}
+        style={{ fontSize: 20, marginBottom: "1vh", marginLeft: "1rem" }}
+        //disabled={!selectedUserId} // Cambiado a !selectedUserId
+      >
+        <DeleteIcon />
       </Fab>
       {/*<DataGrid
         getRowId={(row) => row._id}
@@ -120,7 +136,7 @@ const UsersPage = () => {
             hideFooter
             slots={{ toolbar: GridToolbar }}
             slotProps={{ toolbar: { showQuickFilter: true } }}
-            checkboxSelection
+            onRowClick={handleRowClick}
           />
         </div>
       </div>
