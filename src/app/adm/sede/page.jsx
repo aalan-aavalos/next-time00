@@ -1,8 +1,10 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import Stack from '@mui/material/Stack';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import {
   Button,
@@ -16,19 +18,21 @@ import {
 
 const UsersPage = () => {
   const [open, setOpen] = useState(false);
-
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const [datos, setDatos] = useState([]);
-
   const [newUser, setNewUser] = useState({
-    eNombre: "",
-    eApeP: "",
-    eApeM: "",
+    nombreSede: "",
+    ubicacion: "",
+    Adminstradores: "",
   });
+  const [updateMode, setUpdateMode] = useState(false);
+  const [selectedUserData, setSelectedUserData] = useState(null);
 
   useEffect(() => {
     const loadUsers = async () => {
       try {
-        const respuesta = await fetch("/api/usrs");
+        const respuesta = await fetch("/api/sedes");
         if (!respuesta.ok) {
           throw new Error("Error al obtener los datos");
         }
@@ -44,10 +48,21 @@ const UsersPage = () => {
 
   const handleClickOpen = () => {
     setOpen(true);
+    setUpdateMode(false);
+    setNewUser({ nombreSede: "", ubicacion: "", Adminstradores: "" });
   };
 
   const handleClose = () => {
     setOpen(false);
+    setNewUser({ nombreSede: "", ubicacion: "", Adminstradores: "" });
+  };
+
+  const handleConfirmOpen = () => {
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmClose = () => {
+    setConfirmOpen(false);
   };
 
   const handleChange = (event) => {
@@ -56,13 +71,17 @@ const UsersPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await createUser(newUser);
+    if (updateMode) {
+      await updateUser(selectedUserId, newUser);
+    } else {
+      await createUser(newUser);
+    }
     setOpen(false);
-    window.location.reload();
+    setNewUser({ nombreSede: "", ubicacion: "", Adminstradores: "" });
   };
 
   const createUser = async (user) => {
-    const response = await fetch("/api/usrs", {
+    const response = await fetch("/api/sedes", {
       method: "POST",
       body: JSON.stringify(user),
       headers: {
@@ -71,12 +90,58 @@ const UsersPage = () => {
     });
     const data = await response.json();
     console.log("New user created:", data);
+    setDatos([...datos, data]);
+  };
+
+  const updateUser = async (userId, userData) => {
+    const response = await fetch(`/api/sedes/${userId}`, {
+      method: "PUT",
+      body: JSON.stringify(userData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      const updatedUsers = datos.map((user) =>
+        user._id === userId ? { ...user, ...userData } : user
+      );
+      setDatos(updatedUsers);
+      setSelectedUserId(null);
+      setUpdateMode(false);
+    }
+  };
+
+  const deleteUser = async () => {
+    if (!selectedUserId) return;
+
+    const response = await fetch(`/api/sedes/${selectedUserId}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      const updatedUsers = datos.filter((user) => user._id !== selectedUserId);
+      setDatos(updatedUsers);
+      setSelectedUserId(null);
+    }
+
+    setConfirmOpen(false);
+  };
+
+  const handleRowClick = (params) => {
+    setSelectedUserId(params.row._id);
+    setSelectedUserData(params.row);
+    setNewUser(params.row);
+  };
+
+  const handleEditClick = () => {
+    setUpdateMode(true);
+    setOpen(true);
   };
 
   const columns = [
-    { field: "eNombre", headerName: "Ubicacion", width: 400, fontSize:400},
-    { field: "eApeP", headerName: "Fecha de Registro", width: 400 },
-    { field: "eApeM", headerName: "Administradores", width: 400 },
+    { field: "nombreSede", headerName: "Nombre de la nueva sede", width: 400 },
+    { field: "ubicacion", headerName: "Ubicacion", width: 400 },
+    { field: "Adminstradores", headerName: "Administradores", width: 400 },
   ];
 
   const [filterModel, setFilterModel] = React.useState({
@@ -89,50 +154,46 @@ const UsersPage = () => {
       <Fab
         color="dark"
         aria-label="add"
-        
         onClick={handleClickOpen}
         p={1}
-        style={{ fontSize: 20, marginTop: 20, marginLeft:4}}
+        style={{ fontSize: 20, marginBottom: "2vh", marginRight: "1vw" }}
       >
-        <AddIcon  style={{marginLeft:372}}/>
-
-        <Stack spacing={2} direction="row" style={{marginLeft:50}}>
-      <Button variant="outlined">Editar</Button>
-      <Button variant="outlined">Eliminar</Button>
-      <Button variant="outlined">Registrar Area</Button>
-    </Stack>
-
-       
+        <AddIcon />
       </Fab>
-      
-  
-      {/*<DataGrid
-        getRowId={(row) => row._id}
-        rows={datos}
-        columns={columns}
-        style={{ fontSize: 20 }}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
-        }}
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
-      />*/}
+      <Fab
+        color="primary"
+        aria-label="edit"
+        onClick={handleEditClick}
+        p={1}
+        style={{ fontSize: 20, marginBottom: "2vh", marginRight: "1vw" }}
+        disabled={!selectedUserId}
+      >
+        <EditIcon />
+      </Fab>
+      <Fab
+        color="secondary"
+        aria-label="delete"
+        onClick={handleConfirmOpen}
+        p={1}
+        style={{ fontSize: 20, marginBottom: "2vh" }}
+        disabled={!selectedUserId}
+      >
+        <DeleteIcon />
+      </Fab>
       <div style={{ width: "100%" }}>
-        <div style={{ height: "60vh", width: "100%", marginTop:"2%" }}>
+        <div style={{ height: "60vh", width: "100%" }}>
           <DataGrid
             getRowId={(row) => row._id}
             rows={datos}
             columns={columns}
-            filterModel={filterModel}
-            onFilterModelChange={setFilterModel}
             disableColumnSelector
             disableDensitySelector
+            filterModel={filterModel}
+            onFilterModelChange={setFilterModel}
             hideFooter
             slots={{ toolbar: GridToolbar }}
             slotProps={{ toolbar: { showQuickFilter: true } }}
-            checkboxSelection
+            onRowClick={handleRowClick}
           />
         </div>
       </div>
@@ -142,48 +203,58 @@ const UsersPage = () => {
         onClose={handleClose}
         fullWidth
         PaperProps={{
+          component: "form",
+
+          onSubmit: () => {
+            handleSubmit();
+          },
+
           style: {
             background: "#93A2B9",
           },
         }}
       >
-        <DialogTitle alignSelf="center">Registro de usuarios</DialogTitle>
+        <DialogTitle alignSelf="center">
+          {updateMode ? "Actualizar Sede" : "Registro de Sede"}
+        </DialogTitle>
         <DialogContent>
           <Grid container columnSpacing={1} p={1} rowSpacing={2}>
             <Grid item xs={4}>
               <TextField
                 autoFocus
-                name="eNombre"
+                name="nombreSede"
                 required
-                label="Nombre/s"
+                label="Nombre Sede"
                 type="text"
                 fullWidth
-                
                 variant="outlined"
+                value={newUser.nombreSede}
                 onChange={handleChange}
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
                 autoFocus
-                name="eApeP"
+                name="ubicacion"
                 required
-                label="Apellido paterno"
+                label="Ubicación"
                 type="text"
                 fullWidth
                 variant="outlined"
+                value={newUser.ubicacion}
                 onChange={handleChange}
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
                 autoFocus
-                name="eApeM"
+                name="Adminstradores"
                 required
-                label="Apellido materno"
+                label="Administradores"
                 type="text"
                 fullWidth
                 variant="outlined"
+                value={newUser.Adminstradores}
                 onChange={handleChange}
               />
             </Grid>
@@ -194,7 +265,31 @@ const UsersPage = () => {
             Cancelar
           </Button>
           <Button variant="contained" type="submit" onClick={handleSubmit}>
-            Registrar
+            {updateMode ? "Actualizar" : "Registrar"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={confirmOpen}
+        onClose={handleConfirmClose}
+        fullWidth
+        PaperProps={{
+          style: {
+            background: "#93A2B9",
+          },
+        }}
+      >
+        <DialogTitle alignSelf="center">Confirmar Eliminación</DialogTitle>
+        <DialogContent>
+          ¿Está seguro de que desea eliminar este usuario?
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={handleConfirmClose}>
+            Cancelar
+          </Button>
+          <Button variant="contained" onClick={deleteUser} autoFocus>
+            Eliminar
           </Button>
         </DialogActions>
       </Dialog>
