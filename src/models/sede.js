@@ -15,7 +15,7 @@ const sedeSchema = new Schema(
       trim: true,
     },
     Adminstradores: {
-      type: String,
+      type: [String],
       //unique: true,
       trim: true,
     },
