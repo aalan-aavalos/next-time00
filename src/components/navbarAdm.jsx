@@ -38,7 +38,7 @@ function NavBarAdm() {
         divider={<Divider orientation="vertical" flexItem />}
         spacing={5}
       >
-        <Link href="/adm/area" underline="none" color="inherit">
+        <Link href="/adm/sede" underline="none" color="inherit">
           <h2>Agregar Areas</h2>
         </Link>
         <Link href="/adm/usrs" underline="none" color="inherit">

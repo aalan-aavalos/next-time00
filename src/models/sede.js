@@ -20,7 +20,7 @@ const sedeSchema = new Schema(
       trim: true,
     },
 
-    /*Admin:[{
+    /*Area:[{
       NomArea: String,
 
 

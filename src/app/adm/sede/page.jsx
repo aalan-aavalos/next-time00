@@ -32,22 +32,26 @@ const UsersPage = () => {
     nombreSede: "",
     ubicacion: "",
     Adminstradores: "",
+
   });
   const [datosArea, setDatosArea] = useState([]);
- 
+  const [datosUsrs, setDatosUsrs] = useState([]);
 
   useEffect(() => {
     const loadUsers = async () => {
       try {
         const respuesta = await fetch("/api/sedes");
         const respuesta2 = await fetch("/api/area");
+        const respuesta3 = await fetch("/api/usrs");
         if (!respuesta.ok && !respuesta2) {
           throw new Error("Error al obtener los datos");
         }
         const datosJson = await respuesta.json();
         const datosJson2 = await respuesta2.json();
+        const datosJson3 = await respuesta3.json();
         setDatos(datosJson);
         setDatosArea(datosJson2);
+        setDatosUsrs(datosJson3);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -165,8 +169,10 @@ const UsersPage = () => {
     { field: "nombreSede", headerName: "Nombre de la nueva sede", width: 400 },
     { field: "ubicacion", headerName: "Ubicacion", width: 400 },
     { field: "Adminstradores", headerName: "Administradores", width: 400 },
+    {field: "areas", headerName: "Areas", width:400}
   ];
-  const areas = datosArea
+  // const areas = datosArea
+ const adm = [datosUsrs]
 
 
   const [filterModel, setFilterModel] = React.useState({
@@ -298,7 +304,7 @@ const UsersPage = () => {
         value={newUser.Adminstradores}
         onChange={handleChange}
       />*/}
-      <Grid>
+      {/*<Grid>
         <Autocomplete
           multiple
           id="checkboxes-tags-demo"
@@ -322,6 +328,36 @@ const UsersPage = () => {
               {...params}
               label="Seleccionar Areas"
               placeholder="Areas"
+            />
+          )}
+        />
+
+          </Grid>*/}
+
+      <Grid>
+        <Autocomplete
+          multiple
+          id="checkboxes-tags-demo"
+          options={adm}
+          disableCloseOnSelect
+          getOptionLabel={(option) => option.eNombre}
+          renderOption={(props, option, { selected }) => (
+            <li {...props}>
+              <Checkbox
+                icon={icon}
+                checkedIcon={checkedIcon}
+                style={{ marginRight: "2wv"}}
+                checked={selected}
+              />
+              {option.title}
+            </li>
+          )}
+          style={{ width: 200 }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Seleccionar Administradores"
+              placeholder="Administradores"
             />
           )}
         />
