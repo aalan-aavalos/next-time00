@@ -151,6 +151,7 @@ const UsersPage = () => {
 
   return (
     <div>
+      {/** Boton de agregar */}
       <Fab
         color="dark"
         aria-label="add"
@@ -160,6 +161,8 @@ const UsersPage = () => {
       >
         <AddIcon />
       </Fab>
+
+      {/** Boton de editar */}
       <Fab
         color="primary"
         aria-label="edit"
@@ -170,6 +173,8 @@ const UsersPage = () => {
       >
         <EditIcon />
       </Fab>
+
+      {/** Boton de eliminar */}
       <Fab
         color="secondary"
         aria-label="delete"
@@ -180,6 +185,8 @@ const UsersPage = () => {
       >
         <DeleteIcon />
       </Fab>
+
+      {/** Tabla de datos */}
       <div style={{ width: "100%" }}>
         <div style={{ height: "60vh", width: "100%" }}>
           <DataGrid
@@ -198,6 +205,7 @@ const UsersPage = () => {
         </div>
       </div>
 
+      {/** Ventana emerfente del formulario */}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -270,6 +278,7 @@ const UsersPage = () => {
         </DialogActions>
       </Dialog>
 
+      {/** Ventana emergente para confirmar la eliminacion  */}
       <Dialog
         open={confirmOpen}
         onClose={handleConfirmClose}
@@ -297,4 +306,4 @@ const UsersPage = () => {
   );
 };
 
-export default UsersPage;
+export default UsersPage
