@@ -1,3 +1,4 @@
+
 "use client"
 
 import React, { useState } from "react";
@@ -9,12 +10,12 @@ import {
   InputLabel,
   Select,
 } from "@mui/material";
-
 import Logo from "@/components/logo";
 import Lienzo from "@/components/lienzo";
 import { DataGrid } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
+
 
 function TurnoUsuario() {
   const [filter, setFilter] = useState("");
@@ -49,6 +50,7 @@ function TurnoUsuario() {
     }
     return false;
   });
+
 
   return (
     <div style={{ background: "#93A2B9" }}>
@@ -85,6 +87,7 @@ function TurnoUsuario() {
             <div style={{ height: 400, width: "100%" }}>
               <DataGrid
                 rows={filteredRows}
+
                 columns={columns}
                 pageSize={5}
                 checkboxSelection
@@ -98,17 +101,3 @@ function TurnoUsuario() {
 }
 
 export default TurnoUsuario;
-
-
-/*const columns = [
-  { field: "fechaI", headerName: "Fecha de Inicio", width:300 },
-  { field: "fechaF", headerName: "Fecha de Fin", width: 300},
-  { field: "motivo", headerName: "Motivo", width: 300},
-  { field: "dias", headerName: "Dias totales", width: 300 },
-  { field: "edo", headerName: "Estado", width: 200 },
-];
-
-const rows = [
-  { id: 1, fechaI: "15/05/2024", fechaF: "22/05/2024", motivo: "Semana Santa", dias: "7", edo: "Aprobada - Rechazada"  },
-  { id: 2, fechaI: "02/10/72024", fechaF: "7/10/2024", motivo: "Descanso", dias: "5", edo: "Aprobada - Rechazada"  },
-  { id: 3, fechaI: "07/12/2024", fechaF: "13/02/2024", motivo: "Navidad", dias: "6", edo: "Aprobada - Rechazada"  },*/
