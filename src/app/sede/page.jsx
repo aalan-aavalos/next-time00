@@ -97,17 +97,7 @@ function SedePage() {
                 
 
                 <Fragment>
-                  <TextField
-                    autoFocus
-                    required
-                    margin="dense"
-                    id="name"
-                    name="email"
-                    label="Email Address"
-                    type="email"
-                    fullWidth
-                    variant="standard"
-                  />
+               
                   <TextField
                     autoFocus
                     required
@@ -151,7 +141,17 @@ function SedePage() {
               </DialogActions>
               
             </Dialog>
-            <Grid container spacing={2} alignItems="center">
+            <Grid container spacing={3} alignItems="center">
+              <Grid item>
+                <Fab
+                  color="dark"
+                  aria-label="add"
+                  onClick={handleClickOpen}
+                  style={{ marginTop: "2px", fontSize: 20, margin: "40px" }}
+                >
+                  <AddIcon />
+                </Fab>
+              </Grid>
 
   <Grid item>
     <Fab
@@ -197,7 +197,14 @@ function SedePage() {
 
             <div></div>
 
-            <div style={{ height: 400, width: "100%", marginTop: "40px", fontSize:500 }}>
+            <div
+              style={{
+                height: "59vh",
+                width: "100%",
+                marginTop: "4hv",
+                fontSize: 500,
+              }}
+            >
               <DataGrid
                 rows={rows}
                 columns={columns}

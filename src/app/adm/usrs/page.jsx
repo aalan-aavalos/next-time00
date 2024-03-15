@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import InfoIcon from "@mui/icons-material/InfoSharp";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
@@ -17,17 +18,26 @@ import {
 } from "@mui/material";
 
 const UsersPage = () => {
+  const usrsModel = {
+    eNombre: "",
+    eApeP: "",
+    eApeM: "",
+    eRol: "",
+    eEdad: 0,
+    eNumero: 0,
+    eCorreo: "",
+  };
+
   const [open, setOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [datos, setDatos] = useState([]);
-  const [newUser, setNewUser] = useState({
-    eNombre: "",
-    eApeP: "",
-    eApeM: "",
-  });
+  const [newUser, setNewUser] = useState(usrsModel);
+
   const [updateMode, setUpdateMode] = useState(false);
   const [selectedUserData, setSelectedUserData] = useState(null);
+  const [detailsOpen, setDetailsOpen] = useState(false); // State para abrir/cerrar detalles
+  const [selectedUserDetails, setSelectedUserDetails] = useState(null); // Detalles del usuario seleccionado
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -49,12 +59,12 @@ const UsersPage = () => {
   const handleClickOpen = () => {
     setOpen(true);
     setUpdateMode(false);
-    setNewUser({ eNombre: "", eApeP: "", eApeM: "" });
+    setNewUser(usrsModel);
   };
 
   const handleClose = () => {
     setOpen(false);
-    setNewUser({ eNombre: "", eApeP: "", eApeM: "" });
+    setNewUser(usrsModel);
   };
 
   const handleConfirmOpen = () => {
@@ -77,7 +87,7 @@ const UsersPage = () => {
       await createUser(newUser);
     }
     setOpen(false);
-    setNewUser({ eNombre: "", eApeP: "", eApeM: "" });
+    setNewUser(usrsModel);
   };
 
   const createUser = async (user) => {
@@ -138,7 +148,20 @@ const UsersPage = () => {
     setOpen(true);
   };
 
+  const handleDetailsClick = () => {
+    setDetailsOpen(true);
+    // Aquí puedes cargar los detalles del usuario seleccionado para mostrarlos en el diálogo de detalles
+    // Puedes usar el estado 'selectedUserData' para esto.
+    setSelectedUserDetails(selectedUserData);
+  };
+
+  const handleCloseDetails = () => {
+    setDetailsOpen(false);
+    //setSelectedUserDetails(null);
+  };
+
   const columns = [
+    { field: "eCorreo", headerName: "Correo", width: 400 },
     { field: "eNombre", headerName: "Nombre", width: 400 },
     { field: "eApeP", headerName: "Apellido Paterno", width: 400 },
     { field: "eApeM", headerName: "Apellido Materno", width: 400 },
@@ -151,6 +174,7 @@ const UsersPage = () => {
 
   return (
     <div>
+      {/** Boton de agregar */}
       <Fab
         color="dark"
         aria-label="add"
@@ -160,6 +184,8 @@ const UsersPage = () => {
       >
         <AddIcon />
       </Fab>
+
+      {/** Boton de editar */}
       <Fab
         color="primary"
         aria-label="edit"
@@ -170,16 +196,32 @@ const UsersPage = () => {
       >
         <EditIcon />
       </Fab>
+
+      {/** Boton de ver detalles */}
+      <Fab
+        color="primary"
+        aria-label="details"
+        onClick={handleDetailsClick}
+        p={1}
+        style={{ fontSize: 20, marginBottom: "2vh", marginRight: "1vw" }}
+        disabled={!selectedUserId}
+      >
+        <InfoIcon />
+      </Fab>
+
+      {/** Boton de eliminar */}
       <Fab
         color="secondary"
         aria-label="delete"
         onClick={handleConfirmOpen}
         p={1}
-        style={{ fontSize: 20, marginBottom: "2vh" }}
+        style={{ fontSize: 20, marginBottom: "2vh", marginRight: "1vw" }}
         disabled={!selectedUserId}
       >
         <DeleteIcon />
       </Fab>
+
+      {/** Tabla de datos */}
       <div style={{ width: "100%" }}>
         <div style={{ height: "60vh", width: "100%" }}>
           <DataGrid
@@ -198,6 +240,7 @@ const UsersPage = () => {
         </div>
       </div>
 
+      {/** Ventana emergente del formulario */}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -219,7 +262,8 @@ const UsersPage = () => {
         </DialogTitle>
         <DialogContent>
           <Grid container columnSpacing={1} p={1} rowSpacing={2}>
-            <Grid item xs={4}>
+            {/** Campo para el nombre (eNombre) */}
+            <Grid item xs={12}>
               <TextField
                 autoFocus
                 name="eNombre"
@@ -232,7 +276,9 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={4}>
+
+            {/** Campo para el apellido paterno (eApeP) */}
+            <Grid item xs={6}>
               <TextField
                 autoFocus
                 name="eApeP"
@@ -245,7 +291,9 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={4}>
+
+            {/** Campo para el apellido materno (eApeM) */}
+            <Grid item xs={6}>
               <TextField
                 autoFocus
                 name="eApeM"
@@ -255,6 +303,66 @@ const UsersPage = () => {
                 fullWidth
                 variant="outlined"
                 value={newUser.eApeM}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            {/** Campo para la edad (eEdad) */}
+            <Grid item xs={3}>
+              <TextField
+                autoFocus
+                name="eEdad"
+                required
+                label="Edad"
+                type="number"
+                fullWidth
+                variant="outlined"
+                value={newUser.eEdad}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            {/** Campo para el rol (eRol) */}
+            <Grid item xs={3}>
+              <TextField
+                autoFocus
+                name="eRol"
+                required
+                label="Rol"
+                type=""
+                fullWidth
+                variant="outlined"
+                value={newUser.eRol}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            {/** Campo para el correo (eNumero) */}
+            <Grid item xs={6}>
+              <TextField
+                autoFocus
+                name="eNumero"
+                required
+                label="Numero de telefono"
+                type="tel"
+                fullWidth
+                variant="outlined"
+                value={newUser.eNumero}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            {/** Campo para el correo (eCorreo) */}
+            <Grid item xs={12}>
+              <TextField
+                autoFocus
+                name="eCorreo"
+                required
+                label="Correo electronico"
+                type="email"
+                fullWidth
+                variant="outlined"
+                value={newUser.eCorreo}
                 onChange={handleChange}
               />
             </Grid>
@@ -270,6 +378,7 @@ const UsersPage = () => {
         </DialogActions>
       </Dialog>
 
+      {/** Ventana emergente para confirmar la eliminacion  */}
       <Dialog
         open={confirmOpen}
         onClose={handleConfirmClose}
@@ -290,6 +399,107 @@ const UsersPage = () => {
           </Button>
           <Button variant="contained" onClick={deleteUser} autoFocus>
             Eliminar
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/** Ventana emergente para mostrar detalles del usuario */}
+      <Dialog
+        open={detailsOpen}
+        onClose={handleCloseDetails}
+        fullWidth
+        PaperProps={{
+          style: {
+            background: "#93A2B9",
+          },
+        }}
+      >
+        <DialogTitle alignSelf="center">Detalles del Usuario</DialogTitle>
+        {selectedUserDetails && (
+          <DialogContent>
+            <Grid container columnSpacing={1} p={1} rowSpacing={2}>
+              {/** Campo para el nombre (eNombre) */}
+              <Grid item xs={12}>
+                <TextField
+                  label="Nombre/s"
+                  disabled
+                  fullWidth
+                  variant="outlined"
+                  defaultValue={selectedUserDetails.eNombre}
+                />
+              </Grid>
+
+              {/** Campo para el apellido paterno (eApeP) */}
+              <Grid item xs={6}>
+                <TextField
+                  label="Apellido paterno"
+                  disabled
+                  fullWidth
+                  variant="outlined"
+                  defaultValue={selectedUserDetails.eApeP}
+                />
+              </Grid>
+
+              {/** Campo para el apellido materno (eApeM) */}
+              <Grid item xs={6}>
+                <TextField
+                  label="Apellido materno"
+                  disabled
+                  fullWidth
+                  variant="outlined"
+                  defaultValue={selectedUserDetails.eApeM}
+                />
+              </Grid>
+
+              {/** Campo para la edad (eEdad) */}
+              <Grid item xs={3}>
+                <TextField
+                  label="Edad"
+                  disabled
+                  fullWidth
+                  variant="outlined"
+                  defaultValue={selectedUserDetails.eEdad}
+                />
+              </Grid>
+
+              {/** Campo para el rol (eRol) */}
+              <Grid item xs={3}>
+                <TextField
+                  label="Rol"
+                  disabled
+                  fullWidth
+                  variant="outlined"
+                  defaultValue={selectedUserDetails.eRol}
+                />
+              </Grid>
+
+              {/** Campo para el numero de telefono (eNumero) */}
+              <Grid item xs={6}>
+                <TextField
+                  label="Numero de telefono"
+                  disabled
+                  fullWidth
+                  variant="outlined"
+                  defaultValue={selectedUserDetails.eNumero}
+                />
+              </Grid>
+
+              {/** Campo para el correo (eCorreo) */}
+              <Grid item xs={12}>
+                <TextField
+                  label="Correo electronico"
+                  disabled
+                  fullWidth
+                  variant="outlined"
+                  defaultValue={selectedUserDetails.eCorreo}
+                />
+              </Grid>
+            </Grid>
+          </DialogContent>
+        )}
+        <DialogActions>
+          <Button variant="contained" onClick={handleCloseDetails}>
+            Cerrar
           </Button>
         </DialogActions>
       </Dialog>
