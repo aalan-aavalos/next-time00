@@ -261,6 +261,8 @@ const UsersPage = () => {
         </DialogTitle>
         <DialogContent>
           <Grid container columnSpacing={1} p={1} rowSpacing={2}>
+            
+            {/** Campo para el nombre (eNombre) */}
             <Grid item xs={4}>
               <TextField
                 autoFocus
@@ -274,6 +276,8 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
+
+            {/** Campo para el nombre (eApeP) */}
             <Grid item xs={4}>
               <TextField
                 autoFocus
@@ -287,6 +291,8 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
+
+            {/** Campo para el nombre (eApeM) */}
             <Grid item xs={4}>
               <TextField
                 autoFocus
