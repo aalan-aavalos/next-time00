@@ -161,6 +161,7 @@ const UsersPage = () => {
   };
 
   const columns = [
+    { field: "eCorreo", headerName: "Nombre", width: 400 },
     { field: "eNombre", headerName: "Nombre", width: 400 },
     { field: "eApeP", headerName: "Apellido Paterno", width: 400 },
     { field: "eApeM", headerName: "Apellido Materno", width: 400 },
@@ -261,9 +262,8 @@ const UsersPage = () => {
         </DialogTitle>
         <DialogContent>
           <Grid container columnSpacing={1} p={1} rowSpacing={2}>
-            
             {/** Campo para el nombre (eNombre) */}
-            <Grid item xs={4}>
+            <Grid item xs={12}>
               <TextField
                 autoFocus
                 name="eNombre"
@@ -277,8 +277,8 @@ const UsersPage = () => {
               />
             </Grid>
 
-            {/** Campo para el nombre (eApeP) */}
-            <Grid item xs={4}>
+            {/** Campo para el apellido paterno (eApeP) */}
+            <Grid item xs={6}>
               <TextField
                 autoFocus
                 name="eApeP"
@@ -292,8 +292,8 @@ const UsersPage = () => {
               />
             </Grid>
 
-            {/** Campo para el nombre (eApeM) */}
-            <Grid item xs={4}>
+            {/** Campo para el apellido materno (eApeM) */}
+            <Grid item xs={6}>
               <TextField
                 autoFocus
                 name="eApeM"
@@ -303,6 +303,66 @@ const UsersPage = () => {
                 fullWidth
                 variant="outlined"
                 value={newUser.eApeM}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            {/** Campo para la edad (eEdad) */}
+            <Grid item xs={3}>
+              <TextField
+                autoFocus
+                name="eEdad"
+                required
+                label="Edad"
+                type="number"
+                fullWidth
+                variant="outlined"
+                value={newUser.eEdad}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            {/** Campo para el rol (eRol) */}
+            <Grid item xs={3}>
+              <TextField
+                autoFocus
+                name="eRol"
+                required
+                label="Rol"
+                type=""
+                fullWidth
+                variant="outlined"
+                value={newUser.eRol}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            {/** Campo para el correo (eNumero) */}
+            <Grid item xs={6}>
+              <TextField
+                autoFocus
+                name="eNumero"
+                required
+                label="Numero de telefono"
+                type="tel"
+                fullWidth
+                variant="outlined"
+                value={newUser.eNumero}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            {/** Campo para el correo (eCorreo) */}
+            <Grid item xs={12}>
+              <TextField
+                autoFocus
+                name="eCorreo"
+                required
+                label="Correo electronico"
+                type="email"
+                fullWidth
+                variant="outlined"
+                value={newUser.eCorreo}
                 onChange={handleChange}
               />
             </Grid>
@@ -357,20 +417,84 @@ const UsersPage = () => {
         <DialogTitle alignSelf="center">Detalles del Usuario</DialogTitle>
         {selectedUserDetails && (
           <DialogContent>
-            <p>Nombre: {selectedUserDetails.eNombre}</p>
-            <TextField
-              disabled
-              id="outlined-disabled"
-              label="Nombre"
-              defaultValue={selectedUserData.eNombre}
-            />
-            <p>Apellido Paterno: {selectedUserDetails.eApeP}</p>
-            <p>Apellido Materno: {selectedUserDetails.eApeM}</p>
-            <p>Correo electronico: {selectedUserDetails.eCorreo}</p>
-            <p>Apellido Materno: {selectedUserDetails.eEdad}</p>
-            <p>Apellido Materno: {selectedUserDetails.eRol}</p>
-            <p>Apellido Materno: {selectedUserDetails.eNumero}</p>
-            {/* Aquí puedes agregar más detalles del usuario si es necesario */}
+            <Grid container columnSpacing={1} p={1} rowSpacing={2}>
+              {/** Campo para el nombre (eNombre) */}
+              <Grid item xs={12}>
+                <TextField
+                  label="Nombre/s"
+                  disabled
+                  fullWidth
+                  variant="outlined"
+                  defaultValue={selectedUserDetails.eNombre}
+                />
+              </Grid>
+
+              {/** Campo para el apellido paterno (eApeP) */}
+              <Grid item xs={6}>
+                <TextField
+                  label="Apellido paterno"
+                  disabled
+                  fullWidth
+                  variant="outlined"
+                  defaultValue={selectedUserDetails.eApeP}
+                />
+              </Grid>
+
+              {/** Campo para el apellido materno (eApeM) */}
+              <Grid item xs={6}>
+                <TextField
+                  label="Apellido materno"
+                  disabled
+                  fullWidth
+                  variant="outlined"
+                  defaultValue={selectedUserDetails.eApeM}
+                />
+              </Grid>
+
+              {/** Campo para la edad (eEdad) */}
+              <Grid item xs={3}>
+                <TextField
+                  label="Edad"
+                  disabled
+                  fullWidth
+                  variant="outlined"
+                  defaultValue={selectedUserDetails.eEdad}
+                />
+              </Grid>
+
+              {/** Campo para el rol (eRol) */}
+              <Grid item xs={3}>
+                <TextField
+                  label="Rol"
+                  disabled
+                  fullWidth
+                  variant="outlined"
+                  defaultValue={selectedUserDetails.eRol}
+                />
+              </Grid>
+
+              {/** Campo para el numero de telefono (eNumero) */}
+              <Grid item xs={6}>
+                <TextField
+                  label="Numero de telefono"
+                  disabled
+                  fullWidth
+                  variant="outlined"
+                  defaultValue={selectedUserDetails.eNumero}
+                />
+              </Grid>
+
+              {/** Campo para el correo (eCorreo) */}
+              <Grid item xs={12}>
+                <TextField
+                  label="Correo electronico"
+                  disabled
+                  fullWidth
+                  variant="outlined"
+                  defaultValue={selectedUserDetails.eCorreo}
+                />
+              </Grid>
+            </Grid>
           </DialogContent>
         )}
         <DialogActions>
