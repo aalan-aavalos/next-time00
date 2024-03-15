@@ -165,9 +165,15 @@ const VacacionesPage = () => {
       renderCell: (params) => {
         const dias = calcularDiferenciaDias(params.row.fechaI, params.row.fechaF);
         return dias;
-      }
+      },
     },
-    { field: "edo", headerName: "Estado", width: 200 },
+    {field: "estado",
+        headerName: "Estado",
+        width: 200,
+        renderCell: (params) => {
+          return params.row.estado; // Muestra el estado tal como está en los datos
+        },
+    }
   ];
 
   const [filterModel, setFilterModel] = React.useState({
