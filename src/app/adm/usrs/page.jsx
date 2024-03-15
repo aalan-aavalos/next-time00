@@ -161,7 +161,7 @@ const UsersPage = () => {
   };
 
   const columns = [
-    { field: "eCorreo", headerName: "Nombre", width: 400 },
+    { field: "eCorreo", headerName: "Correo", width: 400 },
     { field: "eNombre", headerName: "Nombre", width: 400 },
     { field: "eApeP", headerName: "Apellido Paterno", width: 400 },
     { field: "eApeM", headerName: "Apellido Materno", width: 400 },
