@@ -33,24 +33,28 @@ const UsersPage = () => {
     ubicacion: "",
     Adminstradores: "",
   });
+  const [datosArea, setDatosArea] = useState([]);
  
 
   useEffect(() => {
     const loadUsers = async () => {
       try {
         const respuesta = await fetch("/api/sedes");
-        if (!respuesta.ok) {
+        const respuesta2 = await fetch("/api/area");
+        if (!respuesta.ok && !respuesta2) {
           throw new Error("Error al obtener los datos");
         }
         const datosJson = await respuesta.json();
+        const datosJson2 = await respuesta2.json();
         setDatos(datosJson);
+        setDatosArea(datosJson2);
       } catch (error) {
         console.error("Error:", error);
       }
     };
 
     loadUsers();
-  }, []);
+  }, []); 
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -162,12 +166,9 @@ const UsersPage = () => {
     { field: "ubicacion", headerName: "Ubicacion", width: 400 },
     { field: "Adminstradores", headerName: "Administradores", width: 400 },
   ];
-  const top100Films = [
-    { title: 'The Shawshank Redemption', year: 1994 },
-    { title: 'The Godfather', year: 1972 },
-    { title: 'The Godfather: Part II', year: 1974 },
+  const areas = datosArea
 
-  ]
+
   const [filterModel, setFilterModel] = React.useState({
     items: [],
     quickFilterValues: [""],
@@ -301,7 +302,7 @@ const UsersPage = () => {
         <Autocomplete
           multiple
           id="checkboxes-tags-demo"
-          options={top100Films}
+          options={areas}
           disableCloseOnSelect
           getOptionLabel={(option) => option.title}
           renderOption={(props, option, { selected }) => (
