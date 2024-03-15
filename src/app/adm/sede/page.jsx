@@ -158,7 +158,7 @@ const UsersPage = () => {
 
 
   const columns = [
-    { field: "nombreSede", headerName: "Nombre de la nueva sede", width: 400, fontSize:40},
+    { field: "nombreSede", headerName: "Nombre de la nueva sede", width: 400 },
     { field: "ubicacion", headerName: "Ubicacion", width: 400 },
     { field: "Adminstradores", headerName: "Administradores", width: 400 },
   ];
