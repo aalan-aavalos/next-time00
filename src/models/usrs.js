@@ -3,7 +3,7 @@ const { Schema, model, models } = require("mongoose");
 const usrsSchema = new Schema(
   {
     eNombre: {
-      type: String,
+      type: [String],
       required: [true, "El nombre es requerido"],
       //unique: [true, "El nombre no puede ser igual"], // Lo que hace es que manda un error si se repite
       trim: true, // Lo que hace es que borra los espacios del final e inicio

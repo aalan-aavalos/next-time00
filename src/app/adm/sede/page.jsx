@@ -31,34 +31,62 @@ const UsersPage = () => {
   const [newUser, setNewUser] = useState({
     nombreSede: "",
     ubicacion: "",
-    Adminstradores: "",
+    Adminstradores: [],
 
   });
   const [datosArea, setDatosArea] = useState([]);
   const [datosUsrs, setDatosUsrs] = useState([]);
 
   useEffect(() => {
-    const loadUsers = async () => {
+    const loadSedes = async () => {
       try {
         const respuesta = await fetch("/api/sedes");
-        const respuesta2 = await fetch("/api/area");
-        const respuesta3 = await fetch("/api/usrs");
-        if (!respuesta.ok && !respuesta2) {
-          throw new Error("Error al obtener los datos");
+        if (!respuesta.ok) {
+          throw new Error("Error al obtener los datos de sedes");
         }
         const datosJson = await respuesta.json();
-        const datosJson2 = await respuesta2.json();
-        const datosJson3 = await respuesta3.json();
         setDatos(datosJson);
-        setDatosArea(datosJson2);
-        setDatosUsrs(datosJson3);
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Error al cargar los datos de sedes:", error);
       }
     };
-
-    loadUsers();
-  }, []); 
+  
+    loadSedes();
+  }, []);
+  
+  useEffect(() => {
+    const loadAreas = async () => {
+      try {
+        const respuesta = await fetch("/api/area");
+        if (!respuesta.ok) {
+          throw new Error("Error al obtener los datos de áreas");
+        }
+        const datosJson = await respuesta.json();
+        setDatosArea(datosJson);
+      } catch (error) {
+        console.error("Error al cargar los datos de áreas:", error);
+      }
+    };
+  
+    loadAreas();
+  }, []);
+  
+  useEffect(() => {
+    const loadUsrs = async () => {
+      try {
+        const respuesta = await fetch("/api/usrs");
+        if (!respuesta.ok) {
+          throw new Error("Error al obtener los datos de usuarios");
+        }
+        const datosJson = await respuesta.json();
+        setDatosUsrs(datosJson);
+      } catch (error) {
+        console.error("Error al cargar los datos de usuarios:", error);
+      }
+    };
+  
+    loadUsrs();
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -172,7 +200,7 @@ const UsersPage = () => {
     {field: "areas", headerName: "Areas", width:400}
   ];
   // const areas = datosArea
- const adm = [datosUsrs]
+ const adm = datosUsrs
 
 
   const [filterModel, setFilterModel] = React.useState({
@@ -279,6 +307,7 @@ const UsersPage = () => {
         onChange={handleChange}
       />
     </Grid>
+    
     <Grid item xs={4}>
       <TextField
         autoFocus
@@ -349,7 +378,7 @@ const UsersPage = () => {
                 style={{ marginRight: "2wv"}}
                 checked={selected}
               />
-              {option.title}
+              {option.eNombre}
             </li>
           )}
           style={{ width: 200 }}
