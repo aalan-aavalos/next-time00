@@ -24,7 +24,7 @@ const VacacionesPage = () => {
     fechaI: "",
     fechaF: "",
     motivo: "",
-    estado: "",
+    estado: "Pendiente",
   });
   const [updateMode, setUpdateMode] = useState(false);
   const [selectedUserData, setSelectedUserData] = useState(null);
@@ -49,12 +49,12 @@ const VacacionesPage = () => {
   const handleClickOpen = () => {
     setOpen(true);
     setUpdateMode(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "" });
+    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "Pendiente" });
   };
 
   const handleClose = () => {
     setOpen(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "" });
+    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "Pendiente" });
   };
 
   const handleConfirmOpen = () => {
@@ -77,7 +77,7 @@ const VacacionesPage = () => {
       await createUser(newUser);
     }
     setOpen(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "" });
+    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "Pendiente" });
   };
 
   const createUser = async (user) => {
@@ -172,7 +172,7 @@ const VacacionesPage = () => {
         return dias;
       },
     },
-    { field: "estado", headerName: "Estado", width: 200 },
+    //{ field: "estado", headerName: "Estado", width: 200 },
   ];
 
   const [filterModel, setFilterModel] = React.useState({
