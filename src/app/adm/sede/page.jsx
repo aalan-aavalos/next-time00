@@ -405,6 +405,9 @@ const UsersPage = () => {
             {updateMode ? "Actualizar" : "Registrar"}
           </Button>
         </DialogActions>
+
+
+        {/** ------------------------------------------------------------------- */}
         <DialogTitle alignSelf="center">
           {updateMode ? "Actualizar Area" : "Registro de Area"}
           
