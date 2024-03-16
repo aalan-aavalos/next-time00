@@ -8,13 +8,13 @@ export default function Home() {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push("/adm/usrs");
+    router.push("/views");
   };
   return (
     <div>
       <h1>Home</h1>
       <Button variant="contained" onClick={handleClick}>
-        Admin view
+        Vistas
       </Button>
     </div>
   );

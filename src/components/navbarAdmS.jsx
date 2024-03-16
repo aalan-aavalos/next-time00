@@ -42,7 +42,7 @@ function NavBarSAdm() {
           <h2>Administradores</h2>
         </Link>
         <Link href="/views/adms/sede" underline="none" color="inherit">
-          <h2>Solicitudes</h2>
+          <h2>Sedes</h2>
         </Link>
         <PersonIcon
           sx={{ fontSize: "4.5rem", color: "white" }}
