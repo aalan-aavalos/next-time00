@@ -47,12 +47,7 @@ function NavBarAdm() {
         <Link href="/views/adm/solic" underline="none" color="inherit">
           <h2>Solicitudes</h2>
         </Link>
-        <Link href="/views/adm/train" underline="none" color="inherit">
-          <h2>Training</h2>
-        </Link>
-        <Link href="/views/adm/contrato" underline="none" color="inherit">
-          <h2>Contrato</h2>
-        </Link>
+
         <PersonIcon
           sx={{ fontSize: "4.5rem", color: "white" }}
           onClick={handleClick}
