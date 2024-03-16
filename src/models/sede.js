@@ -20,8 +20,9 @@ const sedeSchema = new Schema(
       trim: true,
     },
 
-    /*Area:[{
-      NomArea: String,
+    /*area:{
+      nomArea: String,
+      tipoArea
 
 
     }]*/
