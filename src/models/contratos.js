@@ -1,39 +1,35 @@
 const { Schema, model, models } = require("mongoose");
 
-const contratosSchema = new Schema(
+const contratoSchema = new Schema(
   {
-    fechaInicio: {
-      type: Date,
-      required: [true, "El nombre es requerido"],
+    tipo_contrato:{ 
+      type: String,
+      required: [true, "El Tipo de contrato es requerido"],
       //unique: [true, "El nombre no puede ser igual"], // Lo que hace es que manda un error si se repite
       trim: true, // Lo que hace es que borra los espacios del final e inicio
     },
-    fechaFin: {
-      type: Date,
-      required: [true, "El Apellido Paterno es requerido"],
+    duracion_jornada: {
+      type: String,
+      required: [true, "Es necesario que indiques el horario  "],
       //unique: true,
       trim: true,
     },
-    eApeM: {
+    turnos: [
+      {
+      hora_inicioFin:{
       type: String,
       required: [true, "El Apellido Materno es requerido"],
       //unique: true,
-      trim: true,
+      trim: true,}
+
     },
-    //eRol: "adm/sup/usr", // Atributo lo tiene todos los empleado, catalogo
-    //eNomUsr: "jonhDoe", // Atributo lo tiene todos los empleado
-    //eEdad: 19, // Atributo lo tiene todos los empleado
-    //eNumero: 1234567890, // Atributo lo tiene todos los empleado
-    //eCorreo: "jonh@doe.com", // Atributo lo tiene todos los empleado
-    //efechaRegistro: "02/02/2024", // Atributo lo tiene todos los empleado
-    //auSede: "Leon", // Atributo de administradores y empleado, este se tomara de un catalogo
-    //uArea: "Mantenimiento", //Atributo de empleado, este se tomara de un catalogo
-    //uTurno: "4 / 5", // Atributo de empleado, este se tomara de un catalogo
+  ]
+    
   },
   {
     timestamps: true /* Lo que hace es que agrega el campo de fecha de creacion y actualizacion */,
   },
 );
-export default models.Usrs || model("Contratos", usrsSchema);
+export default models.Contrato || model("Contrato", contratoSchema);
 
 
