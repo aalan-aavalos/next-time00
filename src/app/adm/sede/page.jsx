@@ -292,6 +292,7 @@ const UsersPage = () => {
         <DialogTitle alignSelf="center">
           {updateMode ? "Actualizar Sede" : "Registro de Sede"}
         </DialogTitle>
+       
         <DialogContent>
   <Grid container columnSpacing={1} p={1} rowSpacing={2}>
     <Grid item xs={4}>
@@ -404,6 +405,10 @@ const UsersPage = () => {
             {updateMode ? "Actualizar" : "Registrar"}
           </Button>
         </DialogActions>
+        <DialogTitle alignSelf="center">
+          {updateMode ? "Actualizar Area" : "Registro de Area"}
+          
+           </DialogTitle>
       </Dialog>
 
       <Dialog
@@ -428,6 +433,7 @@ const UsersPage = () => {
             Eliminar
           </Button>
         </DialogActions>
+       
       </Dialog>
     </div>
   );
