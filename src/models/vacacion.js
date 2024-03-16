@@ -19,6 +19,11 @@ const vacacionSchema = new Schema(
       //unique: true,
       trim: true,
     },
+    estado: {
+      type: String,
+      default: "Pendiente",
+      trim: true
+    }
   },
   {
     timestamps: true /* Lo que hace es que agrega el campo de fecha de creacion y actualizacion */,

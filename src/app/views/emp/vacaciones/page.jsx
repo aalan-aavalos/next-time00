@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
@@ -24,6 +24,7 @@ const VacacionesPage = () => {
     fechaI: "",
     fechaF: "",
     motivo: "",
+    estado: "",
   });
   const [updateMode, setUpdateMode] = useState(false);
   const [selectedUserData, setSelectedUserData] = useState(null);
@@ -48,12 +49,12 @@ const VacacionesPage = () => {
   const handleClickOpen = () => {
     setOpen(true);
     setUpdateMode(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "" });
+    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "" });
   };
 
   const handleClose = () => {
     setOpen(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "" });
+    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "" });
   };
 
   const handleConfirmOpen = () => {
@@ -76,7 +77,7 @@ const VacacionesPage = () => {
       await createUser(newUser);
     }
     setOpen(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "" });
+    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "" });
   };
 
   const createUser = async (user) => {
@@ -140,40 +141,38 @@ const VacacionesPage = () => {
       ...selectedUserData, // Conserva todos los datos del usuario seleccionado
     });
   };
-// Calcula la diferencia de días entre dos fechas
-    const calcularDiferenciaDias = (fechaI, fechaF) => {
-      const unDia = 24 * 60 * 60 * 1000; // milisegundos en un día
-      const fechaInicioMs = new Date(fechaI).getTime(); // Convertir fecha de inicio a milisegundos
-      const fechaFinMs = new Date(fechaF).getTime(); // Convertir fecha de fin a milisegundos
+  // Calcula la diferencia de días entre dos fechas
+  const calcularDiferenciaDias = (fechaI, fechaF) => {
+    const unDia = 24 * 60 * 60 * 1000; // milisegundos en un día
+    const fechaInicioMs = new Date(fechaI).getTime(); // Convertir fecha de inicio a milisegundos
+    const fechaFinMs = new Date(fechaF).getTime(); // Convertir fecha de fin a milisegundos
 
-      // Calcular diferencia en milisegundos
-      const diferenciaMs = Math.abs(fechaFinMs - fechaInicioMs);
+    // Calcular diferencia en milisegundos
+    const diferenciaMs = Math.abs(fechaFinMs - fechaInicioMs);
 
-      // Calcular diferencia en días y redondear al entero más cercano
-      const diferenciaDias = Math.round(diferenciaMs / unDia);
+    // Calcular diferencia en días y redondear al entero más cercano
+    const diferenciaDias = Math.round(diferenciaMs / unDia);
 
-      return diferenciaDias;
-    };
-    
-    const columns = [
-      { field: "fechaI", headerName: "Fecha de Inicio", width: 300 },
-      { field: "fechaF", headerName: "Fecha de Fin", width: 300 },
-      { field: "motivo", headerName: "Motivo", width: 300 },
-      {field: "dias", 
-      headerName: "Días totales", 
+    return diferenciaDias;
+  };
+
+  const columns = [
+    { field: "fechaI", headerName: "Fecha de Inicio", width: 300 },
+    { field: "fechaF", headerName: "Fecha de Fin", width: 300 },
+    { field: "motivo", headerName: "Motivo", width: 300 },
+    {
+      field: "dias",
+      headerName: "Días totales",
       width: 300,
       renderCell: (params) => {
-        const dias = calcularDiferenciaDias(params.row.fechaI, params.row.fechaF);
+        const dias = calcularDiferenciaDias(
+          params.row.fechaI,
+          params.row.fechaF
+        );
         return dias;
       },
     },
-    {field: "estado",
-        headerName: "Estado",
-        width: 200,
-        renderCell: (params) => {
-          return params.row.estado; // Muestra el estado tal como está en los datos
-        },
-    }
+    { field: "estado", headerName: "Estado", width: 200 },
   ];
 
   const [filterModel, setFilterModel] = React.useState({
