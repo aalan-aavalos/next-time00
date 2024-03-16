@@ -14,6 +14,9 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
 } from "@mui/material";
 
@@ -26,12 +29,14 @@ const UsersPage = () => {
     eEdad: 0,
     eNumero: 0,
     eCorreo: "",
+    auSede: "",
   };
 
   const [open, setOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [datos, setDatos] = useState([]);
+  const [datosSede, setDatosSede] = useState([]);
   const [newUser, setNewUser] = useState(usrsModel);
 
   const [updateMode, setUpdateMode] = useState(false);
@@ -54,6 +59,23 @@ const UsersPage = () => {
     };
 
     loadUsers();
+  }, []);
+
+  useEffect(() => {
+    const loadSedes = async () => {
+      try {
+        const respuesta = await fetch("/api/sedes");
+        if (!respuesta.ok) {
+          throw new Error("Error al obtener los datos de sedes");
+        }
+        const datosJson = await respuesta.json();
+        setDatosSede(datosJson);
+      } catch (error) {
+        console.error("Error al cargar los datos de sedes:", error);
+      }
+    };
+
+    loadSedes();
   }, []);
 
   const handleClickOpen = () => {
@@ -324,17 +346,17 @@ const UsersPage = () => {
 
             {/** Campo para el rol (eRol) */}
             <Grid item xs={3}>
-              <TextField
-                autoFocus
+              <Select
                 name="eRol"
-                required
-                label="Rol"
-                type=""
-                fullWidth
-                variant="outlined"
                 value={newUser.eRol}
+                label="Rol"
                 onChange={handleChange}
-              />
+                fullWidth
+              >
+                <MenuItem value={"emp"}>Empleado</MenuItem>
+                <MenuItem value={"adm"}>Usuario</MenuItem>
+                <MenuItem value={"sAdm"}>Super-administrdor</MenuItem>
+              </Select>
             </Grid>
 
             {/** Campo para el correo (eNumero) */}
@@ -365,6 +387,23 @@ const UsersPage = () => {
                 value={newUser.eCorreo}
                 onChange={handleChange}
               />
+            </Grid>
+
+            {/** Campo para la sede (auSede) */}
+            <Grid item xs={3}>
+              <Select
+                name="auSede"
+                value={newUser.auSede}
+                label="Sede"
+                onChange={handleChange}
+                fullWidth
+              >
+                {datosSede.map((sede) => (
+                  <MenuItem key={sede._id} value={sede.nombreSede}>
+                    {sede.nombreSede}
+                  </MenuItem>
+                ))}
+              </Select>
             </Grid>
           </Grid>
         </DialogContent>
@@ -492,6 +531,17 @@ const UsersPage = () => {
                   fullWidth
                   variant="outlined"
                   defaultValue={selectedUserDetails.eCorreo}
+                />
+              </Grid>
+
+              {/** Campo para la sede (auSede) */}
+              <Grid item xs={12}>
+                <TextField
+                  label="Sede"
+                  disabled
+                  fullWidth
+                  variant="outlined"
+                  defaultValue={selectedUserDetails.auSede}
                 />
               </Grid>
             </Grid>
