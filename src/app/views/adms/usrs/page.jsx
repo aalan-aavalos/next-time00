@@ -14,12 +14,21 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  InputLabel,
   MenuItem,
   Select,
   TextField,
 } from "@mui/material";
-
+const generateRandomPassword = () => {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const passwordLength = 8; // Longitud de la contraseña
+  let password = "";
+  for (let i = 0; i < passwordLength; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    password += characters[randomIndex];
+  }
+  return password;
+};
 const UsersPage = () => {
   const usrsModel = {
     eNombre: "",
@@ -30,8 +39,10 @@ const UsersPage = () => {
     eNumero: 0,
     eCorreo: "",
     auSede: "",
-    contraseña: "", // Campo adicional para contraseña
+    pwd: ""
   };
+
+
 
   const [open, setOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -347,13 +358,13 @@ const UsersPage = () => {
               <Grid item xs={6}>
                 <TextField
                   autoFocus
-                  name="contraseña"
+                  name="pwd"
                   required
                   label="Contraseña"
                   type="password"
                   fullWidth
                   variant="outlined"
-                  value={newUser.contraseña}
+                  value={newUser.pwd}
                   onChange={handleChange}
                 />
               </Grid>
