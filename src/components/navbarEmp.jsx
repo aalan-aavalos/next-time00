@@ -14,7 +14,7 @@ import {
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-function NavBarAdm() {
+function NavBarSAdm() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -38,16 +38,12 @@ function NavBarAdm() {
         divider={<Divider orientation="vertical" flexItem />}
         spacing={5}
       >
-        <Link href="/views/adm/area" underline="none" color="inherit">
-          <h2>Areas</h2>
+        <Link href="/views/emp/turnos" underline="none" color="inherit">
+          <h2>Turnos</h2>
         </Link>
-        <Link href="/views/adm/usrs" underline="none" color="inherit">
-          <h2>Usuarios</h2>
+        <Link href="/views/emp/vacaciones" underline="none" color="inherit">
+          <h2>Vacaciones</h2>
         </Link>
-        <Link href="/views/adm/solic" underline="none" color="inherit">
-          <h2>Solicitudes</h2>
-        </Link>
-
         <PersonIcon
           sx={{ fontSize: "4.5rem", color: "white" }}
           onClick={handleClick}
@@ -78,4 +74,4 @@ function NavBarAdm() {
   );
 }
 
-export default NavBarAdm;
+export default NavBarSAdm;
