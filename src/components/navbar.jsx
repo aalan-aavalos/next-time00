@@ -38,7 +38,7 @@ function NavBarSAdm() {
         divider={<Divider orientation="vertical" flexItem />}
         spacing={5}
       >
-        <Link href="/views/emp/" underline="none" color="inherit">
+        <Link href="/views/emp/turnos" underline="none" color="inherit">
           <h2>Usuarios</h2>
         </Link>
         <Link href="/views/adm/usrs" underline="none" color="inherit">

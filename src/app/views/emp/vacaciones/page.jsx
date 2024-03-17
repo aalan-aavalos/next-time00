@@ -172,7 +172,7 @@ const VacacionesPage = () => {
         return dias;
       },
     },
-    //{ field: "estado", headerName: "Estado", width: 200 },
+    { field: "estado", headerName: "Estado", width: 200 },
   ];
 
   const [filterModel, setFilterModel] = React.useState({

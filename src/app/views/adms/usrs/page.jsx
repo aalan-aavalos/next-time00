@@ -14,12 +14,21 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  InputLabel,
   MenuItem,
   Select,
   TextField,
 } from "@mui/material";
-
+const generateRandomPassword = () => {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const passwordLength = 8; // Longitud de la contraseña
+  let password = "";
+  for (let i = 0; i < passwordLength; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    password += characters[randomIndex];
+  }
+  return password;
+};
 const UsersPage = () => {
   const usrsModel = {
     eNombre: "",
@@ -30,7 +39,10 @@ const UsersPage = () => {
     eNumero: 0,
     eCorreo: "",
     auSede: "",
+    pwd: ""
   };
+
+
 
   const [open, setOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -41,8 +53,8 @@ const UsersPage = () => {
 
   const [updateMode, setUpdateMode] = useState(false);
   const [selectedUserData, setSelectedUserData] = useState(null);
-  const [detailsOpen, setDetailsOpen] = useState(false); // State para abrir/cerrar detalles
-  const [selectedUserDetails, setSelectedUserDetails] = useState(null); // Detalles del usuario seleccionado
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [selectedUserDetails, setSelectedUserDetails] = useState(null);
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -98,7 +110,13 @@ const UsersPage = () => {
   };
 
   const handleChange = (event) => {
-    setNewUser({ ...newUser, [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+    if (name === "eRol") {
+      // Reiniciar los campos al cambiar el rol
+      setNewUser({ ...usrsModel, eRol: value });
+    } else {
+      setNewUser({ ...newUser, [name]: value });
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -172,14 +190,11 @@ const UsersPage = () => {
 
   const handleDetailsClick = () => {
     setDetailsOpen(true);
-    // Aquí puedes cargar los detalles del usuario seleccionado para mostrarlos en el diálogo de detalles
-    // Puedes usar el estado 'selectedUserData' para esto.
     setSelectedUserDetails(selectedUserData);
   };
 
   const handleCloseDetails = () => {
     setDetailsOpen(false);
-    //setSelectedUserDetails(null);
   };
 
   const columns = [
@@ -196,7 +211,6 @@ const UsersPage = () => {
 
   return (
     <div>
-      {/** Boton de agregar */}
       <Fab
         color="dark"
         aria-label="add"
@@ -207,7 +221,6 @@ const UsersPage = () => {
         <AddIcon />
       </Fab>
 
-      {/** Boton de editar */}
       <Fab
         color="primary"
         aria-label="edit"
@@ -219,7 +232,6 @@ const UsersPage = () => {
         <EditIcon />
       </Fab>
 
-      {/** Boton de ver detalles */}
       <Fab
         color="primary"
         aria-label="details"
@@ -231,7 +243,6 @@ const UsersPage = () => {
         <InfoIcon />
       </Fab>
 
-      {/** Boton de eliminar */}
       <Fab
         color="secondary"
         aria-label="delete"
@@ -243,7 +254,6 @@ const UsersPage = () => {
         <DeleteIcon />
       </Fab>
 
-      {/** Tabla de datos */}
       <div style={{ width: "100%" }}>
         <div style={{ height: "60vh", width: "100%" }}>
           <DataGrid
@@ -262,18 +272,13 @@ const UsersPage = () => {
         </div>
       </div>
 
-      {/** Ventana emergente del formulario */}
       <Dialog
         open={open}
         onClose={handleClose}
         fullWidth
         PaperProps={{
           component: "form",
-
-          onSubmit: () => {
-            handleSubmit();
-          },
-
+          onSubmit: handleSubmit,
           style: {
             background: "#93A2B9",
           },
@@ -284,7 +289,6 @@ const UsersPage = () => {
         </DialogTitle>
         <DialogContent>
           <Grid container columnSpacing={1} p={1} rowSpacing={2}>
-            {/** Campo para el nombre (eNombre) */}
             <Grid item xs={12}>
               <TextField
                 autoFocus
@@ -298,8 +302,6 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
-
-            {/** Campo para el apellido paterno (eApeP) */}
             <Grid item xs={6}>
               <TextField
                 autoFocus
@@ -313,8 +315,6 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
-
-            {/** Campo para el apellido materno (eApeM) */}
             <Grid item xs={6}>
               <TextField
                 autoFocus
@@ -328,8 +328,6 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
-
-            {/** Campo para la edad (eEdad) */}
             <Grid item xs={3}>
               <TextField
                 autoFocus
@@ -343,8 +341,6 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
-
-            {/** Campo para el rol (eRol) */}
             <Grid item xs={3}>
               <Select
                 name="eRol"
@@ -355,11 +351,24 @@ const UsersPage = () => {
               >
                 <MenuItem value={"emp"}>Empleado</MenuItem>
                 <MenuItem value={"adm"}>Usuario</MenuItem>
-                <MenuItem value={"sAdm"}>Super-administrdor</MenuItem>
+                <MenuItem value={"sAdm"}>Super-administrador</MenuItem>
               </Select>
             </Grid>
-
-            {/** Campo para el correo (eNumero) */}
+            {newUser.eRol === "adm" || newUser.eRol === "sAdm" ? (
+              <Grid item xs={6}>
+                <TextField
+                  autoFocus
+                  name="pwd"
+                  required
+                  label="Contraseña"
+                  type="password"
+                  fullWidth
+                  variant="outlined"
+                  value={newUser.pwd}
+                  onChange={handleChange}
+                />
+              </Grid>
+            ) : null}
             <Grid item xs={6}>
               <TextField
                 autoFocus
@@ -373,8 +382,6 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
-
-            {/** Campo para el correo (eCorreo) */}
             <Grid item xs={12}>
               <TextField
                 autoFocus
@@ -388,8 +395,6 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
-
-            {/** Campo para la sede (auSede) */}
             <Grid item xs={3}>
               <Select
                 name="auSede"
@@ -417,7 +422,6 @@ const UsersPage = () => {
         </DialogActions>
       </Dialog>
 
-      {/** Ventana emergente para confirmar la eliminacion  */}
       <Dialog
         open={confirmOpen}
         onClose={handleConfirmClose}
@@ -442,7 +446,6 @@ const UsersPage = () => {
         </DialogActions>
       </Dialog>
 
-      {/** Ventana emergente para mostrar detalles del usuario */}
       <Dialog
         open={detailsOpen}
         onClose={handleCloseDetails}
@@ -457,7 +460,6 @@ const UsersPage = () => {
         {selectedUserDetails && (
           <DialogContent>
             <Grid container columnSpacing={1} p={1} rowSpacing={2}>
-              {/** Campo para el nombre (eNombre) */}
               <Grid item xs={12}>
                 <TextField
                   label="Nombre/s"
@@ -467,8 +469,6 @@ const UsersPage = () => {
                   defaultValue={selectedUserDetails.eNombre}
                 />
               </Grid>
-
-              {/** Campo para el apellido paterno (eApeP) */}
               <Grid item xs={6}>
                 <TextField
                   label="Apellido paterno"
@@ -478,8 +478,6 @@ const UsersPage = () => {
                   defaultValue={selectedUserDetails.eApeP}
                 />
               </Grid>
-
-              {/** Campo para el apellido materno (eApeM) */}
               <Grid item xs={6}>
                 <TextField
                   label="Apellido materno"
@@ -489,8 +487,6 @@ const UsersPage = () => {
                   defaultValue={selectedUserDetails.eApeM}
                 />
               </Grid>
-
-              {/** Campo para la edad (eEdad) */}
               <Grid item xs={3}>
                 <TextField
                   label="Edad"
@@ -500,8 +496,6 @@ const UsersPage = () => {
                   defaultValue={selectedUserDetails.eEdad}
                 />
               </Grid>
-
-              {/** Campo para el rol (eRol) */}
               <Grid item xs={3}>
                 <TextField
                   label="Rol"
@@ -511,8 +505,6 @@ const UsersPage = () => {
                   defaultValue={selectedUserDetails.eRol}
                 />
               </Grid>
-
-              {/** Campo para el numero de telefono (eNumero) */}
               <Grid item xs={6}>
                 <TextField
                   label="Numero de telefono"
@@ -522,8 +514,6 @@ const UsersPage = () => {
                   defaultValue={selectedUserDetails.eNumero}
                 />
               </Grid>
-
-              {/** Campo para el correo (eCorreo) */}
               <Grid item xs={12}>
                 <TextField
                   label="Correo electronico"
@@ -533,8 +523,6 @@ const UsersPage = () => {
                   defaultValue={selectedUserDetails.eCorreo}
                 />
               </Grid>
-
-              {/** Campo para la sede (auSede) */}
               <Grid item xs={12}>
                 <TextField
                   label="Sede"
