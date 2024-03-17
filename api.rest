@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/usrs
 
 ### Obteniendo usuario
-GET http://localhost:3000/api/usrs/Alan
+GET http://localhost:3000/api/usrs/Josue
 
 ### Creando usuario
 POST http://localhost:3000/api/usrs
@@ -10,4 +10,19 @@ Content-Type: application/json
 
 {
     message: "hola"
+}
+
+### Obteniendo contrato
+GET http://localhost:3000/api/areas
+
+### Obteniendo contrato
+GET http://localhost:3000/api/contrato/
+
+### Actualizando contrato
+PUT http://localhost:3000/api/contrato/65f5f1de0f8e881b984c983d
+Content-Type: application/json
+{
+  "tipo_contrato": "Contrato actualizado",
+  "duracion_jornada": "10 horas",
+  "hora_inicioFin": "9:00 / 19:00"
 }
