@@ -327,6 +327,7 @@ const UsersPage = () => {
                 ))}
               </Select>
             </Grid>
+            
           </Grid>
         </DialogContent>
 
@@ -340,11 +341,8 @@ const UsersPage = () => {
         </DialogActions>
 
 
-        {/** ------------------------------------------------------------------- */}
-        <DialogTitle alignSelf="center">
-          {updateMode ? "Actualizar Area" : "Registro de Area"}
-          
-           </DialogTitle>
+        
+        
       </Dialog>
 
       <Dialog
