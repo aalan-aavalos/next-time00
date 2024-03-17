@@ -39,10 +39,8 @@ const UsersPage = () => {
     eNumero: 0,
     eCorreo: "",
     auSede: "",
-    pwd: ""
+    pwd: "",
   };
-
-
 
   const [open, setOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -342,17 +340,21 @@ const UsersPage = () => {
               />
             </Grid>
             <Grid item xs={3}>
-              <Select
+              <TextField
                 name="eRol"
                 value={newUser.eRol}
                 label="Rol"
                 onChange={handleChange}
                 fullWidth
+                autoFocus
+                required
+                select
+                variant="outlined"
               >
                 <MenuItem value={"emp"}>Empleado</MenuItem>
                 <MenuItem value={"adm"}>Usuario</MenuItem>
                 <MenuItem value={"sAdm"}>Super-administrador</MenuItem>
-              </Select>
+              </TextField>
             </Grid>
             {newUser.eRol === "adm" || newUser.eRol === "sAdm" ? (
               <Grid item xs={6}>
