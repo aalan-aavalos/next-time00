@@ -18,28 +18,18 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-const generateRandomPassword = () => {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  const passwordLength = 8; // Longitud de la contraseña
-  let password = "";
-  for (let i = 0; i < passwordLength; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    password += characters[randomIndex];
-  }
-  return password;
-};
+
 const UsersPage = () => {
   const usrsModel = {
-    eNombre: "",
-    eApeP: "",
-    eApeM: "",
-    eRol: "",
-    eEdad: 0,
-    eNumero: 0,
-    eCorreo: "",
-    auSede: "",
-    pwd: "",
+    eNombre: String,
+    eApeP: String,
+    eApeM: String,
+    eRol: String,
+    eEdad: Number,
+    eNumero: Number,
+    eCorreo: String,
+    auSede: String,
+    pwd: String,
   };
 
   const [open, setOpen] = useState(false);
@@ -109,11 +99,28 @@ const UsersPage = () => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+    let newValue = value;
+  
+
+    // Validar longitud del número de teléfono
+    if (name === "eNumero") {
+      // Permitir solo números y exactamente 10 caracteres
+      newValue = value.replace(/\D/g, "").slice(0, 10);
+    }
+
+    if (name === "eEdad") {
+      // Permitir solo números y asegurar que estén entre 0 y 99
+      newValue = value.replace(/\D/g, "").slice(0, 2);
+      if (parseInt(newValue) > 99) {
+        newValue = "99";
+      }
+    }
+
     if (name === "eRol") {
       // Reiniciar los campos al cambiar el rol
       setNewUser({ ...usrsModel, eRol: value });
     } else {
-      setNewUser({ ...newUser, [name]: value });
+      setNewUser({ ...newUser, [name]: newValue });
     }
   };
 
@@ -137,6 +144,7 @@ const UsersPage = () => {
       },
     });
     const data = await response.json();
+    
     console.log("New user created:", data);
     setDatos([...datos, data]);
   };
@@ -206,9 +214,9 @@ const UsersPage = () => {
     items: [],
     quickFilterValues: [""],
   });
-
   return (
     <div>
+      {/** Boton para agregar */}
       <Fab
         color="dark"
         aria-label="add"
@@ -219,6 +227,7 @@ const UsersPage = () => {
         <AddIcon />
       </Fab>
 
+      {/** Boton para editar */}
       <Fab
         color="primary"
         aria-label="edit"
@@ -230,6 +239,7 @@ const UsersPage = () => {
         <EditIcon />
       </Fab>
 
+      {/** Boton para ver detalles */}
       <Fab
         color="primary"
         aria-label="details"
@@ -241,6 +251,7 @@ const UsersPage = () => {
         <InfoIcon />
       </Fab>
 
+      {/** Boton para eliminar */}
       <Fab
         color="secondary"
         aria-label="delete"
@@ -252,6 +263,7 @@ const UsersPage = () => {
         <DeleteIcon />
       </Fab>
 
+      {/** Tabla de datos */}
       <div style={{ width: "100%" }}>
         <div style={{ height: "60vh", width: "100%" }}>
           <DataGrid
@@ -270,6 +282,7 @@ const UsersPage = () => {
         </div>
       </div>
 
+      {/** Formulario de registro */}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -287,6 +300,27 @@ const UsersPage = () => {
         </DialogTitle>
         <DialogContent>
           <Grid container columnSpacing={1} p={1} rowSpacing={2}>
+            {/** Campo para el rol de 12 */}
+            <Grid item xs={6}>
+              <TextField
+                name="eRol"
+                value={newUser.eRol}
+                label="Rol"
+                onChange={handleChange}
+                fullWidth
+                autoFocus
+                required
+                select
+                disabled={updateMode ? true : false}
+                variant="outlined"
+              >
+                <MenuItem value={"emp"}>Empleado</MenuItem>
+                <MenuItem value={"adm"}>Usuario</MenuItem>
+                <MenuItem value={"sAdm"}>Super-administrador</MenuItem>
+              </TextField>
+            </Grid>
+
+            {/** Campo para el nombre de 12 */}
             <Grid item xs={12}>
               <TextField
                 autoFocus
@@ -300,6 +334,8 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
+
+            {/** Campo para el apellido paterno de 6 */}
             <Grid item xs={6}>
               <TextField
                 autoFocus
@@ -313,6 +349,8 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
+
+            {/** Campo para el apellido materno de 6 */}
             <Grid item xs={6}>
               <TextField
                 autoFocus
@@ -326,6 +364,8 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
+
+            {/** Campo para la edad de 3 */}
             <Grid item xs={3}>
               <TextField
                 autoFocus
@@ -339,23 +379,8 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={3}>
-              <TextField
-                name="eRol"
-                value={newUser.eRol}
-                label="Rol"
-                onChange={handleChange}
-                fullWidth
-                autoFocus
-                required
-                select
-                variant="outlined"
-              >
-                <MenuItem value={"emp"}>Empleado</MenuItem>
-                <MenuItem value={"adm"}>Usuario</MenuItem>
-                <MenuItem value={"sAdm"}>Super-administrador</MenuItem>
-              </TextField>
-            </Grid>
+
+            {/** Campo para la contraseña de 6 */}
             {newUser.eRol === "adm" || newUser.eRol === "sAdm" ? (
               <Grid item xs={6}>
                 <TextField
@@ -371,6 +396,7 @@ const UsersPage = () => {
                 />
               </Grid>
             ) : null}
+
             <Grid item xs={6}>
               <TextField
                 autoFocus
@@ -384,6 +410,7 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
+
             <Grid item xs={12}>
               <TextField
                 autoFocus
@@ -402,6 +429,7 @@ const UsersPage = () => {
                 name="auSede"
                 value={newUser.auSede}
                 label="Sede"
+                required
                 onChange={handleChange}
                 fullWidth
               >
@@ -418,7 +446,7 @@ const UsersPage = () => {
           <Button variant="contained" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button variant="contained" type="submit" onClick={handleSubmit}>
+          <Button variant="contained" type="submit">
             {updateMode ? "Actualizar" : "Registrar"}
           </Button>
         </DialogActions>

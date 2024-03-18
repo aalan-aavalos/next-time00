@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
   connectDB();
   const usuarios = await Usrs.find();
-  return NextResponse.json(usuarios);
+  return NextResponse.json(usuarios, {message: ""});
 }
 
 // Agregar usuarios
