@@ -99,7 +99,7 @@ const UsersPage = () => {
     setNewUser({
       nombreSede: "",
       ubicacion: "",
-      Adminstradores: "",
+      Adminstradores: [],
       aNombre: [],
     });
   };
@@ -109,7 +109,7 @@ const UsersPage = () => {
     setNewUser({
       nombreSede: "",
       ubicacion: "",
-      Adminstradores: "",
+      Adminstradores: [],
       aNombre: [],
     });
   };
@@ -137,7 +137,7 @@ const UsersPage = () => {
     setNewUser({
       nombreSede: "",
       ubicacion: "",
-      Adminstradores: "",
+      Adminstradores: [],
       aNombre: [],
     });
   };
@@ -336,36 +336,39 @@ const UsersPage = () => {
               />
             </Grid>
             <Grid item xs={4}>
-              <Select
-                name="Adminstradores"
+              <Autocomplete
+                multiple
+                id="admin-autocomplete"
+                options={adm.map((admin) => admin.eNombre)}
+                disableCloseOnSelect
+                getOptionLabel={(option) => option}
                 value={newUser.Adminstradores}
-                label="Administradores"
-                onChange={handleChange}
-                fullWidth
-              >
-                {adm.map((adms) => (
-                  <MenuItem key={adms._id} value={adms.eNombre}>
-                    {adms.eNombre}
-                  </MenuItem>
-                ))}
-              </Select>
+                onChange={(event, newValue) => {
+                  setNewUser({ ...newUser, Adminstradores: newValue });
+                }}
+                renderOption={(props, option, { selected }) => (
+                  <li {...props}>
+                    <Checkbox
+                      icon={<span className="checkbox-icon"></span>}
+                      checkedIcon={
+                        <span className="checkbox-icon checked"></span>
+                      }
+                      style={{ marginRight: 8 }}
+                      checked={selected}
+                    />
+                    {option}
+                  </li>
+                )}
+                style={{ maxWidth: 300, margin: "0 auto" }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Administradores"
+                    placeholder="Selecciona administradores"
+                  />
+                )}
+              />
             </Grid>
-
-            {/* <Grid item xs={4}>
-              <Select
-                name= "aNombre"
-                value={newUser.aNombre}
-                label="Área"
-                onChange={handleChange}
-                fullWidth
-                >
-                  {areas.map((adm) => (
-                    <MenuItem key={adm._id} value={adm.aNombre}>
-                      {adm.aNombre}
-                    </MenuItem>
-                  ))}
-              </Select>
-                  </Grid>*/}
 
             <Grid item xs={12} justifyContent="center" textAlign="center">
               <Autocomplete
@@ -374,7 +377,7 @@ const UsersPage = () => {
                 options={areas}
                 disableCloseOnSelect
                 getOptionLabel={(option) => option}
-                value={newUser.aNombre} 
+                value={newUser.aNombre}
                 onChange={(event, newValue) => {
                   setNewUser({ ...newUser, aNombre: newValue });
                 }}
