@@ -13,6 +13,9 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
+
 import {
   Button,
   Dialog,
@@ -20,6 +23,7 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  Icon,
   MenuItem,
   Select,
 } from "@mui/material";
@@ -33,6 +37,7 @@ const UsersPage = () => {
     nombreSede: "",
     ubicacion: "",
     Adminstradores: [],
+    aNombre: [],
   });
   const [datosArea, setDatosArea] = useState([]);
   const [datosUsrs, setDatosUsrs] = useState([]);
@@ -57,7 +62,7 @@ const UsersPage = () => {
   useEffect(() => {
     const loadAreas = async () => {
       try {
-        const respuesta = await fetch("/api/area");
+        const respuesta = await fetch("/api/areas");
         if (!respuesta.ok) {
           throw new Error("Error al obtener los datos de áreas");
         }
@@ -91,12 +96,22 @@ const UsersPage = () => {
   const handleClickOpen = () => {
     setOpen(true);
     setUpdateMode(false);
-    setNewUser({ nombreSede: "", ubicacion: "", Adminstradores: "" });
+    setNewUser({
+      nombreSede: "",
+      ubicacion: "",
+      Adminstradores: "",
+      aNombre: [],
+    });
   };
 
   const handleClose = () => {
     setOpen(false);
-    setNewUser({ nombreSede: "", ubicacion: "", Adminstradores: "" });
+    setNewUser({
+      nombreSede: "",
+      ubicacion: "",
+      Adminstradores: "",
+      aNombre: [],
+    });
   };
 
   const handleConfirmOpen = () => {
@@ -119,7 +134,12 @@ const UsersPage = () => {
       await createUser(newUser);
     }
     setOpen(false);
-    setNewUser({ nombreSede: "", ubicacion: "", Adminstradores: "" });
+    setNewUser({
+      nombreSede: "",
+      ubicacion: "",
+      Adminstradores: "",
+      aNombre: [],
+    });
   };
 
   const createUser = async (user) => {
@@ -187,9 +207,12 @@ const UsersPage = () => {
     { field: "nombreSede", headerName: "Nombre de la nueva sede", width: 400 },
     { field: "ubicacion", headerName: "Ubicacion", width: 400 },
     { field: "Adminstradores", headerName: "Administradores", width: 400 },
-    { field: "areas", headerName: "Areas", width: 400 },
+    { field: "aNombre", headerName: "Areas", width: 400 },
   ];
-  // const areas = datosArea
+  {
+    /*const areas = [datosArea];*/
+  }
+  const areas = datosArea.map((area) => area.aNombre);
   const adm = datosUsrs;
 
   const [filterModel, setFilterModel] = React.useState({
@@ -282,7 +305,7 @@ const UsersPage = () => {
         <DialogTitle alignSelf="center">
           {updateMode ? "Actualizar Sede" : "Registro de Sede"}
         </DialogTitle>
-       
+
         <DialogContent>
           <Grid container columnSpacing={1} p={1} rowSpacing={2}>
             <Grid item xs={4}>
@@ -327,7 +350,57 @@ const UsersPage = () => {
                 ))}
               </Select>
             </Grid>
-            
+
+            {/* <Grid item xs={4}>
+              <Select
+                name= "aNombre"
+                value={newUser.aNombre}
+                label="Área"
+                onChange={handleChange}
+                fullWidth
+                >
+                  {areas.map((adm) => (
+                    <MenuItem key={adm._id} value={adm.aNombre}>
+                      {adm.aNombre}
+                    </MenuItem>
+                  ))}
+              </Select>
+                  </Grid>*/}
+
+            <Grid item xs={12} justifyContent="center" textAlign="center">
+              <Autocomplete
+                multiple
+                id="checkboxes-tags-demo"
+                options={areas}
+                disableCloseOnSelect
+                getOptionLabel={(option) => option}
+                value={newUser.aNombre} 
+                onChange={(event, newValue) => {
+                  setNewUser({ ...newUser, aNombre: newValue });
+                }}
+                renderOption={(props, option, { selected }) => (
+                  <li {...props}>
+                    <Checkbox
+                      icon={<span className="checkbox-icon"></span>}
+                      checkedIcon={
+                        <span className="checkbox-icon checked"></span>
+                      }
+                      style={{ marginRight: 8 }}
+                      checked={selected}
+                    />
+                    {option}
+                  </li>
+                )}
+                style={{ maxWidth: 300, margin: "0 auto" }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Areas"
+                    placeholder="Selecciona áreas"
+                  />
+                )}
+              />
+            </Grid>
           </Grid>
         </DialogContent>
 
@@ -339,10 +412,6 @@ const UsersPage = () => {
             {updateMode ? "Actualizar" : "Registrar"}
           </Button>
         </DialogActions>
-
-
-        
-        
       </Dialog>
 
       <Dialog
@@ -367,7 +436,6 @@ const UsersPage = () => {
             Eliminar
           </Button>
         </DialogActions>
-       
       </Dialog>
     </div>
   );
