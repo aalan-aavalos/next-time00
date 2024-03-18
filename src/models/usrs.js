@@ -56,6 +56,7 @@ const usrsSchema = new Schema(
   },
   {
     timestamps: true /* Lo que hace es que agrega el campo de fecha de creacion y actualizacion */,
+    versionKey: false,
   }
 );
 export default models.Usrs || model("Usrs", usrsSchema);
