@@ -18,7 +18,7 @@ const areasSchema = new Schema(
   
   },
   {
-    timestamps: true /* Lo que hace es que agrega el campo de fecha de creacion y actualizacionv  */,
+    timestamps: true /* Lo que hace es que agrega el campo de fecha de creacion y a;ctualizacionv  */,
   },
 );
 export default models.Areas || model("Areas", areasSchema);
