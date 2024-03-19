@@ -436,6 +436,7 @@ const UsersPage = () => {
               <TextField
                 autoFocus
                 select
+                multiple
                 variant="outlined"
                 name="auSede"
                 value={newUser.auSede}
