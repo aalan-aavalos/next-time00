@@ -16,6 +16,11 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
+
+
+
+
+
 import {
   Button,
   Dialog,
@@ -27,6 +32,7 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+
 
 const UsersPage = () => {
   const [open, setOpen] = useState(false);
@@ -42,6 +48,9 @@ const UsersPage = () => {
   const [datosArea, setDatosArea] = useState([]);
   const [datosUsrs, setDatosUsrs] = useState([]);
 
+
+
+  
   useEffect(() => {
     const loadSedes = async () => {
       try {
@@ -369,8 +378,25 @@ const UsersPage = () => {
                 )}
               />
             </Grid>
+            <Grid item xs={4}>
+              <TextField
+                autoFocus
+                name="tipoArea"
+                required
+                label="Tipo de Área"
+                type="text"
+                fullWidth
+                variant="outlined"
+                select
+                onChange={handleChange}
+              >
+                {datosArea.map((ar) => (
+                  <MenuItem key={ar._id} value={ar.tipoArea}>{ar.tipoArea}</MenuItem>
+                ))}
+              </TextField>
+            </Grid>
 
-            <Grid item xs={12} justifyContent="center" textAlign="center">
+            <Grid item xs={8}>
               <Autocomplete
                 multiple
                 id="checkboxes-tags-demo"
