@@ -22,8 +22,8 @@ const AreasPage = () => {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [datos, setDatos] = useState([]);
   const [newArea, setNewArea] = useState({
+    tipoArea: "",
     aNombre: "",
-    sNombre: "",
   });
   const [updateMode, setUpdateMode] = useState(false);
   const [selectedAreaData, setSelectedAreaData] = useState(null);
@@ -48,12 +48,12 @@ const AreasPage = () => {
   const handleClickOpen = () => {
     setOpen(true);
     setUpdateMode(false);
-    setNewArea({ aNombre: "", sNombre: "" });
+    setNewArea({ aNombre: "", tipoArea: "" });
   };
 
   const handleClose = () => {
     setOpen(false);
-    setNewArea({ aNombre: "", sNombre: "" });
+    setNewArea({ aNombre: "", tipoArea: "" });
   };
 
   const handleConfirmOpen = () => {
@@ -76,7 +76,7 @@ const AreasPage = () => {
       await createArea(newArea);
     }
     setOpen(false);
-    setNewArea({ aNombre: "", sNombre: "" });
+    setNewArea({ tipoArea: "", aNombre: "" });
   };
 
   const createArea = async (area) => {
@@ -139,7 +139,7 @@ const AreasPage = () => {
 
   const columns = [
     { field: "aNombre", headerName: "Nombre del area", width: 400 },
-    { field: "sNombre", headerName: "Sede", width: 400 },
+    { field: "tipoArea", headerName: "Tipo Área", width: 400 },
   ];
 
   const [filterModel, setFilterModel] = React.useState({
@@ -215,35 +215,35 @@ const AreasPage = () => {
           {updateMode ? "Actualizar area" : "Registro de areas"}
         </DialogTitle>
         <DialogContent>
-          <Grid container columnSpacing={1} p={1} rowSpacing={2}>
-            <Grid item xs={4}>
-              <TextField
-                autoFocus
-                name="aNombre"
-                required
-                label="Area"
-                type="text"
-                fullWidth
-                variant="outlined"
-                value={newArea.aNombre}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <TextField
-                autoFocus
-                name="sNombre"
-                required
-                label="Sede"
-                type="text"
-                fullWidth
-                variant="outlined"
-                value={newArea.sNombre}
-                onChange={handleChange}
-              />
-            </Grid>
-          </Grid>
-        </DialogContent>
+  <Grid container justifyContent="center" columnSpacing={1} p={1} rowSpacing={2}>
+    <Grid item xs={4}>
+      <TextField
+        autoFocus
+        name="aNombre"
+        required
+        label="Área"
+        type="text"
+        fullWidth
+        variant="outlined"
+        value={newArea.aNombre}
+        onChange={handleChange}
+      />
+    </Grid>
+    <Grid item xs={4}>
+      <TextField
+        autoFocus
+        name="tipoArea"
+        required
+        label="Tipo de Área"
+        type="text"
+        fullWidth
+        variant="outlined"
+        value={newArea.tipoArea}
+        onChange={handleChange}
+      />
+    </Grid>
+  </Grid>
+</DialogContent>
         <DialogActions>
           <Button variant="contained" onClick={handleClose}>
             Cancelar

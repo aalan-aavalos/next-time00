@@ -20,12 +20,10 @@ const sedeSchema = new Schema(
       trim: true,
     },
 
-    /*area:{
-      nomArea: String,
-      tipoArea
-
-
-    }]*/
+  aNombre:{
+      type: Array,
+      trim: true,
+    }
 
     
   },

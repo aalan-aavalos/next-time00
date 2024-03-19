@@ -14,22 +14,15 @@ const contratoSchema = new Schema(
       //unique: true,
       trim: true,
     },
-    turnos: [
-      {
       hora_inicioFin:{
       type: String,
-      required: [true, "El Apellido Materno es requerido"],
+      required: [true, "El turno es requerido"],
       //unique: true,
-      trim: true,}
-
+      trim: true,
     },
-  ]
-    
   },
   {
     timestamps: true /* Lo que hace es que agrega el campo de fecha de creacion y actualizacion */,
   },
 );
 export default models.Contrato || model("Contrato", contratoSchema);
-
-

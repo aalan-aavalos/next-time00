@@ -22,7 +22,6 @@ const vacacionSchema = new Schema(
     estado: {
       type: String,
       default: "Pendiente",
-      trim: true
     }
   },
   {
