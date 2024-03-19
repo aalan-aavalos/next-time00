@@ -24,6 +24,7 @@ const VacacionesPage = () => {
     fechaI: "",
     fechaF: "",
     motivo: "",
+    estado: "",
   });
   const [updateMode, setUpdateMode] = useState(false);
   const [selectedUserData, setSelectedUserData] = useState(null);
@@ -48,12 +49,12 @@ const VacacionesPage = () => {
   const handleClickOpen = () => {
     setOpen(true);
     setUpdateMode(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "" });
+    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "" });
   };
 
   const handleClose = () => {
     setOpen(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "" });
+    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "" });
   };
 
   const handleConfirmOpen = () => {
@@ -76,7 +77,7 @@ const VacacionesPage = () => {
       await createUser(newUser);
     }
     setOpen(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "" });
+    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "" });
   };
 
   const createUser = async (user) => {
@@ -173,14 +174,7 @@ const VacacionesPage = () => {
         return dias;
       },
     },
-    {
-      field: "estado",
-      headerName: "Estado",
-      width: 200,
-      renderCell: (params) => {
-        return params.row.estado; // Muestra el estado tal como está en los datos
-      },
-    },
+    { field: "estado", headerName: "Estado", width: 200 },
   ];
 
   const [filterModel, setFilterModel] = React.useState({

@@ -14,15 +14,7 @@ const areasSchema = new Schema(
       //unique: true,
       trim: true,
     },
-    //eRol: "adm/sup/usr", // Atributo lo tiene todos los empleado, catalogo
-    //eNomUsr: "jonhDoe", // Atributo lo tiene todos los empleado
-    //eEdad: 19, // Atributo lo tiene todos los empleado
-    //eNumero: 1234567890, // Atributo lo tiene todos los empleado
-    //eCorreo: "jonh@doe.com", // Atributo lo tiene todos los empleado
-    //efechaRegistro: "02/02/2024", // Atributo lo tiene todos los empleado
-    //auSede: "Leon", // Atributo de administradores y empleado, este se tomara de un catalogo
-    //uArea: "Mantenimiento", //Atributo de empleado, este se tomara de un catalogo
-    //uTurno: "4 / 5", // Atributo de empleado, este se tomara de un catalogo
+  
   },
   {
     timestamps: true /* Lo que hace es que agrega el campo de fecha de creacion y actualizacion */,
