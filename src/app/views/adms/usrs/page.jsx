@@ -100,20 +100,15 @@ const UsersPage = () => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     let newValue = value;
-  
-
-    // Validar longitud del número de teléfono
-    if (name === "eNumero") {
-      // Permitir solo números y exactamente 10 caracteres
-      newValue = value.replace(/\D/g, "").slice(0, 10);
-    }
 
     if (name === "eEdad") {
       // Permitir solo números y asegurar que estén entre 0 y 99
       newValue = value.replace(/\D/g, "").slice(0, 2);
-      if (parseInt(newValue) > 99) {
-        newValue = "99";
-      }
+    }
+
+    if (name === "eNumero") {
+      // Permitir solo números y exactamente 10 caracteres
+      newValue = value.replace(/\D/g, "").slice(0, 10);
     }
 
     if (name === "eRol") {
@@ -126,6 +121,19 @@ const UsersPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Verificar si el correo ya está en uso antes de crear un nuevo usuario
+    const existingUser = datos.find((user) => user.eCorreo === newUser.eCorreo);
+    if (existingUser) {
+      alert("Correo electrónico ya está en uso");
+      return; // Detener el proceso de registro
+    }
+
+    if (newUser.eNumero.toString().length !== 10) {
+      alert("El número de teléfono debe tener 10 dígitos");
+      return; // Detener el proceso de registro
+    }
+
     if (updateMode) {
       await updateUser(selectedUserId, newUser);
     } else {
@@ -144,7 +152,7 @@ const UsersPage = () => {
       },
     });
     const data = await response.json();
-    
+
     console.log("New user created:", data);
     setDatos([...datos, data]);
   };
@@ -372,7 +380,7 @@ const UsersPage = () => {
                 name="eEdad"
                 required
                 label="Edad"
-                type="number"
+                type="tel"
                 fullWidth
                 variant="outlined"
                 value={newUser.eEdad}
@@ -425,7 +433,10 @@ const UsersPage = () => {
               />
             </Grid>
             <Grid item xs={3}>
-              <Select
+              <TextField
+                autoFocus
+                select
+                variant="outlined"
                 name="auSede"
                 value={newUser.auSede}
                 label="Sede"
@@ -438,7 +449,7 @@ const UsersPage = () => {
                     {sede.nombreSede}
                   </MenuItem>
                 ))}
-              </Select>
+              </TextField>
             </Grid>
           </Grid>
         </DialogContent>

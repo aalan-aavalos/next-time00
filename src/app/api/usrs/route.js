@@ -2,6 +2,8 @@ import Usrs from "@/models/usrs";
 import { connectDB } from "@/utils/mongoose";
 import { NextResponse } from "next/server";
 
+
+
 // Obtener usuarios
 export async function GET() {
   connectDB();

@@ -4,7 +4,6 @@ const usrsSchema = new Schema(
   {
     eNombre: {
       type: String,
-      //unique: [true, "El nombre no puede ser igual"], // Lo que hace es que manda un error si se repite
       trim: true,
     },
     eApeP: {
@@ -30,6 +29,7 @@ const usrsSchema = new Schema(
     },
     eCorreo: {
       type: String,
+      unique: true,
       trim: true,
     },
 
