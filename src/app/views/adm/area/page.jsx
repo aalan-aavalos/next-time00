@@ -13,6 +13,7 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  MenuItem,
   TextField,
 } from "@mui/material";
 
@@ -230,17 +231,21 @@ const AreasPage = () => {
       />
     </Grid>
     <Grid item xs={4}>
-      <TextField
-        autoFocus
-        name="tipoArea"
-        required
-        label="Tipo de Área"
-        type="text"
-        fullWidth
-        variant="outlined"
-        value={newArea.tipoArea}
-        onChange={handleChange}
-      />
+    <TextField
+  autoFocus
+  name="tipoArea"
+  required
+  label="Tipo de Área"
+  type="text"
+  fullWidth
+  variant="outlined"
+  value={newArea.tipoArea}
+  select
+  onChange={handleChange}
+>
+  <MenuItem value={"Administrativo"}>Administrativo</MenuItem>
+  <MenuItem value={"Área"}>Área</MenuItem>
+</TextField>
     </Grid>
   </Grid>
 </DialogContent>
