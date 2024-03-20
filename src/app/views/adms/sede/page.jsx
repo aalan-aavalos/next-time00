@@ -44,7 +44,6 @@ const UsersPage = () => {
 
   const [areasByType, setAreasByType] = useState([]);
 
-
   useEffect(() => {
     const loadSedes = async () => {
       try {
@@ -128,12 +127,13 @@ const UsersPage = () => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setNewUser({ ...newUser, [name]: value });
-  
+
     // Aquí se puede agregar una lógica adicional para actualizar las áreas según el tipo seleccionado
-    const areasFilteredByType = datosArea.filter(area => area.tipoArea === value);
+    const areasFilteredByType = datosArea.filter(
+      (area) => area.tipoArea === value
+    );
     setAreasByType(areasFilteredByType);
   };
-  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -221,14 +221,14 @@ const UsersPage = () => {
   {
     /*const areas = [datosArea];*/
   }
-  const areas = datosArea.map((area) => (area.aNombre));
+  const areas = datosArea.map((area) => area.aNombre);
   const adm = datosUsrs;
 
   const tiposAreaUnicos = datosArea
     .map((area) => area.tipoArea)
     .filter((value, index, self) => self.indexOf(value) === index);
 
-  console.log(datosArea);
+  //console.log(datosArea);
 
   const [filterModel, setFilterModel] = React.useState({
     items: [],
