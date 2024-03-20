@@ -37,6 +37,7 @@ const UsersPage = () => {
   const [open, setOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmOpenMessage, setConfirmOpenMessage] = useState(false);
   const [datos, setDatos] = useState([]);
   const [datosSede, setDatosSede] = useState([]);
   const [newUser, setNewUser] = useState(usrsModel);
@@ -50,6 +51,7 @@ const UsersPage = () => {
   const [contrato, setContrato] = useState([]);
   // Añade un nuevo estado para almacenar la sede seleccionada
   const [sedeSeleccionada, setSedeSeleccionada] = useState("");
+  const [messageError, setMessageError] = useState("no hay");
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -121,6 +123,10 @@ const UsersPage = () => {
     setConfirmOpen(false);
   };
 
+  const handleConfirmCloseMessage = () => {
+    setConfirmOpenMessage(false);
+  };
+
   const handleSedeChange = (event) => {
     const sedeSeleccionada = event.target.value;
     setSedeSeleccionada(sedeSeleccionada);
@@ -159,13 +165,16 @@ const UsersPage = () => {
 
     // Verificar si el correo ya está en uso antes de crear un nuevo usuario
     const existingUser = datos.find((user) => user.eCorreo === newUser.eCorreo);
-    if (existingUser) {
-      alert("Correo electrónico ya está en uso");
+
+    if (newUser.eNumero.toString().length !== 10) {
+      setMessageError("El número de teléfono debe tener 10 dígitos");
+      setConfirmOpenMessage(true);
       return; // Detener el proceso de registro
     }
 
-    if (newUser.eNumero.toString().length !== 10) {
-      alert("El número de teléfono debe tener 10 dígitos");
+    if (existingUser) {
+      setMessageError("Correo electronico ya esta en uso");
+      setConfirmOpenMessage(true);
       return; // Detener el proceso de registro
     }
 
@@ -733,6 +742,24 @@ const UsersPage = () => {
         <DialogActions>
           <Button variant="contained" onClick={handleCloseDetails}>
             Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={confirmOpenMessage}
+        onClose={handleConfirmCloseMessage}
+        PaperProps={{
+          style: {
+            background: "rgb(255, 0, 0)",
+          },
+        }}
+      >
+        <DialogTitle alignSelf="center">Error al insertar</DialogTitle>
+        <DialogContent>{messageError}</DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={handleConfirmCloseMessage}>
+            Aceptar
           </Button>
         </DialogActions>
       </Dialog>
