@@ -85,12 +85,16 @@ const ContratosPage = () => {
   const handleTipoContratoChange = (event) => {
     const { name, value } = event.target;
     let horasDisponibles = [];
+    let duracionJornada = "";
+
     switch (value) {
       case "5d/2d":
         horasDisponibles = ["7:00 / 15:00", "15:00 / 23:00", "23:00 / 7:00"];
+        duracionJornada = "8 horas";
         break;
       case "1d/2d":
         horasDisponibles = ["7:00 / 7:00", "19:00 / 19:00"];
+        duracionJornada = "24 horas";
         break;
       case "6d/1d":
         horasDisponibles = [
@@ -99,14 +103,18 @@ const ContratosPage = () => {
           "18:00 / 23:59",
           "0:00 / 6:00",
         ];
+        duracionJornada = "6 horas";
         break;
       default:
         horasDisponibles = [];
+        duracionJornada = "";
         break;
     }
+
     setNewContrato((prevContrato) => ({
       ...prevContrato,
       [name]: value,
+      duracion_jornada: duracionJornada, // Establece la duración de la jornada automáticamente
       hora_inicioFin: "", // Reinicia el valor de la hora de inicio/fin cuando cambia el tipo de contrato
     }));
     setHorasDisponibles(horasDisponibles);
@@ -292,6 +300,7 @@ const ContratosPage = () => {
                 variant="outlined"
                 value={newContrato.tipo_contrato}
                 onChange={handleTipoContratoChange}
+                sx={{ marginBottom: "16px" }} // Ajusta el espaciado inferior
               >
                 <MenuItem value="5d/2d">
                   Trabaja 5 días / Descansa 2 días
@@ -314,11 +323,12 @@ const ContratosPage = () => {
                 variant="outlined"
                 value={newContrato.duracion_jornada}
                 onChange={handleChange}
+                disabled
               />
             </Grid>
 
             <Grid item xs={4}>
-              <FormControl fullWidth>
+              <FormControl fullWidth variant="outlined">
                 <InputLabel id="hora-inicio-fin-label">
                   Hora de inicio y fin
                 </InputLabel>
@@ -329,6 +339,7 @@ const ContratosPage = () => {
                   required
                   value={newContrato.hora_inicioFin}
                   onChange={handleHoraInicioFinChange}
+                  label="Hora de inicio y fin"
                 >
                   {horasDisponibles.map((hora, index) => (
                     <MenuItem key={index} value={hora}>
