@@ -164,23 +164,25 @@ const UsersPage = () => {
     event.preventDefault();
 
     // Verificar si el correo ya está en uso antes de crear un nuevo usuario
-    const existingUser = datos.find((user) => user.eCorreo === newUser.eCorreo);
-
-    if (newUser.eNumero.toString().length !== 10) {
-      setMessageError("El número de teléfono debe tener 10 dígitos");
-      setConfirmOpenMessage(true);
-      return; // Detener el proceso de registro
-    }
-
-    if (existingUser) {
-      setMessageError("Correo electronico ya esta en uso");
-      setConfirmOpenMessage(true);
-      return; // Detener el proceso de registro
-    }
 
     if (updateMode) {
       await updateUser(selectedUserId, newUser);
     } else {
+      const existingUser = datos.find(
+        (user) => user.eCorreo === newUser.eCorreo
+      );
+
+      if (newUser.eNumero.toString().length !== 10) {
+        setMessageError("El número de teléfono debe tener 10 dígitos");
+        setConfirmOpenMessage(true);
+        return; // Detener el proceso de registro
+      }
+
+      if (existingUser) {
+        setMessageError("Correo electronico ya esta en uso");
+        setConfirmOpenMessage(true);
+        return; // Detener el proceso de registro
+      }
       await createUser(newUser);
     }
     setOpen(false);
