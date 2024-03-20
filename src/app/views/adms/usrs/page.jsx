@@ -256,10 +256,14 @@ const UsersPage = () => {
   };
 
   const columns = [
-    { field: "eCorreo", headerName: "Correo", width: 400 },
-    { field: "eNombre", headerName: "Nombre", width: 400 },
-    { field: "eApeP", headerName: "Apellido Paterno", width: 400 },
-    { field: "eApeM", headerName: "Apellido Materno", width: 400 },
+    { field: "eCorreo", headerName: "Correo", width: 250 },
+    { field: "eNombre", headerName: "Nombre", width: 250 },
+    { field: "eApeP", headerName: "Apellido Paterno", width: 250 },
+    { field: "eApeM", headerName: "Apellido Materno", width: 250 },
+    { field: "eEdad", headerName: "Edad", width: 100 },
+    { field: "eRol", headerName: "Rol", width: 100 },
+    { field: "auSede", headerName: "Sede", width: 150 },
+    { field: "uArea", headerName: "Area", width: 150 },
   ];
 
   const [filterModel, setFilterModel] = React.useState({
