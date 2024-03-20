@@ -185,7 +185,6 @@ const ContratosPage = () => {
 
     setConfirmOpen(false);
   };
-  
 
   const handleRowClick = (params) => {
     setSelectedContratoId(params.row._id);

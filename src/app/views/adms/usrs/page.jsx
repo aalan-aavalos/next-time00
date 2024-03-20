@@ -222,6 +222,8 @@ const UsersPage = () => {
     items: [],
     quickFilterValues: [""],
   });
+
+
   return (
     <div>
       {/** Boton para agregar */}

@@ -216,39 +216,45 @@ const AreasPage = () => {
           {updateMode ? "Actualizar area" : "Registro de areas"}
         </DialogTitle>
         <DialogContent>
-  <Grid container justifyContent="center" columnSpacing={1} p={1} rowSpacing={2}>
-    <Grid item xs={4}>
-      <TextField
-        autoFocus
-        name="aNombre"
-        required
-        label="Área"
-        type="text"
-        fullWidth
-        variant="outlined"
-        value={newArea.aNombre}
-        onChange={handleChange}
-      />
-    </Grid>
-    <Grid item xs={4}>
-    <TextField
-  autoFocus
-  name="tipoArea"
-  required
-  label="Tipo de Área"
-  type="text"
-  fullWidth
-  variant="outlined"
-  value={newArea.tipoArea}
-  select
-  onChange={handleChange}
->
-  <MenuItem value={"Administrativo"}>Administrativo</MenuItem>
-  <MenuItem value={"Área"}>Área</MenuItem>
-</TextField>
-    </Grid>
-  </Grid>
-</DialogContent>
+          <Grid
+            container
+            justifyContent="center"
+            columnSpacing={1}
+            p={1}
+            rowSpacing={2}
+          >
+            <Grid item xs={4}>
+              <TextField
+                autoFocus
+                name="aNombre"
+                required
+                label="Área"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={newArea.aNombre}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                autoFocus
+                name="tipoArea"
+                required
+                label="Tipo de Área"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={newArea.tipoArea}
+                select
+                onChange={handleChange}
+              >
+                <MenuItem value={"Administrativo"}>Administrativo</MenuItem>
+                <MenuItem value={"Área"}>Área</MenuItem>
+              </TextField>
+            </Grid>
+          </Grid>
+        </DialogContent>
         <DialogActions>
           <Button variant="contained" onClick={handleClose}>
             Cancelar
