@@ -34,7 +34,7 @@ const UsersPage = () => {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [datos, setDatos] = useState([]);
   const [newUser, setNewUser] = useState({
-    nombreSede: "",
+    nombreSede: String,
     ubicacion: "",
     Adminstradores: [],
     aNombre: [],
