@@ -34,13 +34,15 @@ const UsersPage = () => {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [datos, setDatos] = useState([]);
   const [newUser, setNewUser] = useState({
-    nombreSede: "",
+    nombreSede: String,
     ubicacion: "",
     Adminstradores: [],
     aNombre: [],
   });
   const [datosArea, setDatosArea] = useState([]);
   const [datosUsrs, setDatosUsrs] = useState([]);
+
+  const [areasByType, setAreasByType] = useState([]);
 
   useEffect(() => {
     const loadSedes = async () => {
@@ -123,7 +125,14 @@ const UsersPage = () => {
   };
 
   const handleChange = (event) => {
-    setNewUser({ ...newUser, [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+    setNewUser({ ...newUser, [name]: value });
+
+    // Aquí se puede agregar una lógica adicional para actualizar las áreas según el tipo seleccionado
+    const areasFilteredByType = datosArea.filter(
+      (area) => area.tipoArea === value
+    );
+    setAreasByType(areasFilteredByType);
   };
 
   const handleSubmit = async (event) => {
@@ -214,6 +223,12 @@ const UsersPage = () => {
   }
   const areas = datosArea.map((area) => area.aNombre);
   const adm = datosUsrs;
+
+  const tiposAreaUnicos = datosArea
+    .map((area) => area.tipoArea)
+    .filter((value, index, self) => self.indexOf(value) === index);
+
+  //console.log(datosArea);
 
   const [filterModel, setFilterModel] = React.useState({
     items: [],
@@ -369,12 +384,31 @@ const UsersPage = () => {
                 )}
               />
             </Grid>
+            <Grid item xs={4}>
+              <TextField
+                autoFocus
+                name="tipoArea"
+                required
+                label="Tipo de Área"
+                type="text"
+                fullWidth
+                variant="outlined"
+                select
+                onChange={handleChange}
+              >
+                {tiposAreaUnicos.map((ar) => (
+                  <MenuItem key={ar} value={ar}>
+                    {ar}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
 
-            <Grid item xs={12} justifyContent="center" textAlign="center">
+            <Grid item xs={8}>
               <Autocomplete
                 multiple
                 id="checkboxes-tags-demo"
-                options={areas}
+                options={areasByType.map((area) => area.aNombre)}
                 disableCloseOnSelect
                 getOptionLabel={(option) => option}
                 value={newUser.aNombre}
