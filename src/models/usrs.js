@@ -4,7 +4,6 @@ const usrsSchema = new Schema(
   {
     eNombre: {
       type: String,
-      //unique: [true, "El nombre no puede ser igual"], // Lo que hace es que manda un error si se repite
       trim: true,
     },
     eApeP: {
@@ -30,6 +29,7 @@ const usrsSchema = new Schema(
     },
     eCorreo: {
       type: String,
+      unique: true,
       trim: true,
     },
 
@@ -56,6 +56,7 @@ const usrsSchema = new Schema(
   },
   {
     timestamps: true /* Lo que hace es que agrega el campo de fecha de creacion y actualizacion */,
+    versionKey: false,
   }
 );
 export default models.Usrs || model("Usrs", usrsSchema);

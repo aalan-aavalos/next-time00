@@ -18,33 +18,26 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-const generateRandomPassword = () => {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  const passwordLength = 8; // Longitud de la contraseña
-  let password = "";
-  for (let i = 0; i < passwordLength; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    password += characters[randomIndex];
-  }
-  return password;
-};
+
 const UsersPage = () => {
   const usrsModel = {
-    eNombre: "",
-    eApeP: "",
-    eApeM: "",
-    eRol: "",
-    eEdad: 0,
-    eNumero: 0,
-    eCorreo: "",
-    auSede: "",
-    pwd: "",
+    eNombre: String,
+    eApeP: String,
+    eApeM: String,
+    eRol: String,
+    eEdad: Number,
+    eNumero: Number,
+    eCorreo: String,
+    auSede: String,
+    uArea: String,
+    uTurno: String,
+    pwd: String,
   };
 
   const [open, setOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmOpenMessage, setConfirmOpenMessage] = useState(false);
   const [datos, setDatos] = useState([]);
   const [datosSede, setDatosSede] = useState([]);
   const [newUser, setNewUser] = useState(usrsModel);
@@ -53,6 +46,12 @@ const UsersPage = () => {
   const [selectedUserData, setSelectedUserData] = useState(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [selectedUserDetails, setSelectedUserDetails] = useState(null);
+
+  const [areasSede, setAreasSede] = useState([]);
+  const [contrato, setContrato] = useState([]);
+  // Añade un nuevo estado para almacenar la sede seleccionada
+  const [sedeSeleccionada, setSedeSeleccionada] = useState("");
+  const [messageError, setMessageError] = useState("no hay");
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -69,6 +68,23 @@ const UsersPage = () => {
     };
 
     loadUsers();
+  }, []);
+
+  useEffect(() => {
+    const loadContratos = async () => {
+      try {
+        const respuesta = await fetch("/api/contrato");
+        if (!respuesta.ok) {
+          throw new Error("Error al obtener los datos");
+        }
+        const datosJson = await respuesta.json();
+        setContrato(datosJson);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    loadContratos();
   }, []);
 
   useEffect(() => {
@@ -107,21 +123,66 @@ const UsersPage = () => {
     setConfirmOpen(false);
   };
 
+  const handleConfirmCloseMessage = () => {
+    setConfirmOpenMessage(false);
+  };
+
+  const handleSedeChange = (event) => {
+    const sedeSeleccionada = event.target.value;
+    setSedeSeleccionada(sedeSeleccionada);
+    const sede = datosSede.find((sede) => sede.nombreSede === sedeSeleccionada);
+    if (sede) {
+      setAreasSede(sede.aNombre);
+      // Reinicia el valor del área seleccionada cuando cambia la sede
+      setNewUser({ ...newUser, auSede: sedeSeleccionada, uArea: "" });
+    }
+  };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
+    let newValue = value;
+
+    if (name === "eEdad") {
+      // Permitir solo números y asegurar que estén entre 0 y 99
+      newValue = value.replace(/\D/g, "").slice(0, 2);
+    }
+
+    if (name === "eNumero") {
+      // Permitir solo números y exactamente 10 caracteres
+      newValue = value.replace(/\D/g, "").slice(0, 10);
+    }
+
     if (name === "eRol") {
       // Reiniciar los campos al cambiar el rol
       setNewUser({ ...usrsModel, eRol: value });
     } else {
-      setNewUser({ ...newUser, [name]: value });
+      setNewUser({ ...newUser, [name]: newValue });
     }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Verificar si el correo ya está en uso antes de crear un nuevo usuario
+
     if (updateMode) {
       await updateUser(selectedUserId, newUser);
     } else {
+      const existingUser = datos.find(
+        (user) => user.eCorreo === newUser.eCorreo
+      );
+
+      if (newUser.eNumero.toString().length !== 10) {
+        setMessageError("El número de teléfono debe tener 10 dígitos");
+        setConfirmOpenMessage(true);
+        return; // Detener el proceso de registro
+      }
+
+      if (existingUser) {
+        setMessageError("Correo electronico ya esta en uso");
+        setConfirmOpenMessage(true);
+        return; // Detener el proceso de registro
+      }
       await createUser(newUser);
     }
     setOpen(false);
@@ -137,6 +198,7 @@ const UsersPage = () => {
       },
     });
     const data = await response.json();
+
     console.log("New user created:", data);
     setDatos([...datos, data]);
   };
@@ -196,10 +258,14 @@ const UsersPage = () => {
   };
 
   const columns = [
-    { field: "eCorreo", headerName: "Correo", width: 400 },
-    { field: "eNombre", headerName: "Nombre", width: 400 },
-    { field: "eApeP", headerName: "Apellido Paterno", width: 400 },
-    { field: "eApeM", headerName: "Apellido Materno", width: 400 },
+    { field: "eCorreo", headerName: "Correo", width: 250 },
+    { field: "eNombre", headerName: "Nombre", width: 250 },
+    { field: "eApeP", headerName: "Apellido Paterno", width: 250 },
+    { field: "eApeM", headerName: "Apellido Materno", width: 250 },
+    { field: "eEdad", headerName: "Edad", width: 100 },
+    { field: "eRol", headerName: "Rol", width: 100 },
+    { field: "auSede", headerName: "Sede", width: 150 },
+    { field: "uArea", headerName: "Area", width: 150 },
   ];
 
   const [filterModel, setFilterModel] = React.useState({
@@ -209,6 +275,7 @@ const UsersPage = () => {
 
   return (
     <div>
+      {/** Boton para agregar */}
       <Fab
         color="dark"
         aria-label="add"
@@ -219,6 +286,7 @@ const UsersPage = () => {
         <AddIcon />
       </Fab>
 
+      {/** Boton para editar */}
       <Fab
         color="primary"
         aria-label="edit"
@@ -230,6 +298,7 @@ const UsersPage = () => {
         <EditIcon />
       </Fab>
 
+      {/** Boton para ver detalles */}
       <Fab
         color="primary"
         aria-label="details"
@@ -241,6 +310,7 @@ const UsersPage = () => {
         <InfoIcon />
       </Fab>
 
+      {/** Boton para eliminar */}
       <Fab
         color="secondary"
         aria-label="delete"
@@ -252,6 +322,7 @@ const UsersPage = () => {
         <DeleteIcon />
       </Fab>
 
+      {/** Tabla de datos */}
       <div style={{ width: "100%" }}>
         <div style={{ height: "60vh", width: "100%" }}>
           <DataGrid
@@ -270,6 +341,7 @@ const UsersPage = () => {
         </div>
       </div>
 
+      {/** Formulario de registro */}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -287,6 +359,27 @@ const UsersPage = () => {
         </DialogTitle>
         <DialogContent>
           <Grid container columnSpacing={1} p={1} rowSpacing={2}>
+            {/** Campo para el rol de 6 */}
+            <Grid item xs={6}>
+              <TextField
+                name="eRol"
+                value={newUser.eRol}
+                label="Rol"
+                onChange={handleChange}
+                fullWidth
+                autoFocus
+                required
+                select
+                disabled={updateMode ? true : false}
+                variant="outlined"
+              >
+                <MenuItem value={"emp"}>Empleado</MenuItem>
+                <MenuItem value={"adm"}>Administrador</MenuItem>
+                <MenuItem value={"sAdm"}>Super-administrador</MenuItem>
+              </TextField>
+            </Grid>
+
+            {/** Campo para el nombre de 12 */}
             <Grid item xs={12}>
               <TextField
                 autoFocus
@@ -300,6 +393,8 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
+
+            {/** Campo para el apellido paterno de 6 */}
             <Grid item xs={6}>
               <TextField
                 autoFocus
@@ -313,6 +408,8 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
+
+            {/** Campo para el apellido materno de 6 */}
             <Grid item xs={6}>
               <TextField
                 autoFocus
@@ -326,51 +423,23 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
+
+            {/** Campo para la edad de 3 */}
             <Grid item xs={3}>
               <TextField
                 autoFocus
                 name="eEdad"
                 required
                 label="Edad"
-                type="number"
+                type="tel"
                 fullWidth
                 variant="outlined"
                 value={newUser.eEdad}
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={3}>
-              <TextField
-                name="eRol"
-                value={newUser.eRol}
-                label="Rol"
-                onChange={handleChange}
-                fullWidth
-                autoFocus
-                required
-                select
-                variant="outlined"
-              >
-                <MenuItem value={"emp"}>Empleado</MenuItem>
-                <MenuItem value={"adm"}>Usuario</MenuItem>
-                <MenuItem value={"sAdm"}>Super-administrador</MenuItem>
-              </TextField>
-            </Grid>
-            {newUser.eRol === "adm" || newUser.eRol === "sAdm" ? (
-              <Grid item xs={6}>
-                <TextField
-                  autoFocus
-                  name="pwd"
-                  required
-                  label="Contraseña"
-                  type="password"
-                  fullWidth
-                  variant="outlined"
-                  value={newUser.pwd}
-                  onChange={handleChange}
-                />
-              </Grid>
-            ) : null}
+
+            {/** Campo para el telefono de 6 */}
             <Grid item xs={6}>
               <TextField
                 autoFocus
@@ -384,10 +453,13 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
+
+            {/** Campo para el correo de 12 */}
             <Grid item xs={12}>
               <TextField
                 autoFocus
                 name="eCorreo"
+                disabled={updateMode ? true : false}
                 required
                 label="Correo electronico"
                 type="email"
@@ -397,28 +469,105 @@ const UsersPage = () => {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={3}>
-              <Select
-                name="auSede"
-                value={newUser.auSede}
-                label="Sede"
-                onChange={handleChange}
-                fullWidth
-              >
-                {datosSede.map((sede) => (
-                  <MenuItem key={sede._id} value={sede.nombreSede}>
-                    {sede.nombreSede}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
+
+            {/** Campo para la contraseña de 6 */}
+            {newUser.eRol === "adm" || newUser.eRol === "sAdm" ? (
+              <Grid item xs={8}>
+                <TextField
+                  autoFocus
+                  name="pwd"
+                  required
+                  disabled={updateMode ? true : false}
+                  label="Contraseña"
+                  type="password"
+                  fullWidth
+                  variant="outlined"
+                  value={newUser.pwd}
+                  onChange={handleChange}
+                />
+              </Grid>
+            ) : null}
+
+            {/** Campo para la sede de 3 */}
+            {newUser.eRol === "adm" || newUser.eRol === "emp" ? (
+              <Grid item xs={4}>
+                <TextField
+                  autoFocus
+                  select
+                  variant="outlined"
+                  name="auSede"
+                  value={newUser.auSede}
+                  label="Sede"
+                  required
+                  onChange={(event) => {
+                    handleSedeChange(event);
+                  }}
+                  fullWidth
+                >
+                  {datosSede.map((sede) => (
+                    <MenuItem key={sede._id} value={sede.nombreSede}>
+                      {sede.nombreSede}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+            ) : null}
+
+            {/** Campo para la area de 3 */}
+            {newUser.eRol === "emp" ? (
+              <Grid item xs={4}>
+                <TextField
+                  autoFocus
+                  select
+                  variant="outlined"
+                  name="uArea"
+                  value={newUser.uArea}
+                  label="Área"
+                  required
+                  onChange={handleChange}
+                  fullWidth
+                >
+                  {areasSede.map((area) => (
+                    <MenuItem key={area} value={area}>
+                      {area}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+            ) : null}
+
+            {/** Campo para el turno 3 */}
+            {newUser.eRol === "emp" ? (
+              <Grid item xs={4}>
+                <TextField
+                  autoFocus
+                  select
+                  variant="outlined"
+                  name="uTurno"
+                  value={newUser.uTurno}
+                  label="Turno"
+                  required
+                  onChange={handleChange}
+                  fullWidth
+                >
+                  {contrato.map((con) => (
+                    <MenuItem
+                      key={con._id}
+                      value={con.tipo_contrato + con.hora_inicioFin}
+                    >
+                      {`${con.tipo_contrato} - ${con.hora_inicioFin}`}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+            ) : null}
           </Grid>
         </DialogContent>
         <DialogActions>
           <Button variant="contained" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button variant="contained" type="submit" onClick={handleSubmit}>
+          <Button variant="contained" type="submit">
             {updateMode ? "Actualizar" : "Registrar"}
           </Button>
         </DialogActions>
@@ -462,84 +611,161 @@ const UsersPage = () => {
         {selectedUserDetails && (
           <DialogContent>
             <Grid container columnSpacing={1} p={1} rowSpacing={2}>
+              {/** Campo para el rol de 6 */}
+              <Grid item xs={6}>
+                <TextField
+                  label="Rol"
+                  fullWidth
+                  variant="outlined"
+                  disabled
+                  defaultValue={selectedUserDetails.eRol}
+                >
+                  <MenuItem value={"emp"}>Empleado</MenuItem>
+                  <MenuItem value={"adm"}>Administrador</MenuItem>
+                  <MenuItem value={"sAdm"}>Super-administrador</MenuItem>
+                </TextField>
+              </Grid>
+
+              {/** Campo para el nombre de 12 */}
               <Grid item xs={12}>
                 <TextField
                   label="Nombre/s"
-                  disabled
                   fullWidth
                   variant="outlined"
+                  disabled
                   defaultValue={selectedUserDetails.eNombre}
                 />
               </Grid>
+
+              {/** Campo para el apellido paterno de 6 */}
               <Grid item xs={6}>
                 <TextField
                   label="Apellido paterno"
-                  disabled
                   fullWidth
                   variant="outlined"
+                  disabled
                   defaultValue={selectedUserDetails.eApeP}
                 />
               </Grid>
+
+              {/** Campo para el apellido materno de 6 */}
               <Grid item xs={6}>
                 <TextField
                   label="Apellido materno"
-                  disabled
                   fullWidth
                   variant="outlined"
+                  disabled
                   defaultValue={selectedUserDetails.eApeM}
                 />
               </Grid>
+
+              {/** Campo para la edad de 3 */}
               <Grid item xs={3}>
                 <TextField
                   label="Edad"
-                  disabled
                   fullWidth
                   variant="outlined"
+                  disabled
                   defaultValue={selectedUserDetails.eEdad}
                 />
               </Grid>
-              <Grid item xs={3}>
-                <TextField
-                  label="Rol"
-                  disabled
-                  fullWidth
-                  variant="outlined"
-                  defaultValue={selectedUserDetails.eRol}
-                />
-              </Grid>
+
+              {/** Campo para el telefono de 6 */}
               <Grid item xs={6}>
                 <TextField
                   label="Numero de telefono"
-                  disabled
                   fullWidth
                   variant="outlined"
+                  disabled
                   defaultValue={selectedUserDetails.eNumero}
                 />
               </Grid>
+
+              {/** Campo para el correo de 12 */}
               <Grid item xs={12}>
                 <TextField
                   label="Correo electronico"
-                  disabled
                   fullWidth
                   variant="outlined"
+                  disabled
                   defaultValue={selectedUserDetails.eCorreo}
                 />
               </Grid>
-              <Grid item xs={12}>
+
+              {/** Campo para la contraseña de 6 */}
+              {newUser.eRol === "adm" || newUser.eRol === "sAdm" ? (
+                <Grid item xs={6}>
+                  <TextField
+                    label="Contraseña"
+                    fullWidth
+                    variant="outlined"
+                    disabled
+                    defaultValue={selectedUserDetails.pwd}
+                    type="password"
+                  />
+                </Grid>
+              ) : null}
+
+              {/** Campo para la sede de 3 */}
+              <Grid item xs={3}>
                 <TextField
-                  label="Sede"
-                  disabled
-                  fullWidth
                   variant="outlined"
+                  label="Sede"
+                  fullWidth
+                  disabled
                   defaultValue={selectedUserDetails.auSede}
                 />
               </Grid>
+
+              {/** Campo para la area de 3 */}
+              {newUser.eRol === "emp" ? (
+                <Grid item xs={3}>
+                  <TextField
+                    variant="outlined"
+                    label="Área"
+                    fullWidth
+                    disabled
+                    defaultValue={selectedUserDetails.uArea}
+                  />
+                </Grid>
+              ) : null}
+
+              {/** Campo para el turno 3 */}
+              {newUser.eRol === "emp" ? (
+                <Grid item xs={3}>
+                  <TextField
+                    variant="outlined"
+                    label="Turno"
+                    fullWidth
+                    disabled
+                    defaultValue={selectedUserDetails.uTurno}
+                  />
+                </Grid>
+              ) : null}
             </Grid>
           </DialogContent>
         )}
         <DialogActions>
           <Button variant="contained" onClick={handleCloseDetails}>
             Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={confirmOpenMessage}
+        onClose={handleConfirmCloseMessage}
+        PaperProps={{
+          style: {
+            background: "rgb(255, 0, 0)",
+          },
+        }}
+      >
+        <DialogTitle alignSelf="center">Error al insertar</DialogTitle>
+        <DialogContent>{messageError}</DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={handleConfirmCloseMessage}>
+            Aceptar
           </Button>
         </DialogActions>
       </Dialog>

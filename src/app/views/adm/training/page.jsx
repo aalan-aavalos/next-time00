@@ -15,23 +15,26 @@ import {
   TextField,
 } from "@mui/material";
 
-const VacacionesPage = () => {
+const TrainingPage = () => {
   const [open, setOpen] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [selectedTrainingId, setSelectedTrainingId] = useState(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [datos, setDatos] = useState([]);
-  const [newUser, setNewUser] = useState({
+  const [newTraining, setNewTraining] = useState({
+    nombre: "",
     fechaI: "",
     fechaF: "",
     motivo: "",
+    detalles:""
+
   });
   const [updateMode, setUpdateMode] = useState(false);
-  const [selectedUserData, setSelectedUserData] = useState(null);
+  const [selectedTrainingData, setSelectedTrainingData] = useState(null);
 
   useEffect(() => {
-    const loadUsers = async () => {
+    const loadTrainings = async () => {
       try {
-        const respuesta = await fetch("/api/vacacion");
+        const respuesta = await fetch("/api/training");
         if (!respuesta.ok) {
           throw new Error("Error al obtener los datos");
         }
@@ -42,18 +45,18 @@ const VacacionesPage = () => {
       }
     };
 
-    loadUsers();
+    loadTrainings();
   }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
     setUpdateMode(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "" });
+    setNewTraining({ nombre:"", fechaI: "", fechaF: "", motivo: "", detalles:""});
   };
 
   const handleClose = () => {
     setOpen(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "" });
+    setNewTraining({ nombre:"", fechaI: "", fechaF: "", motivo: "", detalles:""  });
   };
 
   const handleConfirmOpen = () => {
@@ -65,71 +68,72 @@ const VacacionesPage = () => {
   };
 
   const handleChange = (event) => {
-    setNewUser({ ...newUser, [event.target.name]: event.target.value });
+    setNewTraining({ ...newTraining, [event.target.name]: event.target.value });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log("Datos enviados al backend:", newTraining); // Agrega este registro para verificar los datos antes de enviar la solicitud
     if (updateMode) {
-      await updateUser(selectedUserId, newUser);
+      await updateTraining(selectedTrainingId, newTraining);
     } else {
-      await createUser(newUser);
+      await createTraining(newTraining);
     }
     setOpen(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "" });
+    setNewTraining({ nombre:"", fechaI: "", fechaF: "", motivo: "", detalles:"" });
   };
 
-  const createUser = async (user) => {
-    const response = await fetch("/api/vacacion", {
+  const createTraining = async (training) => {
+    const response = await fetch("/api/training", {
       method: "POST",
-      body: JSON.stringify(user),
+      body: JSON.stringify(training),
       headers: {
         "Content-Type": "application/json",
       },
     });
     const data = await response.json();
-    console.log("New user created:", data);
+    console.log("New Training created:", data);
     setDatos([...datos, data]);
   };
 
-  const updateUser = async (userId, userData) => {
-    const response = await fetch(`/api/vacacion/${userId}`, {
+  const updateTraining = async (trainingId, trainingData) => {
+    const response = await fetch(`/api/training/${trainingId}`, {
       method: "PUT",
-      body: JSON.stringify(userData),
+      body: JSON.stringify(trainingData),
       headers: {
         "Content-Type": "application/json",
       },
     });
     if (response.ok) {
-      const updatedUsers = datos.map((user) =>
-        user._id === userId ? { ...user, ...userData } : user
+      const updatedTrainings = datos.map((training) =>
+        training._id === trainingId ? { ...training, ...trainingData } : training
       );
-      setDatos(updatedUsers);
-      setSelectedUserId(null);
+      setDatos(updatedTrainings);
+      setSelectedTrainingId(null);
       setUpdateMode(false);
     }
   };
 
-  const deleteUser = async () => {
-    if (!selectedUserId) return;
+  const deleteTraining = async () => {
+    if (!selectedTrainingId) return;
 
-    const response = await fetch(`/api/vacacion/${selectedUserId}`, {
+    const response = await fetch(`/api/training/${selectedTrainingId}`, {
       method: "DELETE",
     });
 
     if (response.ok) {
-      const updatedUsers = datos.filter((user) => user._id !== selectedUserId);
-      setDatos(updatedUsers);
-      setSelectedUserId(null);
+      const updatedTrainings = datos.filter((training) => training._id !== selectedTrainingId);
+      setDatos(updatedTrainings);
+      setSelectedTrainingId(null);
     }
 
     setConfirmOpen(false);
   };
 
   const handleRowClick = (params) => {
-    setSelectedUserId(params.row._id);
-    setSelectedUserData(params.row);
-    setNewUser(params.row);
+    setSelectedTrainingId(params.row._id);
+    setSelectedTrainingData(params.row);
+    setNewTraining(params.row);
   };
 
   const handleEditClick = () => {
@@ -137,13 +141,13 @@ const VacacionesPage = () => {
     setOpen(true);
   
     // Verificar y convertir las fechas al formato correcto si es necesario
-    const formattedUser = {
-      ...selectedUserData,
-      fechaI: selectedUserData.fechaI instanceof Date ? selectedUserData.fechaI.toISOString().split("T")[0] : selectedUserData.fechaI,
-      fechaF: selectedUserData.fechaF instanceof Date ? selectedUserData.fechaF.toISOString().split("T")[0] : selectedUserData.fechaF,
+    const formattedTraining = {
+      ...selectedTrainingData,
+      fechaI: selectedTrainingData.fechaI instanceof Date ? selectedTrainingData.fechaI.toISOString().split("T")[0] : selectedTrainingData.fechaI,
+      fechaF: selectedTrainingData.fechaF instanceof Date ? selectedTrainingData.fechaF.toISOString().split("T")[0] : selectedTrainingData.fechaF,
     };
   
-    setNewUser(formattedUser);
+    setNewTraining(formattedTraining);
   };
   
 
@@ -163,13 +167,14 @@ const VacacionesPage = () => {
   };
 
   const columns = [
-    { field: "fechaI", headerName: "Fecha de Inicio", width: 300 },
-    { field: "fechaF", headerName: "Fecha de Fin", width: 300 },
-    { field: "motivo", headerName: "Motivo", width: 300 },
+    { field: "nombre", headerName: "Nombre del Training", width: 200 },
+    { field: "fechaI", headerName: "Fecha de Inicio", width: 200 },
+    { field: "fechaF", headerName: "Fecha de Fin", width: 200 },
+    { field: "motivo", headerName: "Motivo", width: 200 },
     {
       field: "dias",
       headerName: "Días totales",
-      width: 300,
+      width: 200,
       renderCell: (params) => {
         const dias = calcularDiferenciaDias(
           params.row.fechaI,
@@ -178,7 +183,7 @@ const VacacionesPage = () => {
         return dias;
       },
     },
-    { field: "edo", headerName: "Estado", width: 200 },
+    { field: "detalles", headerName: "Detalles", width: 200 },
   ];
 
   const [filterModel, setFilterModel] = React.useState({
@@ -203,7 +208,7 @@ const VacacionesPage = () => {
         onClick={handleEditClick}
         p={1}
         style={{ fontSize: 20, marginBottom: "2vh", marginRight: "1vw" }}
-        disabled={!selectedUserId}
+        disabled={!selectedTrainingId}
       >
         <EditIcon />
       </Fab>
@@ -213,7 +218,7 @@ const VacacionesPage = () => {
         onClick={handleConfirmOpen}
         p={1}
         style={{ fontSize: 20, marginBottom: "2vh" }}
-        disabled={!selectedUserId}
+        disabled={!selectedTrainingId}
       >
         <DeleteIcon />
       </Fab>
@@ -248,10 +253,23 @@ const VacacionesPage = () => {
         }}
       >
         <DialogTitle alignSelf="center">
-          {updateMode ? "Actualizar Vacaciones" : "Registro de Vacaciones"}
+          {updateMode ? "Actualizar Training" : "Nuevo Training"}
         </DialogTitle>
         <DialogContent>
           <Grid container columnSpacing={1} p={1} rowSpacing={2}>
+          <Grid item xs={12}>
+              <TextField
+                autoFocus
+                name="nombre"
+                required
+                label="Nombre"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={newTraining.nombre}
+                onChange={handleChange}
+              />
+            </Grid>
             <Grid item xs={12}>
               <TextField
                 autoFocus
@@ -262,7 +280,7 @@ const VacacionesPage = () => {
                 fullWidth
                 variant="outlined"
                 InputLabelProps={{ shrink: true }} // Para que el label no se superponga después de seleccionar la fecha
-                value={newUser.fechaI}
+                value={newTraining.fechaI}
                 onChange={handleChange}
               />
             </Grid>
@@ -276,7 +294,7 @@ const VacacionesPage = () => {
                 fullWidth
                 variant="outlined"
                 InputLabelProps={{ shrink: true }} // Para que el label no se superponga después de seleccionar la fecha
-                value={newUser.fechaF}
+                value={newTraining.fechaF}
                 onChange={handleChange}
               />
             </Grid>
@@ -289,7 +307,7 @@ const VacacionesPage = () => {
                 type="text"
                 fullWidth
                 variant="outlined"
-                value={newUser.motivo}
+                value={newTraining.motivo}
                 onChange={handleChange}
               />
             </Grid>
@@ -317,13 +335,13 @@ const VacacionesPage = () => {
       >
         <DialogTitle alignSelf="center">Confirmar Eliminación</DialogTitle>
         <DialogContent>
-          ¿Está seguro de que desea eliminar tu slicitud?
+          ¿Está seguro de que desea eliminar este Training?
         </DialogContent>
         <DialogActions>
           <Button variant="contained" onClick={handleConfirmClose}>
             Cancelar
           </Button>
-          <Button variant="contained" onClick={deleteUser} autoFocus>
+          <Button variant="contained" onClick={deleteTraining} autoFocus>
             Eliminar
           </Button>
         </DialogActions>
@@ -332,4 +350,4 @@ const VacacionesPage = () => {
   );
 };
 
-export default VacacionesPage;
+export default TrainingPage;
