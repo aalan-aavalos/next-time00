@@ -138,7 +138,9 @@ const VacacionesPage = () => {
     setOpen(true);
     // Configurar el estado newUser con los datos del usuario seleccionado
     setNewUser({
-      ...selectedUserData, // Conserva todos los datos del usuario seleccionado
+      fechaI: selectedUserData.fechaI || "",
+      fechaF: selectedUserData.fechaF || "",
+      motivo: selectedUserData.motivo || "",
     });
   };
   // Calcula la diferencia de días entre dos fechas
@@ -172,7 +174,7 @@ const VacacionesPage = () => {
         return dias;
       },
     },
-    //{ field: "estado", headerName: "Estado", width: 200 },
+    { field: "estado", headerName: "Estado", width: 200 },
   ];
 
   const [filterModel, setFilterModel] = React.useState({
@@ -255,7 +257,7 @@ const VacacionesPage = () => {
                 type="date"
                 fullWidth
                 variant="outlined"
-                value={newUser.fechaI}
+                value={newUser.fechaI} // Add the value prop
                 onChange={handleChange}
               />
             </Grid>
@@ -268,7 +270,7 @@ const VacacionesPage = () => {
                 type="date"
                 fullWidth
                 variant="outlined"
-                value={newUser.fechaF}
+                value={newUser.fechaF} // Add the value prop
                 onChange={handleChange}
               />
             </Grid>

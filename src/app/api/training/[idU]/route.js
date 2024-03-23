@@ -1,57 +1,57 @@
 const { NextResponse } = require("next/server");
-import Contrato from "@/models/contratos";
+import Training from "@/models/training";
 import { connectDB } from "@/utils/mongoose";
 
 // Obtener un usuario
 export async function GET(request, { params }) {
   try {
     connectDB();
-    const contratoFound = await Contrato.findById(params.idU); // Busca por id
-    //const usrFound = await Usrs.findOne({ eNombre: params.idU }); // Busca por nombre
+    const trainingFound = await Training.findById(params.idU); // Busca por id
 
-    if (!contratoFound) {
+
+    if (!trainingFound) {
       return NextResponse.json(
         {
-          message: "Usuario no encontrado",
+          message: "Periodo de training no encontrado",
         },
         { status: 404 }
       );
     }
-    return NextResponse.json(contratoFound);
+    return NextResponse.json(trainingFound);
   } catch (error) {
     return NextResponse.json(error.message, { status: 400 });
   }
 }
 
-// Actualizar usuario
+// Actualizar periodo de training
 export async function PUT(request, { params }) {
   try {
     connectDB();
     const data = await request.json();
-    const contratoUpdated = await Contrato.findByIdAndUpdate(params.idU, data, {
+    const trainingUpdated = await Training.findByIdAndUpdate(params.idU, data, {
       new: true,
     });
 
-    return NextResponse.json(contratoUpdated);
+    return NextResponse.json(trainingUpdated);
   } catch (error) {
     return NextResponse.json(error.message, { status: 400 });
   }
 }
 
-// Eliminar usuario
+// Eliminar periodo de training
 export async function DELETE(request, { params }) {
   try {
     connectDB();
-    const contratoDeleted = await Contrato.findByIdAndDelete(params.idU);
-    if (!contratoDeleted) {
+    const trainingDeleted = await Training.findByIdAndDelete(params.idU);
+    if (!trainingDeleted) {
       return NextResponse.json(
         {
-          message: "Usuario no encontrado",
+          message: "Periodo de training no encontrado",
         },
         { status: 404 }
       );
     }
-    return NextResponse.json(contratoDeleted);
+    return NextResponse.json(trainingDeleted);
   } catch (error) {
     return NextResponse.json(error.message, { status: 400 });
   }

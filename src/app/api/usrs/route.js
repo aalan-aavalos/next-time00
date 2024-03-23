@@ -2,11 +2,13 @@ import Usrs from "@/models/usrs";
 import { connectDB } from "@/utils/mongoose";
 import { NextResponse } from "next/server";
 
+
+
 // Obtener usuarios
 export async function GET() {
   connectDB();
   const usuarios = await Usrs.find();
-  return NextResponse.json(usuarios);
+  return NextResponse.json(usuarios, {message: ""});
 }
 
 // Agregar usuarios

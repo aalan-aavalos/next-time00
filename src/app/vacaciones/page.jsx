@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
@@ -135,37 +135,48 @@ const VacacionesPage = () => {
   const handleEditClick = () => {
     setUpdateMode(true);
     setOpen(true);
-    // Configurar el estado newUser con los datos del usuario seleccionado
-    setNewUser({
-      ...selectedUserData, // Conserva todos los datos del usuario seleccionado
-    });
-  };
-// Calcula la diferencia de días entre dos fechas
-    const calcularDiferenciaDias = (fechaI, fechaF) => {
-      const unDia = 24 * 60 * 60 * 1000; // milisegundos en un día
-      const fechaInicioMs = new Date(fechaI).getTime(); // Convertir fecha de inicio a milisegundos
-      const fechaFinMs = new Date(fechaF).getTime(); // Convertir fecha de fin a milisegundos
-
-      // Calcular diferencia en milisegundos
-      const diferenciaMs = Math.abs(fechaFinMs - fechaInicioMs);
-
-      // Calcular diferencia en días y redondear al entero más cercano
-      const diferenciaDias = Math.round(diferenciaMs / unDia);
-
-      return diferenciaDias;
+  
+    // Verificar y convertir las fechas al formato correcto si es necesario
+    const formattedUser = {
+      ...selectedUserData,
+      fechaI: selectedUserData.fechaI instanceof Date ? selectedUserData.fechaI.toISOString().split("T")[0] : selectedUserData.fechaI,
+      fechaF: selectedUserData.fechaF instanceof Date ? selectedUserData.fechaF.toISOString().split("T")[0] : selectedUserData.fechaF,
     };
-    
-    const columns = [
-      { field: "fechaI", headerName: "Fecha de Inicio", width: 300 },
-      { field: "fechaF", headerName: "Fecha de Fin", width: 300 },
-      { field: "motivo", headerName: "Motivo", width: 300 },
-      {field: "dias", 
-      headerName: "Días totales", 
+  
+    setNewUser(formattedUser);
+  };
+  
+
+  // Calcula la diferencia de días entre dos fechas
+  const calcularDiferenciaDias = (fechaI, fechaF) => {
+    const unDia = 24 * 60 * 60 * 1000; // milisegundos en un día
+    const fechaInicioMs = new Date(fechaI).getTime(); // Convertir fecha de inicio a milisegundos
+    const fechaFinMs = new Date(fechaF).getTime(); // Convertir fecha de fin a milisegundos
+
+    // Calcular diferencia en milisegundos
+    const diferenciaMs = Math.abs(fechaFinMs - fechaInicioMs);
+
+    // Calcular diferencia en días y redondear al entero más cercano
+    const diferenciaDias = Math.round(diferenciaMs / unDia);
+
+    return diferenciaDias;
+  };
+
+  const columns = [
+    { field: "fechaI", headerName: "Fecha de Inicio", width: 300 },
+    { field: "fechaF", headerName: "Fecha de Fin", width: 300 },
+    { field: "motivo", headerName: "Motivo", width: 300 },
+    {
+      field: "dias",
+      headerName: "Días totales",
       width: 300,
       renderCell: (params) => {
-        const dias = calcularDiferenciaDias(params.row.fechaI, params.row.fechaF);
+        const dias = calcularDiferenciaDias(
+          params.row.fechaI,
+          params.row.fechaF
+        );
         return dias;
-      }
+      },
     },
     { field: "edo", headerName: "Estado", width: 200 },
   ];
@@ -250,6 +261,7 @@ const VacacionesPage = () => {
                 type="date"
                 fullWidth
                 variant="outlined"
+                InputLabelProps={{ shrink: true }} // Para que el label no se superponga después de seleccionar la fecha
                 value={newUser.fechaI}
                 onChange={handleChange}
               />
@@ -263,6 +275,7 @@ const VacacionesPage = () => {
                 type="date"
                 fullWidth
                 variant="outlined"
+                InputLabelProps={{ shrink: true }} // Para que el label no se superponga después de seleccionar la fecha
                 value={newUser.fechaF}
                 onChange={handleChange}
               />
@@ -304,7 +317,7 @@ const VacacionesPage = () => {
       >
         <DialogTitle alignSelf="center">Confirmar Eliminación</DialogTitle>
         <DialogContent>
-          ¿Está seguro de que desea eliminar este usuario?
+          ¿Está seguro de que desea eliminar tu slicitud?
         </DialogContent>
         <DialogActions>
           <Button variant="contained" onClick={handleConfirmClose}>

@@ -44,6 +44,12 @@ function NavBarSAdm() {
         <Link href="/views/adms/sede" underline="none" color="inherit">
           <h2>Sedes</h2>
         </Link>
+        <Link href="/views/adm/area" underline="none" color="inherit">
+          <h2>Area</h2>
+        </Link>
+        <Link href="/views/adm/contrato" underline="none" color="inherit">
+          <h2>Contratos</h2>
+        </Link>
         <PersonIcon
           sx={{ fontSize: "4.5rem", color: "white" }}
           onClick={handleClick}

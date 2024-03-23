@@ -1,8 +1,12 @@
 const { Schema, model, models } = require("mongoose");
 
-const vacacionSchema = new Schema(
-  
+const trainingSchema = new Schema(
   {
+    nombre: {
+      type: String,
+      required: [true, "Se requiere un nombre"],
+      trim: true, // Lo que hace es que borra los espacios del final e inicio
+    },
     fechaI: {
       type: Date,
       required: [true, "La fecha de inicio es requerida"],
@@ -20,13 +24,19 @@ const vacacionSchema = new Schema(
       //unique: true,
       trim: true,
     },
-    estado: {
-      type: String,
-      default: "Pendiente",
-    }
+    Administradores: {
+        type: [String],
+        //unique: true,
+        trim: true,
+      },
+      Empleados: {
+        type: [String],
+        //unique: true,
+        trim: true,
+      }
   },
   {
     timestamps: true /* Lo que hace es que agrega el campo de fecha de creacion y actualizacion */,
   },
 );
-export default models.Vacacion || model("Vacacion", vacacionSchema);
+export default models.Training || model("Training", trainingSchema);
