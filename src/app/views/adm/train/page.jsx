@@ -4,7 +4,7 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/InfoSharp";
-
+import EditIcon from "@mui/icons-material/Edit";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Autocomplete from "@mui/material/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
@@ -270,17 +270,21 @@ const TrainingPage = () => {
         p={1}
         style={{ fontSize: 20, marginBottom: "2vh", marginRight: "1vw" }}
         disabled={!selectedTrainingId}
-      ></Fab>
-      <Fab
-        color="primary"
-        aria-label="details"
-        onClick={handleDetailsClick}
-        p={1}
-        style={{ fontSize: 20, marginBottom: "2vh", marginRight: "1vw" }}
-        disabled={!selectedTrainingId}
       >
-        <InfoIcon />
+        <EditIcon />
       </Fab>
+      {/*
+        <Fab
+          color="primary"
+          aria-label="details"
+          onClick={handleDetailsClick}
+          p={1}
+          style={{ fontSize: 20, marginBottom: "2vh", marginRight: "1vw" }}
+          disabled={!selectedTrainingId}
+        >
+          <InfoIcon />
+        </Fab>
+      */}
       <Fab
         color="secondary"
         aria-label="delete"
