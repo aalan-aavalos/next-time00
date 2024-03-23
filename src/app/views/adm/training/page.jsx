@@ -3,8 +3,13 @@ import React, { useState, useEffect } from "react";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import InfoIcon from "@mui/icons-material/InfoSharp";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import Autocomplete from "@mui/material/Autocomplete";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import Checkbox from "@mui/material/Checkbox";
+
 import {
   Button,
   Dialog,
@@ -25,11 +30,30 @@ const TrainingPage = () => {
     fechaI: "",
     fechaF: "",
     motivo: "",
-    detalles:""
-
+    Administradores: [],
+    Empleados: []
   });
+  
   const [updateMode, setUpdateMode] = useState(false);
   const [selectedTrainingData, setSelectedTrainingData] = useState(null);
+  const [datosUsrs, setDatosUsrs] = useState([]);
+
+  useEffect(() => {
+    const loadUsrs = async () => {
+      try {
+        const respuesta = await fetch("/api/usrs");
+        if (!respuesta.ok) {
+          throw new Error("Error al obtener los datos de usuarios");
+        }
+        const datosJson = await respuesta.json();
+        setDatosUsrs(datosJson);
+      } catch (error) {
+        console.error("Error al cargar los datos de usuarios:", error);
+      }
+    };
+
+    loadUsrs();
+  }, []);
 
   useEffect(() => {
     const loadTrainings = async () => {
@@ -48,15 +72,16 @@ const TrainingPage = () => {
     loadTrainings();
   }, []);
 
+
   const handleClickOpen = () => {
     setOpen(true);
     setUpdateMode(false);
-    setNewTraining({ nombre:"", fechaI: "", fechaF: "", motivo: "", detalles:""});
+    setNewTraining({ nombre:"", fechaI: "", fechaF: "", motivo: ""});
   };
 
   const handleClose = () => {
     setOpen(false);
-    setNewTraining({ nombre:"", fechaI: "", fechaF: "", motivo: "", detalles:""  });
+    setNewTraining({ nombre:"", fechaI: "", fechaF: "", motivo: ""});
   };
 
   const handleConfirmOpen = () => {
@@ -73,14 +98,14 @@ const TrainingPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Datos enviados al backend:", newTraining); // Agrega este registro para verificar los datos antes de enviar la solicitud
+    console.log("Datos enviados al backend:", newTraining);
     if (updateMode) {
       await updateTraining(selectedTrainingId, newTraining);
     } else {
       await createTraining(newTraining);
     }
     setOpen(false);
-    setNewTraining({ nombre:"", fechaI: "", fechaF: "", motivo: "", detalles:"" });
+    setNewTraining({ nombre:"", fechaI: "", fechaF: "", motivo: "" });
   };
 
   const createTraining = async (training) => {
@@ -136,6 +161,11 @@ const TrainingPage = () => {
     setNewTraining(params.row);
   };
 
+  const handleDetailsClick = () => {
+    setDetailsOpen(true);
+    setSelectedTrainingDetails(selectedTrainingData);
+  };
+
   const handleEditClick = () => {
     setUpdateMode(true);
     setOpen(true);
@@ -183,13 +213,14 @@ const TrainingPage = () => {
         return dias;
       },
     },
-    { field: "detalles", headerName: "Detalles", width: 200 },
   ];
 
   const [filterModel, setFilterModel] = React.useState({
     items: [],
     quickFilterValues: [""],
   });
+    const adm = datosUsrs;
+    const emp = datosUsrs;
 
   return (
     <div>
@@ -211,6 +242,16 @@ const TrainingPage = () => {
         disabled={!selectedTrainingId}
       >
         <EditIcon />
+      </Fab>
+      <Fab
+        color="primary"
+        aria-label="details"
+        onClick={handleDetailsClick}
+        p={1}
+        style={{ fontSize: 20, marginBottom: "2vh", marginRight: "1vw" }}
+        disabled={!selectedTrainingId}
+      >
+        <InfoIcon />
       </Fab>
       <Fab
         color="secondary"
@@ -311,6 +352,71 @@ const TrainingPage = () => {
                 onChange={handleChange}
               />
             </Grid>
+            <Grid item xs={4}>
+            <Autocomplete
+  multiple
+  id="admin-autocomplete"
+  options={(datosUsrs && datosUsrs.filter(usuario => usuario.eRol === 'adm') || []).map((admin) => admin.eNombre)}
+    disableCloseOnSelect
+    getOptionLabel={(option) => option}
+    value={newTraining.Administradores}
+    onChange={(event, newValue) => {
+      setNewTraining({ ...newTraining, Administradores: newValue });
+    }}
+    renderOption={(props, option, { selected }) => (
+      <li {...props}>
+        <Checkbox
+          icon={<span className="checkbox-icon"></span>}
+          checkedIcon={<span className="checkbox-icon checked"></span>}
+          style={{ marginRight: 8 }}
+          checked={selected}
+        />
+        {option}
+      </li>
+    )}
+    style={{ maxWidth: 300, margin: "0 auto" }}
+    renderInput={(params) => (
+      <TextField
+        {...params}
+        label="Administradores"
+        placeholder="Selecciona administradores"
+      />
+    )}
+  />
+</Grid>
+<Grid item xs={4}>
+<Autocomplete
+  multiple
+  id="empleado-autocomplete"
+  options={(datosUsrs && datosUsrs.filter(usuario => usuario.eRol === 'emp')).map((empleado) => empleado.eNombre)}
+    disableCloseOnSelect
+    getOptionLabel={(option) => option}
+    value={newTraining.Empleados}
+    onChange={(event, newValue) => {
+      setNewTraining({ ...newTraining, Empleados: newValue });
+    }}
+    renderOption={(props, option, { selected }) => (
+      <li {...props}>
+        <Checkbox
+          icon={<span className="checkbox-icon"></span>}
+          checkedIcon={<span className="checkbox-icon checked"></span>}
+          style={{ marginRight: 8 }}
+          checked={selected}
+        />
+        {option}
+      </li>
+    )}
+    style={{ maxWidth: 300, margin: "0 auto" }}
+    renderInput={(params) => (
+      <TextField
+        {...params}
+        label="Empleados"
+        placeholder="Selecciona Participantes"
+      />
+    )}
+  />
+</Grid>
+
           </Grid>
         </DialogContent>
         <DialogActions>

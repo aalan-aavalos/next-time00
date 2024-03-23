@@ -24,9 +24,15 @@ const trainingSchema = new Schema(
       //unique: true,
       trim: true,
     },
-    detalles: {
-        type: String,
-        required: false // Puedes cambiar esto según tus necesidades
+    Administradores: {
+        type: [String],
+        //unique: true,
+        trim: true,
+      },
+      Empleados: {
+        type: [String],
+        //unique: true,
+        trim: true,
       }
   },
   {
