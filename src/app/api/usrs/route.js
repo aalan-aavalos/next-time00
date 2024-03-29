@@ -8,11 +8,13 @@ import { NextResponse } from "next/server";
 export async function GET() {
   connectDB();
   const usuarios = await Usrs.find();
+  
   return NextResponse.json(usuarios, {message: ""});
 }
 
 // Agregar usuarios
 export async function POST(request) {
+  // Falta agregar la encriptacion de la contraseña
   try {
     connectDB();
     const data = await request.json(); // Parsea los datos de la peticion

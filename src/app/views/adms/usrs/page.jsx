@@ -163,6 +163,8 @@ const UsersPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+
+    // Puedo manerajar los errores con un try catch
     // Verificar si el correo ya está en uso antes de crear un nuevo usuario
 
     if (updateMode) {
