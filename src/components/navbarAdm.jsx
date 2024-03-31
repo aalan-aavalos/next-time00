@@ -51,7 +51,7 @@ function NavBarAdm() {
           <h2>Contratos</h2>
         </Link>
         <Link href="/views/adm/train" underline="none" color="inherit">
-          <h2>Contratos</h2>
+          <h2>Training</h2>
         </Link>
         <PersonIcon
           sx={{ fontSize: "4.5rem", color: "white" }}
