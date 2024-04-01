@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
@@ -60,33 +60,20 @@ function NavBarAdm() {
         spacing={5}
       >
         <Link
-          href="/views/adm/area"
+          href="/views/adms/usrs"
           underline="none"
-          color={isActiveRoute("/views/adm/area") ? "primary" : "inherit"}
-        >
-          <h2>Areas</h2>
-        </Link>
-        <Link
-          href="/views/adm/usrs"
-          underline="none"
-          color={isActiveRoute("/views/adm/usrs") ? "primary" : "inherit"}
+          color={isActiveRoute("/views/adms/usrs") ? "primary" : "inherit"}
         >
           <h2>Usuarios</h2>
         </Link>
         <Link
-          href="/views/adm/solic"
+          href="/views/adms/sede"
           underline="none"
-          color={isActiveRoute("/views/adm/solic") ? "primary" : "inherit"}
+          color={isActiveRoute("/views/adms/sede") ? "primary" : "inherit"}
         >
-          <h2>Solicitudes</h2>
+          <h2>Sede</h2>
         </Link>
-        <Link
-          href="/views/adm/contrato"
-          underline="none"
-          color={isActiveRoute("/views/adm/contrato") ? "primary" : "inherit"}
-        >
-          <h2>Contratos</h2>
-        </Link>
+
         <PersonIcon
           sx={{ fontSize: "4.5rem", color: "white" }}
           onClick={handleClick}
