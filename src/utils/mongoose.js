@@ -18,6 +18,7 @@ connection.on("connected", () => {
   console.log("Mongoose is connected");
 });
 
+ 
 connection.on("error", (err) => {
   console.log("Mongoose connection error", err);
 });
