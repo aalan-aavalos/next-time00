@@ -298,7 +298,7 @@ const UsersPage = () => {
           },
 
           style: {
-            background: "#93A2B9",
+            background: "#787571",
           },
         }}
       >
