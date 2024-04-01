@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { signOut, useSession } from "next-auth/react";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import InfoIcon from "@mui/icons-material/InfoSharp";
@@ -15,11 +16,12 @@ import {
   DialogTitle,
   Grid,
   MenuItem,
-  Select,
   TextField,
 } from "@mui/material";
 
 const UsersPage = () => {
+  const { data: session, status } = useSession();
+  const sessionData = session ? session.user : "";
   const usrsModel = {
     eNombre: String,
     eApeP: String,
@@ -31,7 +33,7 @@ const UsersPage = () => {
     auSede: String,
     uArea: String,
     uTurno: String,
-    pwd: String,
+    pwd: "",
   };
 
   const [open, setOpen] = useState(false);
@@ -163,6 +165,7 @@ const UsersPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    // Puedo manerajar los errores con un try catch
     // Verificar si el correo ya está en uso antes de crear un nuevo usuario
 
     if (updateMode) {
@@ -264,8 +267,6 @@ const UsersPage = () => {
     { field: "eApeM", headerName: "Apellido Materno", width: 250 },
     { field: "eEdad", headerName: "Edad", width: 100 },
     { field: "eRol", headerName: "Rol", width: 100 },
-    { field: "auSede", headerName: "Sede", width: 150 },
-    { field: "uArea", headerName: "Area", width: 150 },
   ];
 
   const [filterModel, setFilterModel] = React.useState({
@@ -275,6 +276,10 @@ const UsersPage = () => {
 
   return (
     <div>
+      <h1>
+        Hola  {sessionData.eNombre}
+      </h1>
+
       {/** Boton para agregar */}
       <Fab
         color="dark"
