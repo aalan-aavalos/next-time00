@@ -276,9 +276,7 @@ const UsersPage = () => {
 
   return (
     <div>
-      <h1>
-        Hola  {sessionData.eNombre}
-      </h1>
+      
 
       {/** Boton para agregar */}
       <Fab

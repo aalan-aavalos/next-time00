@@ -241,6 +241,20 @@ const AreasPage = () => {
                 <MenuItem value={"Área"}>Área</MenuItem>
               </TextField>
             </Grid>
+
+            <Grid item xs={4}>
+              <TextField
+                autoFocus
+                name="aNombre"
+                required
+                label="Área"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={newArea.aNombre}
+                onChange={handleChange}
+              />
+            </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
