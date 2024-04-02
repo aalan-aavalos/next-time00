@@ -10,7 +10,7 @@ import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-
+import municipiosData from "../sede/municipios.json";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -35,12 +35,15 @@ const UsersPage = () => {
   const [datos, setDatos] = useState([]);
   const [newUser, setNewUser] = useState({
     nombreSede: "",
-    ubicacion: "",
+    codigoPostal: "",
+    estado: "",
+    municipio: "",
     Adminstradores: [],
     aNombre: [],
   });
   const [datosArea, setDatosArea] = useState([]);
   const [datosUsrs, setDatosUsrs] = useState([]);
+  
 
   useEffect(() => {
     const loadSedes = async () => {
@@ -50,12 +53,13 @@ const UsersPage = () => {
           throw new Error("Error al obtener los datos de sedes");
         }
         const datosJson = await respuesta.json();
+        console.log(datosJson); // Agrega este console.log para ver los datos
         setDatos(datosJson);
       } catch (error) {
         console.error("Error al cargar los datos de sedes:", error);
       }
     };
-
+  
     loadSedes();
   }, []);
 
@@ -98,7 +102,9 @@ const UsersPage = () => {
     setUpdateMode(false);
     setNewUser({
       nombreSede: "",
-      ubicacion: "",
+      codigoPostal: "",
+      estado: "",
+      municipio: "",
       Adminstradores: [],
       aNombre: [],
     });
@@ -108,7 +114,9 @@ const UsersPage = () => {
     setOpen(false);
     setNewUser({
       nombreSede: "",
-      ubicacion: "",
+      codigoPostal: "",
+      estado: "",
+      municipio: "",
       Adminstradores: [],
       aNombre: [],
     });
@@ -136,7 +144,9 @@ const UsersPage = () => {
     setOpen(false);
     setNewUser({
       nombreSede: "",
-      ubicacion: "",
+      codigoPostal: "",
+      estado: "", // Restablece el estado de Estado
+      municipio: "", // Restablece el estado de Municipio
       Adminstradores: [],
       aNombre: [],
     });
@@ -189,6 +199,16 @@ const UsersPage = () => {
     setConfirmOpen(false);
   };
 
+  const filtrarMunicipios = (codigoPostal) => {
+    return municipiosData.filter((municipio) => municipio.clave_inegi === codigoPostal);
+  };
+
+  const handleChangeCodigoPostal = (event) => {
+    const codigoPostal = event.target.value;
+    const municipios = filtrarMunicipios(codigoPostal);
+    // Haz algo con los municipios, como actualizar el estado para mostrarlos en una lista desplegable.
+  };
+
   const handleRowClick = (params) => {
     setSelectedUserId(params.row._id);
     setSelectedUserData(params.row);
@@ -205,7 +225,9 @@ const UsersPage = () => {
 
   const columns = [
     { field: "nombreSede", headerName: "Nombre de la nueva sede", width: 400 },
-    { field: "ubicacion", headerName: "Ubicacion", width: 400 },
+    { field: "codigoPostal", headerName: "Código Postal", width: 200 },
+    { field: "estado", headerName: "Estado", width: 200 },
+    { field: "municipio", headerName: "Municipio", width: 200 },
     { field: "Adminstradores", headerName: "Administradores", width: 400 },
     { field: "aNombre", headerName: "Areas", width: 400 },
   ];
@@ -324,17 +346,41 @@ const UsersPage = () => {
 
             <Grid item xs={4}>
               <TextField
-                autoFocus
-                name="ubicacion"
+                name="codigoPostal"
                 required
-                label="Ubicación"
+                label="Código Postal"
                 type="text"
                 fullWidth
                 variant="outlined"
-                value={newUser.ubicacion}
+                value={newUser.codigoPostal}
+                onChange={handleChange} 
+              />
+            </Grid>
+
+            <Grid item xs={4}>
+              <TextField
+                name="estado"
+                label="Estado"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={newUser.estado}
                 onChange={handleChange}
               />
             </Grid>
+            <Grid item xs={4}>
+              <TextField
+                name="municipio"
+                label="Municipio"
+                type="text"
+                fullWidth
+                required
+                variant="outlined"
+                value={newUser.municipio}
+                onChange={handleChange}
+              />
+            </Grid>
+
             <Grid item xs={4}>
               <Autocomplete
                 multiple
