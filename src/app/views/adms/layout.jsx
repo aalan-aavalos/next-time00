@@ -1,5 +1,5 @@
 import Logo from "@/components/logo";
-import NavBarAdmS from "@/components/navbarAdmS";
+import NavBarAdmS from "@/components/navbarAdmSTest";
 import Lienzo from "@/components/lienzo";
 
 import { Grid } from "@mui/material";

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Lienzo from "@/components/lienzo";
 import Logo from "@/components/logo";
 import { signIn, getSession } from "next-auth/react";
+
 import {
   Button,
   Dialog,
@@ -15,6 +16,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import LienzoLo from "@/components/lienzoLo";
 
 function LoginPage() {
   const router = useRouter();
@@ -76,25 +78,30 @@ function LoginPage() {
 
   return (
     <div>
-      <Grid container spacing={2} p={2}>
+      
+      <Grid container spacing={2} p={2} >
+      
+        <Grid item xs={12}><Logo></Logo></Grid>
         <Grid item xs={12}>
-          <Logo />
-        </Grid>
-        <Grid item xs={12}>
-          <Lienzo>
+          <LienzoLo>
+            <DialogTitle alignSelf="center"></DialogTitle>
             <div>
-              <Button
-                variant="contained"
-                onClick={() => handleOpen("email")}
-                style={{
-                  backgroundColor: "#93A2B9",
-                  borderRadius: "20px", // Ajusta el radio según sea necesario
-                  color: "black", // Color de texto
-                  marginRight: "10px", // Espacio entre botones
-                }}
-              >
-                Registrarse
-              </Button>
+              <div style={{ textAlign: "right", width: "36%", height: "50%" }}>
+                <Button
+                  variant="contained"
+                  onClick={() => handleOpen("email")}
+                  style={{
+                    backgroundColor: "#93A2B9",
+                    borderRadius: "20px",
+                    color: "black",
+                    marginRight: "20px",
+                    fontSize: "20px", // Tamaño de la letra
+                    height: "30px", // Tamaño del botón
+                  }}
+                >
+                  Registrarse
+                </Button>
+              </div>
               <Dialog
                 open={dialogOpen === "email"}
                 onClose={handleClose}
@@ -215,7 +222,7 @@ function LoginPage() {
                 </DialogActions>
               </Dialog>
             </div>
-          </Lienzo>
+          </LienzoLo>
         </Grid>
       </Grid>
     </div>

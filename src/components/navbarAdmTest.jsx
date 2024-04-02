@@ -62,28 +62,28 @@ function NavBarAdm() {
         <Link
           href="/views/adm/area"
           underline="none"
-          color={isActiveRoute("/views/adm/area") ? "secondary" : "inherit"}
+          color={isActiveRoute("/views/adm/area") ? "primary" : "inherit"}
         >
           <h2>Areas</h2>
         </Link>
         <Link
           href="/views/adm/usrs"
           underline="none"
-          color={isActiveRoute("/views/adm/usrs") ? "secondary" : "inherit"}
+          color={isActiveRoute("/views/adm/usrs") ? "primary" : "inherit"}
         >
           <h2>Usuarios</h2>
         </Link>
         <Link
           href="/views/adm/solic"
           underline="none"
-          color={isActiveRoute("/views/adm/solic") ? "secondary" : "inherit"}
+          color={isActiveRoute("/views/adm/solic") ? "primary" : "inherit"}
         >
           <h2>Solicitudes</h2>
         </Link>
         <Link
           href="/views/adm/contrato"
           underline="none"
-          color={isActiveRoute("/views/adm/contrato") ? "secondary" : "inherit"}
+          color={isActiveRoute("/views/adm/contrato") ? "primary" : "inherit"}
         >
           <h2>Contratos</h2>
         </Link>
