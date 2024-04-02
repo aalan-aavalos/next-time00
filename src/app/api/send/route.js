@@ -4,7 +4,9 @@ import { NextResponse } from "next/server";
 
 const resend = new Resend("re_Bt93S8qi_Haew4bsY6io7cnnpBQEaQpRx");
 
-export async function POST() {
+export async function POST(request) {
+  const dataReq = await request.json();
+  
   const { data, error } = await resend.emails.send({
     from: "NextTime <onboarding@resend.dev>",
     to: ["avalosalan789@gmail.com"],

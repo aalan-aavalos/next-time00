@@ -82,7 +82,6 @@ function LoginPage() {
         </Grid>
         <Grid item xs={12}>
           <Lienzo>
-            <DialogTitle alignSelf="center"></DialogTitle>
             <div>
               <Button
                 variant="contained"
@@ -112,11 +111,7 @@ function LoginPage() {
                   },
                 }}
               >
-                <DialogTitle>
-                  <Typography variant="h4" style={{ color: "black" }}>
-                    Ingresar Email
-                  </Typography>
-                </DialogTitle>
+                <DialogTitle>Ingresar Email</DialogTitle>
                 <DialogContent>
                   <TextField
                     type="email"
@@ -175,11 +170,7 @@ function LoginPage() {
                   },
                 }}
               >
-                <DialogTitle>
-                  <Typography variant="h4" style={{ color: "black" }}>
-                    Ingresar Contraseña
-                  </Typography>
-                </DialogTitle>
+                <DialogTitle>Ingresar Contraseña</DialogTitle>
                 <DialogContent>
                   <TextField
                     type="password"
