@@ -8,9 +8,21 @@ const sedeSchema = new Schema(
       //unique: [true, "El nombre no puede ser igual"], // Lo que hace es que manda un error si se repite
       trim: true, // Lo que hace es que borra los espacios del final e inicio
     },
-    ubicacion: {
+    codigoPostal: {
       type: String,
-      required: [true, "La ubicacion de  esta requerido"],
+      required: [true, "El código postal es requerido"],
+      //unique: true,
+      trim: true,
+    },
+    estado: {
+      type: String,
+      required: [true, "El estado es requerido"],
+      //unique: true,
+      trim: true,
+    },
+    municipio: {
+      type: String,
+      required: [true, "El municipio es requerido"],
       //unique: true,
       trim: true,
     },
