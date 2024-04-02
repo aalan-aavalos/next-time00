@@ -274,13 +274,14 @@ const ContratosPage = () => {
         fullWidth
         PaperProps={{
           component: "form",
+          
 
           onSubmit: () => {
             handleSubmit();
           },
 
           style: {
-            background: "#93A2B9",
+            background: "#787571",
           },
         }}
       >
@@ -336,6 +337,14 @@ const ContratosPage = () => {
                   labelId="hora-inicio-fin-label"
                   id="hora-inicio-fin"
                   name="hora_inicioFin"
+                  style={{
+                    color: "#ffffff", // Texto negro
+                  }}
+                  InputProps={{
+                    style: {
+                      borderColor: "#000000", // Borde negro
+                    },
+                  }}
                   required
                   value={newContrato.hora_inicioFin}
                   onChange={handleHoraInicioFinChange}

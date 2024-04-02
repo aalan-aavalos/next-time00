@@ -353,7 +353,7 @@ const UsersPage = () => {
           component: "form",
           onSubmit: handleSubmit,
           style: {
-            background: "#93A2B9",
+            background: "#787571",
           },
         }}
       >
@@ -582,7 +582,7 @@ const UsersPage = () => {
         fullWidth
         PaperProps={{
           style: {
-            background: "#93A2B9",
+            background: "#787571",
           },
         }}
       >
@@ -606,7 +606,7 @@ const UsersPage = () => {
         fullWidth
         PaperProps={{
           style: {
-            background: "#93A2B9",
+            background: "#787571",
           },
         }}
       >

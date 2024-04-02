@@ -321,7 +321,7 @@ const TrainingPage = () => {
           component: "form",
           onSubmit: handleSubmit,
           style: {
-            background: "#93A2B9",
+            background: "#787571",
           },
         }}
       >
