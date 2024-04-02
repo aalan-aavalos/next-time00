@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import {
   Divider,
@@ -15,14 +15,35 @@ import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 function NavBarAdm() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setCurrentPath(window.location.pathname);
+    };
+
+    window.addEventListener("popstate", handleRouteChange);
+
+    return () => {
+      window.removeEventListener("popstate", handleRouteChange);
+    };
+  }, []);
+
+  // Función para determinar si la ruta actual coincide con la ruta proporcionada
+  const isActiveRoute = (href) => {
+    return currentPath === href;
+  };
+
   return (
     <Box
       height={"15vh"}
@@ -38,20 +59,33 @@ function NavBarAdm() {
         divider={<Divider orientation="vertical" flexItem />}
         spacing={5}
       >
-        <Link href="/views/adm/area" underline="none" color="inherit">
+        <Link
+          href="/views/adm/area"
+          underline="none"
+          color={isActiveRoute("/views/adm/area") ? "secondary" : "inherit"}
+        >
           <h2>Areas</h2>
         </Link>
-        <Link href="/views/adm/usrs" underline="none" color="inherit">
+        <Link
+          href="/views/adm/usrs"
+          underline="none"
+          color={isActiveRoute("/views/adm/usrs") ? "secondary" : "inherit"}
+        >
           <h2>Usuarios</h2>
         </Link>
-        <Link href="/views/adm/solic" underline="none" color="inherit">
+        <Link
+          href="/views/adm/solic"
+          underline="none"
+          color={isActiveRoute("/views/adm/solic") ? "secondary" : "inherit"}
+        >
           <h2>Solicitudes</h2>
         </Link>
-        <Link href="/views/adm/contrato" underline="none" color="inherit">
+        <Link
+          href="/views/adm/contrato"
+          underline="none"
+          color={isActiveRoute("/views/adm/contrato") ? "secondary" : "inherit"}
+        >
           <h2>Contratos</h2>
-        </Link>
-        <Link href="/views/adm/train" underline="none" color="inherit">
-          <h2>Training</h2>
         </Link>
         <PersonIcon
           sx={{ fontSize: "4.5rem", color: "white" }}

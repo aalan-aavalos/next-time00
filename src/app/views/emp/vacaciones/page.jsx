@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import { signOut, useSession } from "next-auth/react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
@@ -16,16 +17,23 @@ import {
 } from "@mui/material";
 
 const VacacionesPage = () => {
-  const [open, setOpen] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState(null);
-  const [confirmOpen, setConfirmOpen] = useState(false);
-  const [datos, setDatos] = useState([]);
-  const [newUser, setNewUser] = useState({
+  const { data: session, status } = useSession();
+
+  const sessionData = session ? session.user : {};
+
+  const vacacionModel = {
     fechaI: "",
     fechaF: "",
     motivo: "",
     estado: "Pendiente",
-  });
+    eCorreo: sessionData.eCorreo,
+  }
+
+  const [open, setOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [datos, setDatos] = useState([]);
+  const [newUser, setNewUser] = useState(vacacionModel);
   const [updateMode, setUpdateMode] = useState(false);
   const [selectedUserData, setSelectedUserData] = useState(null);
 
@@ -49,12 +57,12 @@ const VacacionesPage = () => {
   const handleClickOpen = () => {
     setOpen(true);
     setUpdateMode(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "Pendiente" });
+    setNewUser(vacacionModel);
   };
 
   const handleClose = () => {
     setOpen(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "Pendiente" });
+    setNewUser(vacacionModel);
   };
 
   const handleConfirmOpen = () => {
@@ -77,7 +85,7 @@ const VacacionesPage = () => {
       await createUser(newUser);
     }
     setOpen(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "Pendiente" });
+    setNewUser(vacacionModel);
   };
 
   const createUser = async (user) => {

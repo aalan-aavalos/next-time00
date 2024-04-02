@@ -1,6 +1,7 @@
-const { NextResponse } = require("next/server");
+import { NextResponse } from "next/server";
 import Usrs from "@/models/usrs";
 import { connectDB } from "@/utils/mongoose";
+import bcrypt from "bcryptjs";
 
 // Obtener un usuario
 export async function GET(request, { params }) {
@@ -28,6 +29,11 @@ export async function PUT(request, { params }) {
   try {
     connectDB();
     const data = await request.json();
+
+    const passData = await bcrypt.hash(data.pwd, 12);
+
+    data.pwd = passData;
+    
     const usrsUpdated = await Usrs.findByIdAndUpdate(params.idU, data, {
       new: true,
     });

@@ -23,6 +23,9 @@ const vacacionSchema = new Schema(
     estado: {
       type: String,
       default: "Pendiente",
+    },
+    eCorreo:{
+      type: String
     }
   },
   {
