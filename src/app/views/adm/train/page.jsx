@@ -20,18 +20,20 @@ import {
 } from "@mui/material";
 
 const TrainingPage = () => {
-  const [open, setOpen] = useState(false);
-  const [selectedTrainingId, setSelectedTrainingId] = useState(null);
-  const [confirmOpen, setConfirmOpen] = useState(false);
-  const [datos, setDatos] = useState([]);
-  const [newTraining, setNewTraining] = useState({
+  const trainingModel = {
     nombre: "",
     fechaI: "",
     fechaF: "",
     motivo: "",
     Administradores: [],
     Empleados: [],
-  });
+  };
+  const [open, setOpen] = useState(false);
+  const [selectedTrainingId, setSelectedTrainingId] = useState(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [datos, setDatos] = useState([]);
+  const [newTraining, 
+  ] = useState(trainingModel);
 
   const [updateMode, setUpdateMode] = useState(false);
   const [selectedTrainingData, setSelectedTrainingData] = useState(null);
@@ -71,29 +73,27 @@ const TrainingPage = () => {
     loadTrainings();
   }, []);
 
+  const sendEmail = async (email) => {
+    const response = await fetch("/api/send/tra", {
+      method: "POST",
+      body: JSON.stringify(email),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    console.log("New email sent:", data);
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
     setUpdateMode(false);
-    setNewTraining({
-      nombre: "",
-      fechaI: "",
-      fechaF: "",
-      motivo: "",
-      Administradores: [],
-      Empleados: [],
-    });
+    setNewTraining(trainingModel);
   };
 
   const handleClose = () => {
     setOpen(false);
-    setNewTraining({
-      nombre: "",
-      fechaI: "",
-      fechaF: "",
-      motivo: "",
-      Administradores: [],
-      Empleados: [],
-    });
+    setNewTraining(trainingModel);
   };
 
   const handleConfirmOpen = () => {
@@ -117,14 +117,7 @@ const TrainingPage = () => {
       await createTraining(newTraining);
     }
     setOpen(false);
-    setNewTraining({
-      nombre: "",
-      fechaI: "",
-      fechaF: "",
-      motivo: "",
-      Administradores: [],
-      Empleados: [],
-    });
+    setNewTraining(trainingModel);
   };
 
   const createTraining = async (training) => {
@@ -258,10 +251,7 @@ const TrainingPage = () => {
 
   const correosFiltrados = datosUsrs
     .filter((usuario) => final.includes(`${usuario.eNombre} ${usuario.eApeP}`))
-    .map((usuario) => usuario.eCorreo);
-
-  console.log(correosFiltrados);
-
+    .map((usuario) => usuario.eCorreo);  
   return (
     <div>
       <Fab
