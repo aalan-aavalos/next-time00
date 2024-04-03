@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import { EmailTemplate } from "@/components/email-template";
+import { EmailTemplate } from "@/components/forms/email-template";
 import { NextResponse } from "next/server";
 
 const resend = new Resend("re_Bt93S8qi_Haew4bsY6io7cnnpBQEaQpRx");
@@ -9,9 +9,9 @@ export async function POST(request) {
   
   const { data, error } = await resend.emails.send({
     from: "NextTime <onboarding@resend.dev>",
-    to: ["avalosalan789@gmail.com"],
-    subject: "No es un virus",
-    react: EmailTemplate({ firstName: "Josue" }),
+    to: dataReq.eCorreo,
+    subject: "Confirmación de vacaciones",
+    react: EmailTemplate({ firstName: dataReq.eNombre, description: `Motivo de las vacaciones: ${dataReq.motivo}, Intervalo de fechas: ${dataReq.fechaI} - ${dataReq.fechaF}, estado: ${dataReq.estado}`}),
   });
 
   if (error) {
