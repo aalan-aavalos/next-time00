@@ -10,19 +10,16 @@ const sedeSchema = new Schema(
     },
     codigoPostal: {
       type: String,
-      required: [true, "El código postal es requerido"],
       //unique: true,
       trim: true,
     },
     estado: {
       type: String,
-      required: [true, "El estado es requerido"],
       //unique: true,
       trim: true,
     },
     municipio: {
       type: String,
-      required: [true, "El municipio es requerido"],
       //unique: true,
       trim: true,
     },
