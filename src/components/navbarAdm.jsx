@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { signOut, useSession } from "next-auth/react";
 import Box from "@mui/material/Box";
 import {
   Divider,
@@ -15,6 +16,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 function NavBarAdm() {
+  const { data: session, status } = useSession();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -23,6 +25,7 @@ function NavBarAdm() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const sessionData = session ? session.user : "";
   return (
     <Box
       height={"15vh"}
@@ -70,9 +73,13 @@ function NavBarAdm() {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleClose}>{sessionData.eNombre}</MenuItem>
+        <MenuItem onClick={handleClose}>{sessionData.eCorreo}</MenuItem>
+        <MenuItem
+          onClick={() => {
+            signOut();
+          }}
+        >
           <ListItemIcon>
             <LogoutIcon color="error" />
           </ListItemIcon>

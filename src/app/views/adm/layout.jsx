@@ -1,6 +1,6 @@
 import Lienzo from "@/components/lienzo";
 import Logo from "@/components/logo";
-import NavBarAdm from "@/components/navbarAdmTest";
+import NavBarAdm from "@/components/navbarAdm";
 import { Grid } from "@mui/material";
 
 export default function AdminLayout({ children }) {
