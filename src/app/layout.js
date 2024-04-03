@@ -28,7 +28,8 @@ export default function RootLayout({ children }) {
         <AppRouterCacheProvider>
           <ThemeProvider theme={darkTheme}>
             <CssBaseline />
-            <Providers>{children}</Providers>
+            <Providers><div style={{ background: "#93A2B9" }}>{children}</div></Providers>
+            
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>

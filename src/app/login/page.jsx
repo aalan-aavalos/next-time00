@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Lienzo from "@/components/lienzo";
 import Logo from "@/components/logo";
+import Navbar from "@/components/navbar";
 import { signIn, getSession } from "next-auth/react";
 
 import {
@@ -13,6 +14,7 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+
   TextField,
   Typography,
 } from "@mui/material";
@@ -78,12 +80,16 @@ function LoginPage() {
 
   return (
     <div>
-      
-      <Grid container spacing={2} p={2} >
-      
-        <Grid item xs={12}><Logo></Logo></Grid>
+      <Grid container spacing={2} p={2}>
+        <Grid item xs={4}>
+          <Logo></Logo>
+        </Grid>
+        <Grid item xs={8}>
+          <Navbar></Navbar>
+        </Grid>
         <Grid item xs={12}>
           <LienzoLo>
+            <img style={{width: "45%", height: "95%",borderRadius: "50px",marginTop:"1vw" }} src = "/log.jpg"/>
             <DialogTitle alignSelf="center"></DialogTitle>
             <div>
               <div style={{ textAlign: "right", width: "36%", height: "50%" }}>
@@ -94,13 +100,15 @@ function LoginPage() {
                     backgroundColor: "#93A2B9",
                     borderRadius: "20px",
                     color: "black",
-                    marginRight: "20px",
+                    marginLeft: "1400px",
+                    marginTop: "-11vw",
                     fontSize: "20px", // Tamaño de la letra
-                    height: "30px", // Tamaño del botón
+                    height: "4vw", // Tamaño del botón
                   }}
                 >
-                  Registrarse
+                  Ingresar
                 </Button>
+                 
               </div>
               <Dialog
                 open={dialogOpen === "email"}
@@ -110,16 +118,25 @@ function LoginPage() {
                   component: "form",
                   onSubmit: handleSubmitEmail,
                   style: {
-                    background: "#ffff",
+                    background: "#ffff0000",
                     textAlign: "center",
                     maxWidth: 600,
                     margin: "0 auto",
                     borderRadius: 20,
+                    marginLeft: "55vw"
                   },
                 }}
               >
-                <DialogTitle>Ingresar Email</DialogTitle>
-                <DialogContent>
+                <DialogTitle
+                  sx={{
+                    color: "white",
+                  }}
+                >
+                  Ingresar Email
+                </DialogTitle>
+                <DialogContent   sx={{
+                    color:  "#ffff",
+                  }}>
                   <TextField
                     type="email"
                     placeholder="introduce tu correo"
@@ -130,7 +147,10 @@ function LoginPage() {
                     margin="dense"
                     variant="outlined"
                     label="Email"
-                    style={{ marginBottom: "10px" }}
+                    background ="#ffff0000"
+                    
+                    style={{ marginBottom: "10px"  }}
+                     
                   />
                 </DialogContent>
                 <DialogActions>
@@ -169,11 +189,12 @@ function LoginPage() {
                   component: "form",
                   onSubmit: handleSubmitPassword,
                   style: {
-                    background: "#ffff",
+                    background: "#ffff0000",
                     textAlign: "center",
                     maxWidth: 600,
                     margin: "0 auto",
                     borderRadius: 20,
+                    marginLeft: "55vw"
                   },
                 }}
               >
