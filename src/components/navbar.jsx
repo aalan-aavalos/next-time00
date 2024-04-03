@@ -38,14 +38,14 @@ function NavBarSAdm() {
         divider={<Divider orientation="vertical" flexItem />}
         spacing={5}
       >
-        <Link href="/views/emp/turnos" underline="none" color="inherit">
-          <h2>Usuarios</h2>
+        <Link underline="none" color="inherit">
+          <h2>Misión</h2>
         </Link>
-        <Link href="/views/adm/usrs" underline="none" color="inherit">
-          <h2>Administradores</h2>
+        <Link  underline="none" color="inherit">
+          <h2>Visión</h2>
         </Link>
-        <Link href="/views/adms/usrs" underline="none" color="inherit">
-          <h2>SuperAdministradores</h2>
+        <Link underline="none" color="inherit">
+          <h2>Acerca de </h2>
         </Link>
         <PersonIcon
           sx={{ fontSize: "4.5rem", color: "white" }}
