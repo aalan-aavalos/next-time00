@@ -223,7 +223,6 @@ const AreasPage = () => {
             p={1}
             rowSpacing={2}
           >
-            
             <Grid item xs={4}>
               <TextField
                 autoFocus
@@ -238,7 +237,10 @@ const AreasPage = () => {
                 onChange={handleChange}
               >
                 <MenuItem value={"Administrativo"}>Administrativo</MenuItem>
-                <MenuItem value={"Área"}>Área</MenuItem>
+                <MenuItem value={"Contabilidad"}>Contabilidad</MenuItem>
+                <MenuItem value={"Seguridad"}>Seguridad</MenuItem>
+                <MenuItem value={"Salud"}>Salud</MenuItem>
+                <MenuItem value={"Recursos Humanos"}>Recursos Humanos</MenuItem>
               </TextField>
             </Grid>
 

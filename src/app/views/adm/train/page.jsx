@@ -32,8 +32,7 @@ const TrainingPage = () => {
   const [selectedTrainingId, setSelectedTrainingId] = useState(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [datos, setDatos] = useState([]);
-  const [newTraining, 
-  ] = useState(trainingModel);
+  const [newTraining, setNewTraining] = useState(trainingModel);
 
   const [updateMode, setUpdateMode] = useState(false);
   const [selectedTrainingData, setSelectedTrainingData] = useState(null);
@@ -251,7 +250,9 @@ const TrainingPage = () => {
 
   const correosFiltrados = datosUsrs
     .filter((usuario) => final.includes(`${usuario.eNombre} ${usuario.eApeP}`))
-    .map((usuario) => usuario.eCorreo);  
+    .map((usuario) => usuario.eCorreo);
+
+  console.log(correosFiltrados)
   return (
     <div>
       <Fab

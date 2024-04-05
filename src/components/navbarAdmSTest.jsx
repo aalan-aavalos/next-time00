@@ -2,7 +2,15 @@
 
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import { Divider, Stack, Link, Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  Divider,
+  Stack,
+  Link,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { signOut, useSession } from "next-auth/react";
@@ -49,14 +57,16 @@ function NavBarAdm() {
         direction="row"
         divider={<Divider orientation="vertical" flexItem />}
         spacing={5}
-        sx={{ alignItems: 'center', fontSize: '3rem' }}
+        sx={{ alignItems: "center", fontSize: "3rem" }}
       >
-        <h1 style={{ fontSize: '1.5rem', margin: 0 }}>Hola {session?.user?.eNombre}</h1>
+        <h1 style={{ fontSize: "1.5rem", margin: 0 }}>
+          Hola {session?.user?.eNombre}
+        </h1>
         <Link
           href="/views/adms/usrs"
           underline="none"
           color={isActiveRoute("/views/adms/usrs") ? "primary" : "inherit"}
-          style={{ fontSize: '1.5rem' }}
+          style={{ fontSize: "1.5rem" }}
         >
           Usuarios
         </Link>
@@ -64,7 +74,7 @@ function NavBarAdm() {
           href="/views/adms/sede"
           underline="none"
           color={isActiveRoute("/views/adms/sede") ? "primary" : "inherit"}
-          style={{ fontSize: '1.5rem' }}
+          style={{ fontSize: "1.5rem" }}
         >
           Sede
         </Link>
@@ -88,7 +98,11 @@ function NavBarAdm() {
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={() => signOut()}>
+        <MenuItem
+          onClick={() => {
+            signOut();
+          }}
+        >
           <ListItemIcon>
             <LogoutIcon color="error" />
           </ListItemIcon>

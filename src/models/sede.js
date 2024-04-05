@@ -28,16 +28,13 @@ const sedeSchema = new Schema(
       //unique: true,
       trim: true,
     },
-
-  aNombre:{
+    aNombre: {
       type: Array,
       trim: true,
-    }
-
-    
+    },
   },
   {
     timestamps: true /* Lo que hace es que agrega el campo de fecha de creacion y actualizacion */,
-  },
+  }
 );
 export default models.Sede || model("Sede", sedeSchema);

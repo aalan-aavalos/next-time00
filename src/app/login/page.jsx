@@ -100,8 +100,8 @@ function LoginPage() {
                     backgroundColor: "#93A2B9",
                     borderRadius: "20px",
                     color: "black",
-                    marginLeft: "1400px",
-                    marginTop: "-11vw",
+                    marginLeft: "1300px",
+                    marginTop: "-12vw",
                     fontSize: "20px", // Tamaño de la letra
                     height: "4vw", // Tamaño del botón
                   }}

@@ -10,7 +10,6 @@ import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import municipiosData from "../sede/municipios.json";
 import cpData from "../sede/cp.json";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
@@ -360,178 +359,189 @@ const UsersPage = () => {
       </div>
 
       <Dialog
-  open={open}
-  onClose={handleClose}
-  fullWidth
-  PaperProps={{
-    component: "form",
-    onSubmit: handleSubmit,
-    style: {
-      borderRadius: 8, // Añade bordes redondeados al diálogo
-    },
-  }}
->
-  <DialogTitle align="center">
-    {updateMode ? "Actualizar Sede" : "Registro de Sede"}
-  </DialogTitle>
+        open={open}
+        onClose={handleClose}
+        fullWidth
+        PaperProps={{
+          component: "form",
+          onSubmit: handleSubmit,
+          style: {
+            borderRadius: 8, // Añade bordes redondeados al diálogo
+          },
+        }}
+      >
+        <DialogTitle align="center">
+          {updateMode ? "Actualizar Sede" : "Registro de Sede"}
+        </DialogTitle>
 
-  <DialogContent dividers>
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <TextField
-          autoFocus
-          name="nombreSede"
-          required
-          label="Nombre Sede"
-          type="text"
-          fullWidth
-          variant="outlined"
-          value={newUser.nombreSede}
-          onChange={handleChange}
-        />
-      </Grid>
-
-      <Grid item xs={6}>
-        <TextField
-          name="codigoPostal"
-          required
-          label="Código Postal"
-          type="text"
-          fullWidth
-          variant="outlined"
-          value={codigoPostal}
-          onChange={handleChangeCodigoPostal}
-        />
-      </Grid>
-      <Grid item xs={6} style={{ display: "flex", alignItems: "center" }}>
-        <Button variant="contained" color="primary" onClick={buscarCodigoPostal}>
-          Buscar
-        </Button>
-      </Grid>
-
-      <Grid item xs={6}>
-        <TextField
-          name="estado"
-          label="Estado"
-          type="text"
-          fullWidth
-          variant="outlined"
-          value={estado}
-          onChange={handleChangeEstado}
-          disabled
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <TextField
-          name="municipio"
-          label="Municipio"
-          type="text"
-          fullWidth
-          variant="outlined"
-          value={municipio}
-          onChange={handleChangeMunicipio}
-          disabled
-        />
-      </Grid>
-
-      <Grid item xs={6}>
-        <Autocomplete
-          multiple
-          id="admin-autocomplete"
-          options={adm.map((admin) => admin.eNombre).filter((option) => !newUser.Adminstradores.includes(option))}
-          disableCloseOnSelect
-          getOptionLabel={(option) => option}
-          value={newUser.Adminstradores}
-          onChange={handleOnChange}
-          renderOption={(props, option, { selected }) => (
-            <li {...props}>
-              <Checkbox
-                icon={<span className="checkbox-icon"></span>}
-                checkedIcon={<span className="checkbox-icon checked"></span>}
-                style={{ marginRight: 8 }}
-                checked={selected}
+        <DialogContent dividers>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                autoFocus
+                name="nombreSede"
+                required
+                label="Nombre Sede"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={newUser.nombreSede}
+                onChange={handleChange}
               />
-              {option}
-            </li>
-          )}
-          style={{ maxWidth: 300, margin: "0 auto" }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Administradores"
-              placeholder="Selecciona administradores"
-              variant="outlined"
-            />
-          )}
-        />
-      </Grid>
+            </Grid>
 
-      <Grid item xs={6}>
-        <TextField
-          autoFocus
-          name="tipoArea"
-          required
-          label="Tipo de Área"
-          type="text"
-          fullWidth
-          variant="outlined"
-          select
-          onChange={handleChange}
-        >
-          {tiposAreaUnicos.map((ar) => (
-            <MenuItem key={ar} value={ar}>
-              {ar}
-            </MenuItem>
-          ))}
-        </TextField>
-      </Grid>
-
-      <Grid item xs={12}>
-        <Autocomplete
-          multiple
-          id="checkboxes-tags-demo"
-          options={areasByType.map((area) => area.aNombre)}
-          disableCloseOnSelect
-          getOptionLabel={(option) => option}
-          value={newUser.aNombre}
-          onChange={(event, newValue) => {
-            setNewUser({ ...newUser, aNombre: newValue });
-          }}
-          renderOption={(props, option, { selected }) => (
-            <li {...props}>
-              <Checkbox
-                icon={<span className="checkbox-icon"></span>}
-                checkedIcon={<span className="checkbox-icon checked"></span>}
-                style={{ marginRight: 8 }}
-                checked={selected}
+            <Grid item xs={6}>
+              <TextField
+                name="codigoPostal"
+                required
+                disabled={updateMode ? true : false}
+                label="Código Postal"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={codigoPostal}
+                onChange={handleChangeCodigoPostal}
               />
-              {option}
-            </li>
-          )}
-          style={{ maxWidth: 300, margin: "0 auto" }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Areas"
-              placeholder="Selecciona áreas"
-              variant="outlined"
-            />
-          )}
-        />
-      </Grid>
-    </Grid>
-  </DialogContent>
+            </Grid>
+            <Grid item xs={6} style={{ display: "flex", alignItems: "center" }}>
+              <Button
+                variant="contained"
+                color="primary"
+                disabled={updateMode ? true : false}
+                onClick={buscarCodigoPostal}
+              >
+                Buscar
+              </Button>
+            </Grid>
 
-  <DialogActions>
-    <Button onClick={handleClose} variant="outlined" color="secondary">
-      Cancelar
-    </Button>
-    <Button onClick={handleSubmit} variant="contained" color="primary">
-      {updateMode ? "Actualizar" : "Registrar"}
-    </Button>
-  </DialogActions>
-</Dialog>
+            <Grid item xs={6}>
+              <TextField
+                name="estado"
+                label="Estado"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={estado}
+                onChange={handleChangeEstado}
+                disabled
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                name="municipio"
+                label="Municipio"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={municipio}
+                onChange={handleChangeMunicipio}
+                disabled
+              />
+            </Grid>
 
+            <Grid item xs={6}>
+              <Autocomplete
+                multiple
+                id="admin-autocomplete"
+                options={adm
+                  .map((admin) => `${admin.eNombre} ${admin.eApeP}`)
+                  .filter((option) => !newUser.Adminstradores.includes(option))}
+                disableCloseOnSelect
+                getOptionLabel={(option) => option}
+                value={newUser.Adminstradores}
+                onChange={handleOnChange}
+                renderOption={(props, option, { selected }) => (
+                  <li {...props}>
+                    <Checkbox
+                      icon={<span className="checkbox-icon"></span>}
+                      checkedIcon={
+                        <span className="checkbox-icon checked"></span>
+                      }
+                      style={{ marginRight: 8 }}
+                      checked={selected}
+                    />
+                    {option}
+                  </li>
+                )}
+                style={{ maxWidth: 300, margin: "0 auto" }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Administradores"
+                    placeholder="Selecciona administradores"
+                    variant="outlined"
+                  />
+                )}
+              />
+            </Grid>
+
+            <Grid item xs={6}>
+              <TextField
+                autoFocus
+                name="tipoArea"
+                required
+                label="Tipo de Área"
+                type="text"
+                fullWidth
+                variant="outlined"
+                select
+                onChange={handleChange}
+              >
+                {tiposAreaUnicos.map((ar) => (
+                  <MenuItem key={ar} value={ar}>
+                    {ar}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Autocomplete
+                multiple
+                id="checkboxes-tags-demo"
+                options={areasByType.map((area) => area.aNombre)}
+                disableCloseOnSelect
+                getOptionLabel={(option) => option}
+                value={newUser.aNombre}
+                onChange={(event, newValue) => {
+                  setNewUser({ ...newUser, aNombre: newValue });
+                }}
+                renderOption={(props, option, { selected }) => (
+                  <li {...props}>
+                    <Checkbox
+                      icon={<span className="checkbox-icon"></span>}
+                      checkedIcon={
+                        <span className="checkbox-icon checked"></span>
+                      }
+                      style={{ marginRight: 8 }}
+                      checked={selected}
+                    />
+                    {option}
+                  </li>
+                )}
+                style={{ maxWidth: 300, margin: "0 auto" }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Areas"
+                    placeholder="Selecciona áreas"
+                    variant="outlined"
+                  />
+                )}
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={handleClose} variant="outlined" color="secondary">
+            Cancelar
+          </Button>
+          <Button onClick={handleSubmit} variant="contained" color="primary">
+            {updateMode ? "Actualizar" : "Registrar"}
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <Dialog
         open={confirmOpen}
