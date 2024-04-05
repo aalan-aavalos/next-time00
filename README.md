@@ -23,11 +23,31 @@ Características Clave del Proyecto:
 7. Carga Masiva de Empleados: Se implementará la funcionalidad de carga masiva de empleados mediante archivos en formatos .xlsx, .json, y/o .csv, lo que permitirá una rápida incorporación de nuevos trabajadores a la base de datos.
 
 ## Lista de requisitos priorizada del proyecto refinada
+
+
 ### Historias de usuario
 
 [![image](https://github.com/aalan-aavalos/next-time00/assets/137373510/73776d8a-e1b5-435d-a6c3-cb095630aaa2)](https://docs.google.com/document/d/1HPNxobW4rAUxpRBAwvDVttRNTLNKap02ttYNccn9-JQ/edit?usp=sharing)
 
+link = https://docs.google.com/document/d/1HPNxobW4rAUxpRBAwvDVttRNTLNKap02ttYNccn9-JQ/edit?usp=sharing
+### Diagrama de casos de Uso 
+[![image](https://github.com/aalan-aavalos/next-time00/assets/137373510/5da9c4c2-2921-4bf7-8ca7-ac5ac041d85d)](https://docs.google.com/document/d/1ewmWOIntUtVSd-hdrq5G7CGpYuB8hd9r5KkVcQqRxZs/edit?usp=sharing)
 
+link = https://docs.google.com/document/d/1ewmWOIntUtVSd-hdrq5G7CGpYuB8hd9r5KkVcQqRxZs/edit?usp=sharing 
+
+### Diagrama de Actividades 
+[![image](https://github.com/aalan-aavalos/next-time00/assets/137373510/0ad8cc48-e436-4428-b6ef-a3cf5a36f8a2)](https://docs.google.com/document/d/1w43kBwHU73Po9fwfCAL6qOy-r0bqMPrx3i-bh_yAgTU/edit?usp=sharing)
+
+link = https://docs.google.com/document/d/1w43kBwHU73Po9fwfCAL6qOy-r0bqMPrx3i-bh_yAgTU/edit?usp=sharing
+## Diagrama de Clases o modelo de la base de datos refinada
+
+
+#### 1. Diagrama de clase o interfaces (Atributos o características, métodos) con relaciones entre clases 
+#### 2. Modelo de la base de datos relacional o no relacional
+#### 3. Estándar de la base de datos
+#### 4 . Estándar de programación
+
+[![image](https://github.com/aalan-aavalos/next-time00/assets/137373510/833f3a6a-6173-43a9-819d-58b0ebe24381)](https://docs.google.com/document/d/1ZXpi4wHfdCOIrhPTsFtNnE1EwB2f49Evh99Cj0NlXzs/edit?usp=sharing)
 
 
 ## Instalacion
