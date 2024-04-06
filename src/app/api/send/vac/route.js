@@ -8,8 +8,8 @@ export async function POST(request) {
   const dataReq = await request.json();
   
   const { data, error } = await resend.emails.send({
-    from: "NextTime <email@send.login-nextauth-production.up>", // Cambiar luego  
-    to: [dataReq.eCorreo, "alangamer00185@gmail.com"],
+    from: "NextTime <confirmations@nexttime.website>", // Cambiar luego  
+    to: [dataReq.eCorreo],
     subject: "Confirmación de vacaciones",
     react: EmailTemplate({ firstName: dataReq.eNombre, description: `Motivo de las vacaciones: ${dataReq.motivo}, Intervalo de fechas: ${dataReq.fechaI} - ${dataReq.fechaF}, estado: ${dataReq.estado}`}),
   });
