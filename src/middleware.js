@@ -1,4 +1,4 @@
-//export { default } from "next-auth/middleware";
+export { default } from "next-auth/middleware";
 
 // //Esto es de la funcion del middleware que identifica el rol y te acceso a una rota
 // import { NextResponse } from "next/server";
@@ -30,6 +30,6 @@
 //   }
 // }
 
-// export const config = {
-//   matcher: ["/views/:path*"], // Protege todas las rutas dentro de views
-// };
+export const config = {
+  matcher: ["/"], // Protege todas las rutas dentro de views
+};
