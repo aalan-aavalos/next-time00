@@ -1,15 +1,15 @@
 const { NextResponse } = require("next/server");
-import Vacacion from "@/models/vacacion";
+import Solicitudes from "@/models/solicitudes";
 import { connectDB } from "@/utils/mongoose";
 
 // Obtener un usuario
 export async function GET(request, { params }) {
   try {
     connectDB();
-    const vacacionFound = await Vacacion.findById(params.idU); // Busca por id
+    const solicitudFound = await Solicitudes.findById(params.idU); // Busca por id
     //const usrFound = await Usrs.findOne({ eNombre: params.idU }); // Busca por nombre
 
-    if (!vacacionFound) {
+    if (!solicitudFound) {
       return NextResponse.json(
         {
           message: "Solicitud no encontrada",
@@ -17,7 +17,7 @@ export async function GET(request, { params }) {
         { status: 404 }
       );
     }
-    return NextResponse.json(vacacionFound);
+    return NextResponse.json(solicitudFound);
   } catch (error) {
     return NextResponse.json(error.message, { status: 400 });
   }
@@ -28,11 +28,15 @@ export async function PUT(request, { params }) {
   try {
     connectDB();
     const data = await request.json();
-    const vacacionUpdated = await Vacacion.findByIdAndUpdate(params.idU, data, {
-      new: true,
-    });
+    const solicitudUpdated = await Solicitudes.findByIdAndUpdate(
+      params.idU,
+      data,
+      {
+        new: true,
+      }
+    );
 
-    return NextResponse.json(vacacionUpdated);
+    return NextResponse.json(solicitudUpdated);
   } catch (error) {
     return NextResponse.json(error.message, { status: 400 });
   }
@@ -42,8 +46,8 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     connectDB();
-    const vacacionDeleted = await Vacacion.findByIdAndDelete(params.idU);
-    if (!vacacionDeleted) {
+    const solicitudDeleted = await Solicitudes.findByIdAndDelete(params.idU);
+    if (!solicitudDeleted) {
       return NextResponse.json(
         {
           message: "Solicitud no econtrada",
@@ -51,7 +55,7 @@ export async function DELETE(request, { params }) {
         { status: 404 }
       );
     }
-    return NextResponse.json(vacacionDeleted);
+    return NextResponse.json(solicitudDeleted);
   } catch (error) {
     return NextResponse.json(error.message, { status: 400 });
   }
