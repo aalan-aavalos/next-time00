@@ -444,6 +444,7 @@ const UsersPage = () => {
                 multiple
                 id="admin-autocomplete"
                 options={adm
+                  .filter(admin => admin.eRol === 'adm') 
                   .map((admin) => `${admin.eNombre} ${admin.eApeP}`)
                   .filter((option) => !newUser.Adminstradores.includes(option))}
                 disableCloseOnSelect
