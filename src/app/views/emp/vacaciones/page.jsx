@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import { signOut, useSession } from "next-auth/react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
@@ -16,18 +17,17 @@ import {
 } from "@mui/material";
 
 const VacacionesPage = () => {
+  const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [datos, setDatos] = useState([]);
-  const [newUser, setNewUser] = useState({
-    fechaI: "",
-    fechaF: "",
-    motivo: "",
-    estado: "Pendiente",
-  });
+  const [newUser, setNewUser] = useState({});
+  const [newCorreo, setNewCorreo] = useState({});
   const [updateMode, setUpdateMode] = useState(false);
   const [selectedUserData, setSelectedUserData] = useState(null);
+  const [vacacionModel, setVacacionModel] = useState({}); // Definir vacacionModel aquí
+  const [correoModel, setCorreoModell] = useState({}); // Definir vacacionModel aquí
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -38,23 +38,44 @@ const VacacionesPage = () => {
         }
         const datosJson = await respuesta.json();
         setDatos(datosJson);
+        // Inicializar modelos después de que la sesión esté disponible
+        const sessionData = session ? session.user : {};
+        const vacacionModel = {
+          fechaI: "",
+          fechaF: "",
+          motivo: "",
+          estado: "Pendiente",
+          eCorreo: sessionData.eCorreo,
+        };
+        const correoModel = {
+          fechaI: "",
+          fechaF: "",
+          motivo: "",
+          estado: "Pendiente",
+          eCorreo: sessionData.eCorreo,
+          eNombre: sessionData.eNombre,
+        };
+        setVacacionModel(vacacionModel); // Utilizar setVacacionModel para establecer el valor de vacacionModel
+        setCorreoModell(correoModel); // Utilizar setVacacionModel para establecer el valor de vacacionModel
+        setNewUser(vacacionModel);
+        setNewCorreo(correoModel);
       } catch (error) {
         console.error("Error:", error);
       }
     };
 
     loadUsers();
-  }, []);
+  }, [session]);
 
   const handleClickOpen = () => {
     setOpen(true);
     setUpdateMode(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "Pendiente" });
+    setNewUser(vacacionModel); // Utilizar vacacionModel aquí
   };
 
   const handleClose = () => {
     setOpen(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "Pendiente" });
+    setNewUser(vacacionModel);
   };
 
   const handleConfirmOpen = () => {
@@ -67,6 +88,7 @@ const VacacionesPage = () => {
 
   const handleChange = (event) => {
     setNewUser({ ...newUser, [event.target.name]: event.target.value });
+    setNewCorreo({ ...newCorreo, [event.target.name]: event.target.value });
   };
 
   const handleSubmit = async (event) => {
@@ -75,9 +97,12 @@ const VacacionesPage = () => {
       await updateUser(selectedUserId, newUser);
     } else {
       await createUser(newUser);
+      await sendEmail(newCorreo);
+      console.log(newCorreo);
     }
     setOpen(false);
-    setNewUser({ fechaI: "", fechaF: "", motivo: "", estado: "Pendiente" });
+    setNewUser(vacacionModel);
+    setNewCorreo(correoModel);
   };
 
   const createUser = async (user) => {
@@ -91,6 +116,18 @@ const VacacionesPage = () => {
     const data = await response.json();
     console.log("New user created:", data);
     setDatos([...datos, data]);
+  };
+
+  const sendEmail = async (email) => {
+    const response = await fetch("/api/send/vac", {
+      method: "POST",
+      body: JSON.stringify(email),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    console.log("New email sent:", data);
   };
 
   const updateUser = async (userId, userData) => {

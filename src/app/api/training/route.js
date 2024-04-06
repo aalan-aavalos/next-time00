@@ -1,6 +1,7 @@
 import { connectDB } from "@/utils/mongoose";
 import { NextResponse } from "next/server";
 import Training from "@/models/training";
+import Actividades from "@/models/actividades";
 
 // Obtener usuarios
 export async function GET() {
@@ -19,7 +20,10 @@ export async function POST(request) {
     console.log("Datos recibidos:", data);
 
     const newTraining = new Training(data); // Crea un objeto
+    const newActividad = new Actividades(data);
+
     const savedTraining = await newTraining.save(); // Guarda ese objeto en db
+    await newActividad.save();
 
     return NextResponse.json(savedTraining);
   } catch (error) {

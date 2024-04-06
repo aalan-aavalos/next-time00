@@ -208,7 +208,7 @@ const AreasPage = () => {
           },
 
           style: {
-            background: "#93A2B9",
+            background: "#787571",
           },
         }}
       >
@@ -226,19 +226,6 @@ const AreasPage = () => {
             <Grid item xs={4}>
               <TextField
                 autoFocus
-                name="aNombre"
-                required
-                label="Área"
-                type="text"
-                fullWidth
-                variant="outlined"
-                value={newArea.aNombre}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <TextField
-                autoFocus
                 name="tipoArea"
                 required
                 label="Tipo de Área"
@@ -250,8 +237,25 @@ const AreasPage = () => {
                 onChange={handleChange}
               >
                 <MenuItem value={"Administrativo"}>Administrativo</MenuItem>
-                <MenuItem value={"Área"}>Área</MenuItem>
+                <MenuItem value={"Contabilidad"}>Contabilidad</MenuItem>
+                <MenuItem value={"Seguridad"}>Seguridad</MenuItem>
+                <MenuItem value={"Salud"}>Salud</MenuItem>
+                <MenuItem value={"Recursos Humanos"}>Recursos Humanos</MenuItem>
               </TextField>
+            </Grid>
+
+            <Grid item xs={4}>
+              <TextField
+                autoFocus
+                name="aNombre"
+                required
+                label="Área"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={newArea.aNombre}
+                onChange={handleChange}
+              />
             </Grid>
           </Grid>
         </DialogContent>

@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import { signOut, useSession } from "next-auth/react";
 import Box from "@mui/material/Box";
 import {
   Divider,
@@ -15,6 +16,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 function NavBarSAdm() {
+  const { data: session, status } = useSession();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -23,6 +26,8 @@ function NavBarSAdm() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const sessionData = session ? session.user : "";
   return (
     <Box
       height={"15vh"}
@@ -44,12 +49,6 @@ function NavBarSAdm() {
         <Link href="/views/adms/sede" underline="none" color="inherit">
           <h2>Sedes</h2>
         </Link>
-        <Link href="/views/adm/area" underline="none" color="inherit">
-          <h2>Area</h2>
-        </Link>
-        <Link href="/views/adm/contrato" underline="none" color="inherit">
-          <h2>Contratos</h2>
-        </Link>
         <PersonIcon
           sx={{ fontSize: "4.5rem", color: "white" }}
           onClick={handleClick}
@@ -67,9 +66,13 @@ function NavBarSAdm() {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleClose}>{sessionData.eNombre}</MenuItem>
+        <MenuItem onClick={handleClose}>{sessionData.eCorreo}</MenuItem>
+        <MenuItem
+          onClick={() => {
+            signOut();
+          }}
+        >
           <ListItemIcon>
             <LogoutIcon color="error" />
           </ListItemIcon>

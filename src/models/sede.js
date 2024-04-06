@@ -8,9 +8,18 @@ const sedeSchema = new Schema(
       //unique: [true, "El nombre no puede ser igual"], // Lo que hace es que manda un error si se repite
       trim: true, // Lo que hace es que borra los espacios del final e inicio
     },
-    ubicacion: {
+    codigoPostal: {
       type: String,
-      required: [true, "La ubicacion de  esta requerido"],
+      //unique: true,
+      trim: true,
+    },
+    estado: {
+      type: String,
+      //unique: true,
+      trim: true,
+    },
+    municipio: {
+      type: String,
       //unique: true,
       trim: true,
     },
@@ -19,16 +28,13 @@ const sedeSchema = new Schema(
       //unique: true,
       trim: true,
     },
-
-  aNombre:{
+    aNombre: {
       type: Array,
       trim: true,
-    }
-
-    
+    },
   },
   {
     timestamps: true /* Lo que hace es que agrega el campo de fecha de creacion y actualizacion */,
-  },
+  }
 );
 export default models.Sede || model("Sede", sedeSchema);

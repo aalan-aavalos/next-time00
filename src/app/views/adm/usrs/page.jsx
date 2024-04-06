@@ -278,7 +278,7 @@ const UsersPage = () => {
           },
 
           style: {
-            background: "#93A2B9",
+            background: "#787571",
           },
         }}
       >
@@ -445,14 +445,14 @@ const UsersPage = () => {
         </DialogActions>
       </Dialog>
 
-      {/** Ventana emergente para mostrar detalles del usuario */}
+      {/** Ventana emergente para mostrar detalles del usuario AQUI*/}
       <Dialog
         open={detailsOpen}
         onClose={handleCloseDetails}
         fullWidth
         PaperProps={{
           style: {
-            background: "#93A2B9",
+            background: "#787571",
           },
         }}
       >

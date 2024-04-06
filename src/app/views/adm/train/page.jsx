@@ -3,12 +3,10 @@ import React, { useState, useEffect } from "react";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
-import InfoIcon from "@mui/icons-material/InfoSharp";
 import EditIcon from "@mui/icons-material/Edit";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Autocomplete from "@mui/material/Autocomplete";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
+
 import Checkbox from "@mui/material/Checkbox";
 
 import {
@@ -22,18 +20,19 @@ import {
 } from "@mui/material";
 
 const TrainingPage = () => {
-  const [open, setOpen] = useState(false);
-  const [selectedTrainingId, setSelectedTrainingId] = useState(null);
-  const [confirmOpen, setConfirmOpen] = useState(false);
-  const [datos, setDatos] = useState([]);
-  const [newTraining, setNewTraining] = useState({
+  const trainingModel = {
     nombre: "",
     fechaI: "",
     fechaF: "",
     motivo: "",
     Administradores: [],
     Empleados: [],
-  });
+  };
+  const [open, setOpen] = useState(false);
+  const [selectedTrainingId, setSelectedTrainingId] = useState(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [datos, setDatos] = useState([]);
+  const [newTraining, setNewTraining] = useState(trainingModel);
 
   const [updateMode, setUpdateMode] = useState(false);
   const [selectedTrainingData, setSelectedTrainingData] = useState(null);
@@ -73,29 +72,27 @@ const TrainingPage = () => {
     loadTrainings();
   }, []);
 
+  const sendEmail = async (email) => {
+    const response = await fetch("/api/send/tra", {
+      method: "POST",
+      body: JSON.stringify(email),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    console.log("New email sent:", data);
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
     setUpdateMode(false);
-    setNewTraining({
-      nombre: "",
-      fechaI: "",
-      fechaF: "",
-      motivo: "",
-      Administradores: [],
-      Empleados: [],
-    });
+    setNewTraining(trainingModel);
   };
 
   const handleClose = () => {
     setOpen(false);
-    setNewTraining({
-      nombre: "",
-      fechaI: "",
-      fechaF: "",
-      motivo: "",
-      Administradores: [],
-      Empleados: [],
-    });
+    setNewTraining(trainingModel);
   };
 
   const handleConfirmOpen = () => {
@@ -119,14 +116,7 @@ const TrainingPage = () => {
       await createTraining(newTraining);
     }
     setOpen(false);
-    setNewTraining({
-      nombre: "",
-      fechaI: "",
-      fechaF: "",
-      motivo: "",
-      Administradores: [],
-      Empleados: [],
-    });
+    setNewTraining(trainingModel);
   };
 
   const createTraining = async (training) => {
@@ -249,9 +239,20 @@ const TrainingPage = () => {
     items: [],
     quickFilterValues: [""],
   });
-  const adm = datosUsrs;
-  const emp = datosUsrs;
 
+  const emp = newTraining.Empleados !== undefined ? newTraining.Empleados : [];
+  const adm =
+    newTraining.Administradores !== undefined
+      ? newTraining.Administradores
+      : [];
+
+  const final = [...emp, ...adm];
+
+  const correosFiltrados = datosUsrs
+    .filter((usuario) => final.includes(`${usuario.eNombre} ${usuario.eApeP}`))
+    .map((usuario) => usuario.eCorreo);
+
+  console.log(correosFiltrados)
   return (
     <div>
       <Fab
@@ -321,7 +322,7 @@ const TrainingPage = () => {
           component: "form",
           onSubmit: handleSubmit,
           style: {
-            background: "#93A2B9",
+            background: "#787571",
           },
         }}
       >
@@ -392,7 +393,7 @@ const TrainingPage = () => {
                   (datosUsrs &&
                     datosUsrs.filter((usuario) => usuario.eRol === "adm")) ||
                   []
-                ).map((admin) => admin.eNombre)}
+                ).map((admin) => `${admin.eNombre} ${admin.eApeP}`)}
                 disableCloseOnSelect
                 getOptionLabel={(option) => option}
                 value={newTraining.Administradores}
@@ -429,7 +430,7 @@ const TrainingPage = () => {
                 options={(
                   datosUsrs &&
                   datosUsrs.filter((usuario) => usuario.eRol === "emp")
-                ).map((empleado) => empleado.eNombre)}
+                ).map((empleado) => `${empleado.eNombre} ${empleado.eApeP}`)}
                 disableCloseOnSelect
                 getOptionLabel={(option) => option}
                 value={newTraining.Empleados}
