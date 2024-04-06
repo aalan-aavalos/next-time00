@@ -38,6 +38,9 @@ link = https://docs.google.com/document/d/1ewmWOIntUtVSd-hdrq5G7CGpYuB8hd9r5KkVc
 ### Diagrama de Actividades 
 [![image](https://github.com/aalan-aavalos/next-time00/assets/137373510/0ad8cc48-e436-4428-b6ef-a3cf5a36f8a2)](https://docs.google.com/document/d/1w43kBwHU73Po9fwfCAL6qOy-r0bqMPrx3i-bh_yAgTU/edit?usp=sharing)
 
+### Vistas de Usuario 
+
+
 link = https://docs.google.com/document/d/1w43kBwHU73Po9fwfCAL6qOy-r0bqMPrx3i-bh_yAgTU/edit?usp=sharing
 ## Diagrama de Clases o modelo de la base de datos refinada
 
