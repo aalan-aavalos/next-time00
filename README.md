@@ -25,7 +25,7 @@ Características Clave del Proyecto:
 ## Lista de requisitos priorizada del proyecto refinada
 
 
-### Historias de usuario
+### Historias de usuario y criterios de aceptación:
 
 [![image](https://github.com/aalan-aavalos/next-time00/assets/137373510/73776d8a-e1b5-435d-a6c3-cb095630aaa2)](https://docs.google.com/document/d/1HPNxobW4rAUxpRBAwvDVttRNTLNKap02ttYNccn9-JQ/edit?usp=sharing)
 
