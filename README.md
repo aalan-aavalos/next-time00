@@ -38,10 +38,17 @@ link = https://docs.google.com/document/d/1ewmWOIntUtVSd-hdrq5G7CGpYuB8hd9r5KkVc
 ### Diagrama de Actividades 
 [![image](https://github.com/aalan-aavalos/next-time00/assets/137373510/0ad8cc48-e436-4428-b6ef-a3cf5a36f8a2)](https://docs.google.com/document/d/1w43kBwHU73Po9fwfCAL6qOy-r0bqMPrx3i-bh_yAgTU/edit?usp=sharing)
 
-### Vistas de Usuario 
 
 
 link = https://docs.google.com/document/d/1w43kBwHU73Po9fwfCAL6qOy-r0bqMPrx3i-bh_yAgTU/edit?usp=sharing
+
+
+### Vistas de Usuario 
+
+[![image](https://github.com/aalan-aavalos/next-time00/assets/137373510/5f2734a5-4aac-4166-9a8f-ba1d5af97eda)](https://docs.google.com/document/d/1YrU3uXa4NI2CqdpmaEU5DpTIev-Rzb6KtDuysmdqXrw/edit?usp=sharing)
+
+link = https://docs.google.com/document/d/1YrU3uXa4NI2CqdpmaEU5DpTIev-Rzb6KtDuysmdqXrw/edit?usp=sharing
+
 ## Diagrama de Clases o modelo de la base de datos refinada
 
 
