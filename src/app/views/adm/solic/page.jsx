@@ -1,12 +1,17 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import CheckIcon from "@mui/icons-material/Check";
 import {
   TextField,
   MenuItem,
-  FormControl,
-  InputLabel,
-  Select,
+  Fab,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
@@ -20,11 +25,22 @@ function SolicitudPage() {
     tipo: "",
   };
 
+  // Guardar los estados de los filtros
   const [estadoFilter, setEstadoFilter] = useState("Pendiente");
   const [tipoFilter, setTipoFilter] = useState("");
+
+  // Guardar los datos del back
   const [solicData, setSolicData] = useState([]);
-  const [selectId, setSelectId] = useState(null);
-  // Traer solicitudes del backend
+
+  // Guardar los datos de las fias seleccionadas
+  const [selectRow, setSelectRow] = useState(null);
+
+  // Abrir cuadro de confirmacion
+  const [confirmDialog, setConfirmDialog] = useState(false);
+
+  // Mensaje
+  const [message, setMessage] = useState("");
+  // Traer datos del backend
   useEffect(() => {
     const loadSolic = async () => {
       try {
@@ -72,7 +88,20 @@ function SolicitudPage() {
 
   // Obtener el la fila seleccionada de la tabla
   const handleRowClick = (params) => {
-    setSelectId(params.row);
+    setSelectRow(params.row);
+  };
+
+  // Acciones si se presiona el boton de rechazar
+  const handleAceptClick = () => {
+    //setUpdateMode(true);
+    setMessage("Aceptar");
+    setConfirmDialog(true);
+  };
+
+  const handleRejectClick = () => {
+    //setUpdateMode(true);
+    setMessage("Rechazar");
+    setConfirmDialog(true);
   };
 
   const filteredRows = solicData.filter((row) => {
@@ -95,6 +124,30 @@ function SolicitudPage() {
 
   return (
     <div>
+      {/** Boton para aprobar */}
+      <Fab
+        color="primary"
+        aria-label="acept"
+        onClick={handleAceptClick}
+        p={1}
+        style={{ fontSize: 20, marginBottom: "2vh", marginRight: "1vw" }}
+        disabled={!selectRow}
+      >
+        <CheckIcon />
+      </Fab>
+
+      {/** Boton para rechazar */}
+      <Fab
+        color="error"
+        aria-label="reject"
+        onClick={handleRejectClick}
+        p={1}
+        style={{ fontSize: 20, marginBottom: "2vh", marginRight: "1vw" }}
+        disabled={!selectRow}
+      >
+        <CloseIcon />
+      </Fab>
+
       {/** Campo para filtrar el estado de la solicitud */}
       <TextField
         label="Estado"
@@ -137,6 +190,33 @@ function SolicitudPage() {
           />
         </div>
       </div>
+
+      {/** Cuadro de confirmación */}
+      <Dialog
+        open={confirmDialog}
+        //onClose={() => setConfirmDialog(false)}
+      >
+        <DialogTitle alignSelf="center">
+          ¿Estas seguro que deseas {message} la solicitud?
+        </DialogTitle>
+        <DialogActions>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => setConfirmDialog(false)}
+          >
+            Cancelar
+          </Button>
+
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setConfirmDialog(false)}
+          >
+            Aceptar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
