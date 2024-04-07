@@ -8,7 +8,7 @@ export async function POST(request) {
   const dataReq = await request.json();
   
   const { data, error } = await resend.emails.send({
-    from: "NextTime <confirmations@nexttime.website>", // Cambiar luego  
+    from: "NextTime <confirmations@nexttime.website>",
     to: [dataReq.eCorreo],
     subject: "Se a resistrado una nueva solicitud  de vacaciones",
     react: EmailTemplate({ firstName: dataReq.eNombre, description: `Motivo de las vacaciones: ${dataReq.motivo}, Intervalo de fechas: ${dataReq.fechaI} - ${dataReq.fechaF}, estado: ${dataReq.estado}`}),

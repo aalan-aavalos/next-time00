@@ -109,10 +109,15 @@ const TrainingPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     console.log("Datos enviados al backend:", newTraining);
+
     if (updateMode) {
       await updateTraining(selectedTrainingId, newTraining);
     } else {
+      // Aqui va el enviar un correo
+      await sendEmail({ eCorreo: correosFiltrados, ...newTraining });
+      //console.log("Correo?:",{ eCorreo: correosFiltrados, ...newTraining  });
       await createTraining(newTraining);
     }
     setOpen(false);
@@ -252,7 +257,7 @@ const TrainingPage = () => {
     .filter((usuario) => final.includes(`${usuario.eNombre} ${usuario.eApeP}`))
     .map((usuario) => usuario.eCorreo);
 
-  console.log(correosFiltrados)
+  console.log(correosFiltrados);
   return (
     <div>
       <Fab
