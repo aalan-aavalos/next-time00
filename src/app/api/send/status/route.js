@@ -11,7 +11,7 @@ export async function POST(request) {
     from: "NextTime <confirmations@nexttime.website>", // Cambiar luego  
     to: [dataReq.eCorreo],
     subject: `Estado de tu ${dataReq.tipo}`,
-    react: EmailTemplate({ firstName: dataReq.eNombre, description: `Tu solicitud esta: ${dataReq.estado}`}),
+    react: EmailTemplate({ firstName: dataReq.eNombre, description: `Tu solicitud de ${dataReq.motivo} esta: ${dataReq.estado}`}),
   });
 
   if (error) {

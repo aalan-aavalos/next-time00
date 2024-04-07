@@ -72,14 +72,14 @@ function LoginPage() {
       },
     });
     if (response.ok) {
-      contratos.log(response);
+      console.log(response);
     }
   };
 
-  console.log(datos);
+  // console.log(datos);
 
   const sendEmail = async (dataEmail) => {
-    const response = await fetch("/api/send/status", {
+    const response = await fetch("/api/send/login", {
       method: "POST",
       body: JSON.stringify(dataEmail),
       headers: {
@@ -87,7 +87,7 @@ function LoginPage() {
       },
     });
     const data = await response.json();
-    console.log("New email sent:", data);
+    // console.log("New email sent:", data);
   };
 
   const handleChange = (event) => {
@@ -110,6 +110,7 @@ function LoginPage() {
       let data = { pwd: "" };
       data.pwd = genRanPwd(4);
       await sendEmail({ ...existingUser, ...data });
+      // console.log(data)
       await updateUser(existingUser._id, data);
     }
     setDialogOpen("password"); // Cambia al diálogo de contraseña después de enviar el email

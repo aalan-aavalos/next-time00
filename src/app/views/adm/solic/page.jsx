@@ -119,8 +119,10 @@ function SolicitudPage() {
   // Acciones al subir el formulario
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await updateSolic(selectRow._id, solicitud);
+    selectRow.estado = solicitud.estado;
+    console.log(selectRow);
     await sendEmail(selectRow);
+    await updateSolic(selectRow._id, solicitud);
     setSolicitud(solictudModel);
   };
 

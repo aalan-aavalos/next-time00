@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
-import contratos from "@/models/contratos";
 import { genRanPwd } from "@/utils/ramdom";
 
 function NavBarSAdm() {
@@ -38,14 +37,14 @@ function NavBarSAdm() {
       },
     });
     if (response.ok) {
-      contratos.log(response);
+      console.log(response);
     }
   };
 
   const logOut = async () => {
     let data = { pwd: "" };
     data.pwd = genRanPwd(4);
-    await updateUser(sessionData._i, data);
+    await updateUser(sessionData._id, data);
     signOut();
   };
 
