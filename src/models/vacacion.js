@@ -26,6 +26,10 @@ const vacacionSchema = new Schema(
     },
     eCorreo:{
       type: String
+    },
+    eNombre:{
+      type: String,
+      trim: true
     }
   },
   {

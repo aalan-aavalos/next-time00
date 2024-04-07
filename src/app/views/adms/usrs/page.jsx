@@ -7,6 +7,7 @@ import AddIcon from "@mui/icons-material/Add";
 import InfoIcon from "@mui/icons-material/InfoSharp";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { genRanPwd } from "@/utils/ramdom";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import {
   Button,
@@ -165,6 +166,10 @@ const UsersPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if(newUser.eRol === "emp"){
+      newUser.pwd = genRanPwd(4)
+    }
+
     // Puedo manerajar los errores con un try catch
     // Verificar si el correo ya está en uso antes de crear un nuevo usuario
 
@@ -276,8 +281,6 @@ const UsersPage = () => {
 
   return (
     <div>
-      
-
       {/** Boton para agregar */}
       <Fab
         color="dark"
@@ -352,9 +355,6 @@ const UsersPage = () => {
         PaperProps={{
           component: "form",
           onSubmit: handleSubmit,
-          style: {
-            background: "#787571",
-          },
         }}
       >
         <DialogTitle alignSelf="center">
@@ -580,11 +580,6 @@ const UsersPage = () => {
         open={confirmOpen}
         onClose={handleConfirmClose}
         fullWidth
-        PaperProps={{
-          style: {
-            background: "#787571",
-          },
-        }}
       >
         <DialogTitle alignSelf="center">Confirmar Eliminación</DialogTitle>
         <DialogContent>
@@ -604,11 +599,6 @@ const UsersPage = () => {
         open={detailsOpen}
         onClose={handleCloseDetails}
         fullWidth
-        PaperProps={{
-          style: {
-            background: "#787571",
-          },
-        }}
       >
         <DialogTitle alignSelf="center">Detalles del Usuario</DialogTitle>
         {selectedUserDetails && (
@@ -760,7 +750,7 @@ const UsersPage = () => {
         onClose={handleConfirmCloseMessage}
         PaperProps={{
           style: {
-            background: "rgb(255, 0, 0)",
+            background: "red",
           },
         }}
       >
