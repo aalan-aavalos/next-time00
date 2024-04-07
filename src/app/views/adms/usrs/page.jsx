@@ -355,9 +355,6 @@ const UsersPage = () => {
         PaperProps={{
           component: "form",
           onSubmit: handleSubmit,
-          style: {
-            background: "#787571",
-          },
         }}
       >
         <DialogTitle alignSelf="center">
@@ -583,11 +580,6 @@ const UsersPage = () => {
         open={confirmOpen}
         onClose={handleConfirmClose}
         fullWidth
-        PaperProps={{
-          style: {
-            background: "#787571",
-          },
-        }}
       >
         <DialogTitle alignSelf="center">Confirmar Eliminación</DialogTitle>
         <DialogContent>
@@ -607,11 +599,6 @@ const UsersPage = () => {
         open={detailsOpen}
         onClose={handleCloseDetails}
         fullWidth
-        PaperProps={{
-          style: {
-            background: "#787571",
-          },
-        }}
       >
         <DialogTitle alignSelf="center">Detalles del Usuario</DialogTitle>
         {selectedUserDetails && (
@@ -763,7 +750,7 @@ const UsersPage = () => {
         onClose={handleConfirmCloseMessage}
         PaperProps={{
           style: {
-            background: "rgb(255, 0, 0)",
+            background: "red",
           },
         }}
       >

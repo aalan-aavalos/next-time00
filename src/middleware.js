@@ -31,5 +31,5 @@ export { default } from "next-auth/middleware";
 // }
 
 export const config = {
-  matcher: ["/views/:path*"], // Protege todas las rutas dentro de views
+  matcher: ["/", "/views/:path*"], // Protege todas las rutas dentro de views
 };

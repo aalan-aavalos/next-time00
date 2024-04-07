@@ -8,5 +8,3 @@ export async function GET() {
   const solicitud = await Solicitudes.find();
   return NextResponse.json(solicitud);
 }
-
-// 
