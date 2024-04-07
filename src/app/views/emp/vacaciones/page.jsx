@@ -46,6 +46,7 @@ const VacacionesPage = () => {
           motivo: "",
           estado: "Pendiente",
           eCorreo: sessionData.eCorreo,
+          eNombre: sessionData.eNombre,
         };
         const correoModel = {
           fechaI: "",
@@ -118,10 +119,10 @@ const VacacionesPage = () => {
     setDatos([...datos, data]);
   };
 
-  const sendEmail = async (email) => {
+  const sendEmail = async (dataEmail) => {
     const response = await fetch("/api/send/vac", {
       method: "POST",
-      body: JSON.stringify(email),
+      body: JSON.stringify(dataEmail),
       headers: {
         "Content-Type": "application/json",
       },

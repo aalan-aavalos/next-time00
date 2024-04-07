@@ -75,6 +75,18 @@ function SolicitudPage() {
     }
   };
 
+  const sendEmail = async (dataEmail) => {
+    const response = await fetch("/api/send/status", {
+      method: "POST",
+      body: JSON.stringify(dataEmail),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    console.log("New email sent:", data);
+  };
+
   // Constrolar el estado del filtro
   const handleEstadoFilterChange = (event) => {
     setEstadoFilter(event.target.value);
@@ -108,6 +120,7 @@ function SolicitudPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     await updateSolic(selectRow._id, solicitud);
+    await sendEmail(selectRow);
     setSolicitud(solictudModel);
   };
 

@@ -19,6 +19,24 @@ import {
   TextField,
 } from "@mui/material";
 
+// Funcion para generar contraseñas aleatoreas
+function genRanPwd(long) {
+  const nRandom = (range) => Math.round(Math.random() * range);
+
+  const characters = "ac1bde2fgh3ijk4lmn5opq6rst7uvw8x9yz0";
+
+  let pwd = "";
+
+  for (let i = 0; i < long; i++) {
+    if (nRandom(99) % 2) {
+      pwd += characters[nRandom(characters.length - 1)].toUpperCase();
+    } else {
+      pwd += characters[nRandom(characters.length - 1)];
+    }
+  }
+  return pwd;
+}
+
 const UsersPage = () => {
   const { data: session, status } = useSession();
   const sessionData = session ? session.user : "";
@@ -165,6 +183,10 @@ const UsersPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if(newUser.eRol === "emp"){
+      newUser.pwd = genRanPwd(4)
+    }
+
     // Puedo manerajar los errores con un try catch
     // Verificar si el correo ya está en uso antes de crear un nuevo usuario
 
@@ -276,8 +298,6 @@ const UsersPage = () => {
 
   return (
     <div>
-      
-
       {/** Boton para agregar */}
       <Fab
         color="dark"
