@@ -28,6 +28,7 @@ export async function PUT(request, { params }) {
   try {
     connectDB();
     const data = await request.json();
+    console.log(request, params);
     const solicitudUpdated = await Solicitudes.findByIdAndUpdate(
       params.idU,
       data,

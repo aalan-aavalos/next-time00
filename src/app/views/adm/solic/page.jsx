@@ -17,12 +17,7 @@ import { DataGrid } from "@mui/x-data-grid";
 
 function SolicitudPage() {
   const solictudModel = {
-    fechaI: "",
-    fechaF: "",
-    motivo: "",
     estado: "",
-    eCorreo: "",
-    tipo: "",
   };
 
   // Guardar los estados de los filtros
@@ -40,6 +35,10 @@ function SolicitudPage() {
 
   // Mensaje
   const [message, setMessage] = useState("");
+
+  // Solicitud
+  const [solicitud, setSolicitud] = useState(solictudModel);
+
   // Traer datos del backend
   useEffect(() => {
     const loadSolic = async () => {
@@ -58,21 +57,21 @@ function SolicitudPage() {
     loadSolic();
   }, []);
 
-  const updateSolic = async (solicId, solicData) => {
-    const response = await fetch(`/api/usrs/${solicId}`, {
+  const updateSolic = async (solicId, solicUpData) => {
+    const response = await fetch(`/api/solicitud/${solicId}`, {
       method: "PUT",
-      body: JSON.stringify(solicData),
+      body: JSON.stringify(solicUpData),
       headers: {
         "Content-Type": "application/json",
       },
     });
     if (response.ok) {
       const updatedUsers = solicData.map((solic) =>
-        solic._id === solicId ? { ...solic, ...solicData } : solic
+        solic._id === solicId ? { ...solic, ...solicUpData } : solic
       );
       setSolicData(updatedUsers);
-      setSelectId(null);
-      setUpdateMode(false);
+      setSelectRow(null);
+      setConfirmDialog(false);
     }
   };
 
@@ -91,17 +90,25 @@ function SolicitudPage() {
     setSelectRow(params.row);
   };
 
-  // Acciones si se presiona el boton de rechazar
+  // Acciones si se presiona el boton de aceptar
   const handleAceptClick = () => {
-    //setUpdateMode(true);
-    setMessage("Aceptar");
+    setMessage("Aprovar");
+    setSolicitud({ estado: "Aprovada" });
     setConfirmDialog(true);
   };
 
+  // Acciones si se presiona el boton de rechazar
   const handleRejectClick = () => {
-    //setUpdateMode(true);
     setMessage("Rechazar");
+    setSolicitud({ estado: "Rechazada" });
     setConfirmDialog(true);
+  };
+
+  // Acciones al subir el formulario
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await updateSolic(selectRow._id, solicitud);
+    setSolicitud(solictudModel);
   };
 
   const filteredRows = solicData.filter((row) => {
@@ -124,6 +131,7 @@ function SolicitudPage() {
 
   return (
     <div>
+      <h1>Total: {filteredRows.length}</h1>
       {/** Boton para aprobar */}
       <Fab
         color="primary"
@@ -159,8 +167,8 @@ function SolicitudPage() {
       >
         <MenuItem value="">Todos</MenuItem>
         <MenuItem value={"Pendiente"}>Pendiente</MenuItem>
-        <MenuItem value={"Aprovado"}>Aprovado</MenuItem>
-        <MenuItem value={"Rechazado"}>Rechazado</MenuItem>
+        <MenuItem value={"Aprovada"}>Aprovada</MenuItem>
+        <MenuItem value={"Rechazada"}>Rechazada</MenuItem>
       </TextField>
 
       {/** Campo para filtrar el tipo de la solicitud */}
@@ -178,7 +186,7 @@ function SolicitudPage() {
       </TextField>
       {/** Tabla de datos */}
       <div style={{ width: "100%" }}>
-        <div style={{ height: "60vh", width: "100%" }}>
+        <div style={{ height: "50vh", width: "100%" }}>
           <DataGrid
             getRowId={(row) => row._id}
             rows={filteredRows}
@@ -194,7 +202,10 @@ function SolicitudPage() {
       {/** Cuadro de confirmación */}
       <Dialog
         open={confirmDialog}
-        //onClose={() => setConfirmDialog(false)}
+        PaperProps={{
+          component: "form",
+          onSubmit: handleSubmit,
+        }}
       >
         <DialogTitle alignSelf="center">
           ¿Estas seguro que deseas {message} la solicitud?
@@ -208,11 +219,7 @@ function SolicitudPage() {
             Cancelar
           </Button>
 
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setConfirmDialog(false)}
-          >
+          <Button variant="contained" color="primary" type="submit">
             Aceptar
           </Button>
         </DialogActions>
