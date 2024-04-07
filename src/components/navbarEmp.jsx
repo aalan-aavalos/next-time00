@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
+import contratos from "@/models/contratos";
+import { genRanPwd } from "@/utils/ramdom";
 
 function NavBarSAdm() {
   const { data: session, status } = useSession();
@@ -26,6 +28,27 @@ function NavBarSAdm() {
     setAnchorEl(null);
   };
   const sessionData = session ? session.user : "";
+
+  const updateUser = async (userId, userData) => {
+    const response = await fetch(`/api/usrs/${userId}`, {
+      method: "PUT",
+      body: JSON.stringify(userData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      contratos.log(response);
+    }
+  };
+
+  const logOut = async () => {
+    let data = { pwd: "" };
+    data.pwd = genRanPwd(4);
+    await updateUser(sessionData._i, data);
+    signOut();
+  };
+
   return (
     <Box
       height={"15vh"}
@@ -68,7 +91,7 @@ function NavBarSAdm() {
         <MenuItem onClick={handleClose}>{sessionData.eCorreo}</MenuItem>
         <MenuItem
           onClick={() => {
-            signOut();
+            logOut();
           }}
         >
           <ListItemIcon>

@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Lienzo from "@/components/lienzo";
+import { genRanPwd } from "@/utils/ramdom";
 import Logo from "@/components/logo";
 import Navbar from "@/components/navbar";
 import { signIn, getSession } from "next-auth/react";
@@ -14,7 +14,6 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-
   TextField,
   Typography,
 } from "@mui/material";
@@ -31,6 +30,65 @@ function LoginPage() {
   const [newUser, setNewUser] = useState(usrsModel);
   const [error, setError] = useState("");
   const [dialogOpen, setDialogOpen] = useState("email"); // Controla qué diálogo se muestra: "email" o "password"
+  const [datos, setDatos] = useState();
+
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        const respuesta = await fetch("/api/usrs");
+        if (!respuesta.ok) {
+          throw new Error("Error al obtener los datos");
+        }
+        const datosJson = await respuesta.json();
+        const datosFiltrados = datosJson
+          .map((dato) => {
+            if (dato.eRol === "emp") {
+              return {
+                _id: dato._id,
+                eNombre: dato.eNombre,
+                eCorreo: dato.eCorreo,
+                eRol: dato.eRol,
+              };
+            }
+            return null; // Devolvemos null para los elementos que no cumplan la condición
+          })
+          .filter((dato) => dato !== null); // Filtramos los resultados que no sean null
+
+        setDatos(datosFiltrados);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    loadUsers();
+  }, []);
+
+  const updateUser = async (userId, userData) => {
+    const response = await fetch(`/api/usrs/${userId}`, {
+      method: "PUT",
+      body: JSON.stringify(userData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      contratos.log(response);
+    }
+  };
+
+  console.log(datos);
+
+  const sendEmail = async (dataEmail) => {
+    const response = await fetch("/api/send/status", {
+      method: "POST",
+      body: JSON.stringify(dataEmail),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    console.log("New email sent:", data);
+  };
 
   const handleChange = (event) => {
     setNewUser({ ...newUser, [event.target.name]: event.target.value });
@@ -46,6 +104,14 @@ function LoginPage() {
 
   const handleSubmitEmail = async (event) => {
     event.preventDefault();
+
+    const existingUser = datos.find((user) => user.eCorreo === newUser.eCorreo);
+    if (existingUser) {
+      let data = { pwd: "" };
+      data.pwd = genRanPwd(4);
+      await sendEmail({ ...existingUser, ...data });
+      await updateUser(existingUser._id, data);
+    }
     setDialogOpen("password"); // Cambia al diálogo de contraseña después de enviar el email
   };
 
@@ -89,7 +155,15 @@ function LoginPage() {
         </Grid>
         <Grid item xs={12}>
           <LienzoLo>
-            <img style={{width: "45%", height: "95%",borderRadius: "50px",marginTop:"1vw" }} src = "/log.jpg"/>
+            <img
+              style={{
+                width: "45%",
+                height: "95%",
+                borderRadius: "50px",
+                marginTop: "1vw",
+              }}
+              src="/log.jpg"
+            />
             <DialogTitle alignSelf="center"></DialogTitle>
             <div>
               <div style={{ textAlign: "right", width: "36%", height: "50%" }}>
@@ -108,7 +182,6 @@ function LoginPage() {
                 >
                   Ingresar
                 </Button>
-                 
               </div>
               <Dialog
                 open={dialogOpen === "email"}
@@ -123,7 +196,7 @@ function LoginPage() {
                     maxWidth: 600,
                     margin: "0 auto",
                     borderRadius: 20,
-                    marginLeft: "55vw"
+                    marginLeft: "55vw",
                   },
                 }}
               >
@@ -134,9 +207,11 @@ function LoginPage() {
                 >
                   Ingresar Email
                 </DialogTitle>
-                <DialogContent   sx={{
-                    color:  "#ffff",
-                  }}>
+                <DialogContent
+                  sx={{
+                    color: "#ffff",
+                  }}
+                >
                   <TextField
                     type="email"
                     placeholder="introduce tu correo"
@@ -147,10 +222,8 @@ function LoginPage() {
                     margin="dense"
                     variant="outlined"
                     label="Email"
-                    background ="#ffff0000"
-                    
-                    style={{ marginBottom: "10px"  }}
-                     
+                    background="#ffff0000"
+                    style={{ marginBottom: "10px" }}
                   />
                 </DialogContent>
                 <DialogActions>
@@ -194,7 +267,7 @@ function LoginPage() {
                     maxWidth: 600,
                     margin: "0 auto",
                     borderRadius: 20,
-                    marginLeft: "55vw"
+                    marginLeft: "55vw",
                   },
                 }}
               >

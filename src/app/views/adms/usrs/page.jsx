@@ -7,6 +7,7 @@ import AddIcon from "@mui/icons-material/Add";
 import InfoIcon from "@mui/icons-material/InfoSharp";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { genRanPwd } from "@/utils/ramdom";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import {
   Button,
@@ -18,24 +19,6 @@ import {
   MenuItem,
   TextField,
 } from "@mui/material";
-
-// Funcion para generar contraseñas aleatoreas
-function genRanPwd(long) {
-  const nRandom = (range) => Math.round(Math.random() * range);
-
-  const characters = "ac1bde2fgh3ijk4lmn5opq6rst7uvw8x9yz0";
-
-  let pwd = "";
-
-  for (let i = 0; i < long; i++) {
-    if (nRandom(99) % 2) {
-      pwd += characters[nRandom(characters.length - 1)].toUpperCase();
-    } else {
-      pwd += characters[nRandom(characters.length - 1)];
-    }
-  }
-  return pwd;
-}
 
 const UsersPage = () => {
   const { data: session, status } = useSession();
