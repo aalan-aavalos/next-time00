@@ -18,14 +18,12 @@ const actividadesSchema = new Schema(
       type: String,
       trim: true,
     },
-    Administradores: {
-      type: [String],
-      default: "N/A",
+    Administradores: {  
+      type: [String],      
       trim: true,
     },
     Empleados: {
       type: [String],
-      default: "N/A",
       trim: true,
     },
     estado: {
