@@ -28,7 +28,7 @@ import {
   Select,
 } from "@mui/material";
 
-const UsersPage = () => {
+const SedePage = () => {
   const [open, setOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -571,4 +571,4 @@ const UsersPage = () => {
   );
 };
 
-export default UsersPage;
+export default SedePage;

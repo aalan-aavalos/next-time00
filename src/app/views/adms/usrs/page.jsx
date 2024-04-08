@@ -8,6 +8,7 @@ import InfoIcon from "@mui/icons-material/InfoSharp";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import CargaMasiva from "./cargaM";
 import {
   Button,
   Dialog,
@@ -288,6 +289,7 @@ const UsersPage = () => {
       >
         <AddIcon />
       </Fab>
+    
 
       {/** Boton para editar */}
       <Fab
@@ -324,6 +326,7 @@ const UsersPage = () => {
       >
         <DeleteIcon />
       </Fab>
+      <CargaMasiva></CargaMasiva>
 
       {/** Tabla de datos */}
       <div style={{ width: "100%" }}>
