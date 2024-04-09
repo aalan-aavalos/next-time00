@@ -1,7 +1,6 @@
 const { Schema, model, models } = require("mongoose");
 
 const vacacionSchema = new Schema(
-  
   {
     fechaI: {
       type: Date,
@@ -24,16 +23,21 @@ const vacacionSchema = new Schema(
       type: String,
       default: "Pendiente",
     },
-    eCorreo:{
-      type: String
-    },
-    eNombre:{
+    eCorreo: {
       type: String,
-      trim: true
-    }
+    },
+    eNombre: {
+      type: String,
+      trim: true,
+    },
+    tipo: {
+      type: String,
+      default: "vacacion",
+      trim: true,
+    },
   },
   {
     timestamps: true /* Lo que hace es que agrega el campo de fecha de creacion y actualizacion */,
-  },
+  }
 );
 export default models.Vacacion || model("Vacacion", vacacionSchema);

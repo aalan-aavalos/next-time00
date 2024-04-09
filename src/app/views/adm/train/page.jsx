@@ -27,6 +27,7 @@ const TrainingPage = () => {
     motivo: "",
     Administradores: [],
     Empleados: [],
+    tipo: "training",
   };
   const [open, setOpen] = useState(false);
   const [selectedTrainingId, setSelectedTrainingId] = useState(null);
@@ -118,7 +119,7 @@ const TrainingPage = () => {
       // Aqui va el enviar un correo
       await sendEmail({ eCorreo: correosFiltrados, ...newTraining });
       //console.log("Correo?:",{ eCorreo: correosFiltrados, ...newTraining  });
-      await createTraining(newTraining);
+      await createTraining({ eCorreo: correosFiltrados, ...newTraining });
     }
     setOpen(false);
     setNewTraining(trainingModel);

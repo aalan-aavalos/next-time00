@@ -1,5 +1,6 @@
 const { NextResponse } = require("next/server");
 import Solicitudes from "@/models/solicitudes";
+import Actividades from "@/models/actividades";
 import { connectDB } from "@/utils/mongoose";
 
 // Obtener un usuario
@@ -29,6 +30,11 @@ export async function PUT(request, { params }) {
     connectDB();
     const data = await request.json();
     console.log(request, params);
+
+    if (data.estado !== "Rechazada") {
+      const newActividad = new Actividades(data);
+      await newActividad.save();
+    }
     const solicitudUpdated = await Solicitudes.findByIdAndUpdate(
       params.idU,
       data,

@@ -45,6 +45,7 @@ const VacacionesPage = () => {
           fechaF: "",
           motivo: "",
           estado: "Pendiente",
+          tipo: "vacacion",
           eCorreo: sessionData.eCorreo,
           eNombre: sessionData.eNombre,
         };
