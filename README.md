@@ -57,8 +57,28 @@ link = https://docs.google.com/document/d/1YrU3uXa4NI2CqdpmaEU5DpTIev-Rzb6KtDuys
 
 [![image](https://github.com/aalan-aavalos/next-time00/assets/137373510/833f3a6a-6173-43a9-819d-58b0ebe24381)](https://docs.google.com/document/d/1ZXpi4wHfdCOIrhPTsFtNnE1EwB2f49Evh99Cj0NlXzs/edit?usp=sharing)
 
+## Arquitectura MVC 
 
-## Instalacion
+## Diagrama de componentes.
+
+## Manual Instalacion
+[![image](https://github.com/aalan-aavalos/next-time00/assets/137373510/cabfd9f5-2436-41da-847d-844a5a804a5b)](https://docs.google.com/document/d/1wPwhkG8tAXVJQ9ttx_D4eLhzo-GzfPskIqzCVjRjoyw/edit?usp=sharing)
+
+## Manual de Usuario.
+[![image](https://github.com/aalan-aavalos/next-time00/assets/137373510/9e41fbaa-94a3-4f4f-9adf-0b18bd82e307)](https://docs.google.com/document/d/1KqH5jdt1BlmcnDsNkPr4E482VjcWRJHZy0tNAgVuAys/edit?usp=sharing)
+
+## Código Fuente documentado y pruebas de caja negra.
+
+## Plan de iteraciones o Sprint a partir de la unidad 2 y hasta el cierre de la entrega final
+
+Se utilizaron herremientas de Trello para la organizacion y gestión de tareas en el equipo, llevar control de las reuniones llevadas cada cierto tiempo
+y las metas que se querian alcanzar 
+1. https://trello.com/invite/b/V2vKCjwT/ATTIe120cc24aea913f21ef0b341e7961771D86AB6C2/control-de-horarios
+2. https://trello.com/invite/b/2eJiI9Rn/ATTIf0f27f3ef8d3b0bd0acc0b4feb35e20174E14180/dailys-scrum-2024
+
+Al igual que Notion para la documentacion de el proyectto y hasignacion de tareas individuales 
+
+1. https://www.notion.so/Datos-de-Aplicaci-n-3861c088962c4a0588277241b4c0f744?pvs=4
  `npm install`
 ## Uso
  `npm run dev`
