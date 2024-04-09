@@ -1,14 +1,12 @@
 "use client";
 
-// pages/MyPage.js
-
 import React, { useState } from "react";
 import FileUploader from "@/components/FileUploader";
 
 const MyPage = () => {
   const [jsonData, setJsonData] = useState(null);
 
-  const createUser = async (user) => {
+  const uploadUsers = async (user) => {
     const response = await fetch("/api/upload", {
       method: "POST",
       body: JSON.stringify(user),
@@ -26,7 +24,7 @@ const MyPage = () => {
     setJsonData(data);
   };
   const handleSubmit = async () => {
-    if (jsonData !== null) createUser(jsonData);
+    if (jsonData !== null) uploadUsers(jsonData);
   };
 
   return (
