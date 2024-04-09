@@ -27,6 +27,7 @@ const TrainingPage = () => {
     motivo: "",
     Administradores: [],
     Empleados: [],
+    tipo: "training",
   };
   const [open, setOpen] = useState(false);
   const [selectedTrainingId, setSelectedTrainingId] = useState(null);
@@ -109,11 +110,16 @@ const TrainingPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     console.log("Datos enviados al backend:", newTraining);
+
     if (updateMode) {
       await updateTraining(selectedTrainingId, newTraining);
     } else {
-      await createTraining(newTraining);
+      // Aqui va el enviar un correo
+      await sendEmail({ eCorreo: correosFiltrados, ...newTraining });
+      //console.log("Correo?:",{ eCorreo: correosFiltrados, ...newTraining  });
+      await createTraining({ eCorreo: correosFiltrados, ...newTraining });
     }
     setOpen(false);
     setNewTraining(trainingModel);
@@ -252,7 +258,7 @@ const TrainingPage = () => {
     .filter((usuario) => final.includes(`${usuario.eNombre} ${usuario.eApeP}`))
     .map((usuario) => usuario.eCorreo);
 
-  console.log(correosFiltrados)
+  console.log(correosFiltrados);
   return (
     <div>
       <Fab

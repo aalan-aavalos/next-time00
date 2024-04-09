@@ -29,7 +29,6 @@ const usrsSchema = new Schema(
     },
     eCorreo: {
       type: String,
-      unique: true,
       trim: true,
     },
 

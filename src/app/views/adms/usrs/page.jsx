@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import FileUploader from "@/components/FileUploader";
 import { signOut, useSession } from "next-auth/react";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import InfoIcon from "@mui/icons-material/InfoSharp";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { genRanPwd } from "@/utils/ramdom";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import {
   Button,
@@ -36,6 +38,7 @@ const UsersPage = () => {
     pwd: "",
   };
 
+  const [jsonData, setJsonData] = useState(null);
   const [open, setOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -106,6 +109,26 @@ const UsersPage = () => {
     loadSedes();
   }, []);
 
+  const uploadUsers = async (user) => {
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+
+    console.log("New user created:", data);
+  };
+
+  const handleDataLoad = (data) => {
+    setJsonData(data);
+  };
+  const handleSubmitUpload = async () => {
+    if (jsonData !== null) uploadUsers(jsonData);
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
     setUpdateMode(false);
@@ -164,6 +187,10 @@ const UsersPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (newUser.eRol === "emp") {
+      newUser.pwd = genRanPwd(4);
+    }
 
     // Puedo manerajar los errores con un try catch
     // Verificar si el correo ya está en uso antes de crear un nuevo usuario
@@ -276,8 +303,6 @@ const UsersPage = () => {
 
   return (
     <div>
-      
-
       {/** Boton para agregar */}
       <Fab
         color="dark"
@@ -325,6 +350,10 @@ const UsersPage = () => {
         <DeleteIcon />
       </Fab>
 
+      <FileUploader onDataLoad={handleDataLoad} />
+      <button onClick={handleSubmitUpload}>Mandarlos</button>
+      {/* <button onClick={() => setJsonData(null)}>Eliminar seleccion</button> */}
+
       {/** Tabla de datos */}
       <div style={{ width: "100%" }}>
         <div style={{ height: "60vh", width: "100%" }}>
@@ -352,9 +381,6 @@ const UsersPage = () => {
         PaperProps={{
           component: "form",
           onSubmit: handleSubmit,
-          style: {
-            background: "#787571",
-          },
         }}
       >
         <DialogTitle alignSelf="center">
@@ -576,16 +602,7 @@ const UsersPage = () => {
         </DialogActions>
       </Dialog>
 
-      <Dialog
-        open={confirmOpen}
-        onClose={handleConfirmClose}
-        fullWidth
-        PaperProps={{
-          style: {
-            background: "#787571",
-          },
-        }}
-      >
+      <Dialog open={confirmOpen} onClose={handleConfirmClose} fullWidth>
         <DialogTitle alignSelf="center">Confirmar Eliminación</DialogTitle>
         <DialogContent>
           ¿Está seguro de que desea eliminar este usuario?
@@ -600,16 +617,7 @@ const UsersPage = () => {
         </DialogActions>
       </Dialog>
 
-      <Dialog
-        open={detailsOpen}
-        onClose={handleCloseDetails}
-        fullWidth
-        PaperProps={{
-          style: {
-            background: "#787571",
-          },
-        }}
-      >
+      <Dialog open={detailsOpen} onClose={handleCloseDetails} fullWidth>
         <DialogTitle alignSelf="center">Detalles del Usuario</DialogTitle>
         {selectedUserDetails && (
           <DialogContent>
@@ -760,7 +768,7 @@ const UsersPage = () => {
         onClose={handleConfirmCloseMessage}
         PaperProps={{
           style: {
-            background: "rgb(255, 0, 0)",
+            background: "red",
           },
         }}
       >

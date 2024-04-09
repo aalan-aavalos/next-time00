@@ -25,18 +25,26 @@ const trainingSchema = new Schema(
       trim: true,
     },
     Administradores: {
-        type: [String],
-        //unique: true,
-        trim: true,
-      },
-      Empleados: {
-        type: [String],
-        //unique: true,
-        trim: true,
-      }
+      type: [String],
+      //unique: true,
+      trim: true,
+    },
+    Empleados: {
+      type: [String],
+      //unique: true,
+      trim: true,
+    },
+    eCorreo: {
+      type: [String],
+      trim: true,
+    },
+    tipo: {
+      type: String,
+      trim: true,
+    },
   },
   {
     timestamps: true /* Lo que hace es que agrega el campo de fecha de creacion y actualizacion */,
-  },
+  }
 );
 export default models.Training || model("Training", trainingSchema);

@@ -8,10 +8,10 @@ export async function POST(request) {
   const dataReq = await request.json();
   
   const { data, error } = await resend.emails.send({
-    from: "NextTime <confirmations@nexttime.website>",
+    from: "NextTime <confirmations@nexttime.website>", // Cambiar luego  
     to: [dataReq.eCorreo],
-    subject: "Se a resistrado una nueva solicitud  de vacaciones",
-    react: EmailTemplate({ firstName: dataReq.eNombre, description: `Motivo de las vacaciones: ${dataReq.motivo}, Intervalo de fechas: ${dataReq.fechaI} - ${dataReq.fechaF}, estado: ${dataReq.estado}`}),
+    subject: `Tocken de seguridad temporar! (no lo compartas)`,
+    react: EmailTemplate({ firstName: dataReq.eNombre, description: `Tu tocken temprar de seguridad es: ${dataReq.pwd}`}),
   });
 
   if (error) {

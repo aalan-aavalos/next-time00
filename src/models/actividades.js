@@ -18,8 +18,8 @@ const actividadesSchema = new Schema(
       type: String,
       trim: true,
     },
-    Administradores: {  
-      type: [String],      
+    Administradores: {
+      type: [String],
       trim: true,
     },
     Empleados: {
@@ -28,7 +28,15 @@ const actividadesSchema = new Schema(
     },
     estado: {
       type: String,
-      trim: true
+      trim: true,
+    },
+    eCorreo: {
+      type: [String],
+      trim: true,
+    },
+    tipo: {
+      type: String,
+      trim: true,
     },
   },
   {
