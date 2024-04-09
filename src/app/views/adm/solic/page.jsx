@@ -197,8 +197,8 @@ function SolicitudPage() {
         onChange={handleTipoFilterChange}
       >
         <MenuItem value="">Todos</MenuItem>
-        <MenuItem value={"Vacacion"}>Vacacion</MenuItem>
-        <MenuItem value={"Turno"}>Turno</MenuItem>
+        <MenuItem value={"vacacion"}>Vacacion</MenuItem>
+        <MenuItem value={"turno"}>Turno</MenuItem>
       </TextField>
       {/** Tabla de datos */}
       <div style={{ width: "100%" }}>
