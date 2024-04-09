@@ -60,6 +60,7 @@ link = https://docs.google.com/document/d/1YrU3uXa4NI2CqdpmaEU5DpTIev-Rzb6KtDuys
 ## Arquitectura MVC 
 
 ## Diagrama de componentes.
+![image](https://github.com/aalan-aavalos/next-time00/assets/137373510/188b690d-ab70-4ca7-8aba-92f22cbb3231)
 
 ## Manual Instalacion
 [![image](https://github.com/aalan-aavalos/next-time00/assets/137373510/cabfd9f5-2436-41da-847d-844a5a804a5b)](https://docs.google.com/document/d/1wPwhkG8tAXVJQ9ttx_D4eLhzo-GzfPskIqzCVjRjoyw/edit?usp=sharing)
