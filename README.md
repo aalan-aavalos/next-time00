@@ -22,6 +22,7 @@ Características Clave del Proyecto:
 6. Roles de Usuario: La aplicación contará con diferentes roles de usuario, como administradores con privilegios para gestionar empleados y horarios, y empleados con acceso limitado para ver su propio horario y solicitar vacaciones.
 7. Carga Masiva de Empleados: Se implementará la funcionalidad de carga masiva de empleados mediante archivos en formatos .xlsx, .json, y/o .csv, lo que permitirá una rápida incorporación de nuevos trabajadores a la base de datos.
 
+#### Hacer click en la foto para abrir el archivo
 ## Lista de requisitos priorizada del proyecto refinada
 
 
@@ -71,6 +72,9 @@ link = https://docs.google.com/document/d/1YrU3uXa4NI2CqdpmaEU5DpTIev-Rzb6KtDuys
 ## Código Fuente documentado y pruebas de caja negra.
 
 [![image](https://github.com/aalan-aavalos/next-time00/assets/137373510/361b7e67-393f-4c49-8056-3ddaefb2239a)](https://docs.google.com/spreadsheets/d/1kCNH7c0r1Hqm9UTbE9whgmIDxtO5Cwm8/edit?usp=drive_link&ouid=105183689852948364376&rtpof=true&sd=true)
+
+
+Link=  https://docs.google.com/spreadsheets/d/1kCNH7c0r1Hqm9UTbE9whgmIDxtO5Cwm8/edit?usp=sharing&ouid=105183689852948364376&rtpof=true&sd=true
 
 ## Plan de iteraciones o Sprint a partir de la unidad 2 y hasta el cierre de la entrega final
 
