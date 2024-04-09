@@ -74,6 +74,7 @@ const UsersPage = () => {
 
     loadUsers();
   }, []);
+  console.log(datos)
 
   useEffect(() => {
     const loadContratos = async () => {

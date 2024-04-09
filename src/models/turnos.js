@@ -4,17 +4,21 @@ const { Schema, model } = require("mongoose");
 
 const turnoSchema = new Schema(
   {
+    turno: {
+      type: String,
+      trim: true,
+    },
     tipo: {
       type: String,
-      required: true,
     },
     motivo: {
       type: String,
-      required: true,
     },
-    correo: {
+    eCorreo: {
       type: String,
-      required: true,
+    },
+    eNombre: {
+      type: String,
     },
     estado: {
       type: String,

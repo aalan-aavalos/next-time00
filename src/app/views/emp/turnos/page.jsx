@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { signOut, useSession } from "next-auth/react";
 import {
   Button,
@@ -23,11 +22,11 @@ const TurnosPage = () => {
   const [open, setOpen] = useState(false);
   const [turnos, setTurnos] = useState([]);
   const [newTurno, setNewTurno] = useState({
-    tipo: "",
+    turno: "",
     motivo: "",
-    correo: "",
     estado: "Pendiente",
     eCorreo: sessionData.eCorreo,
+    eNombre: sessionData.eNombre,
     tipo: "turno",
   });
   const [opcionesContratos, setOpcionesContratos] = useState([]);
@@ -52,11 +51,11 @@ const TurnosPage = () => {
   const handleClickOpen = () => {
     setOpen(true);
     setNewTurno({
-      tipo: "",
+      turno: "",
       motivo: "",
-      correo: "",
       estado: "Pendiente",
       eCorreo: sessionData.eCorreo,
+      eNombre: sessionData.eNombre,
       tipo: "turno",
     });
   };
@@ -116,11 +115,11 @@ const TurnosPage = () => {
           <form onSubmit={handleSubmit}>
             <TextField
               autoFocus
-              name="tipo"
+              name="turno"
               label="Tipo de Turno"
               fullWidth
               select
-              value={newTurno.tipo}
+              value={newTurno.turno}
               onChange={handleChange}
             >
               {opcionesContratos.map((contrato) => (

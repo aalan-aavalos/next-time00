@@ -10,7 +10,7 @@ export async function connectDB() {
     return;
   }
 
-  const db = await connect(process.env.MONGODB_LOCAL);
+  const db = await connect(process.env.MONGODB_URI);
   conn.isConnected = db.connections[0].readyState;
 }
 

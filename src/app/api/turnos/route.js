@@ -3,6 +3,7 @@
 import Turno from "@/models/turnos";
 import { connectDB } from "@/utils/mongoose";
 import { NextResponse } from "next/server";
+import Solicitudes from "@/models/solicitudes";
 
 // Obtener todos los turnos
 export async function GET() {
@@ -17,7 +18,9 @@ export async function POST(request) {
     connectDB();
     const data = await request.json();
     const newTurno = new Turno(data);
+    const newSolicitud = new Solicitudes(data);
     const savedTurno = await newTurno.save();
+    await newSolicitud.save();
     return NextResponse.json(savedTurno);
   } catch (error) {
     return NextResponse.json(error.message, { status: 400 });
