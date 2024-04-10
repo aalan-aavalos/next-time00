@@ -22,14 +22,14 @@ const solicitudSchema = new Schema(
       type: String,
       trim: true,
     },
-    tipo: { 
-        type: String, 
-        trim: true 
-    },
-    eNombre:{
+    tipo: {
       type: String,
-      trim: true
-    }
+      trim: true,
+    },
+    eNombre: {
+      type: String,
+      trim: true,
+    },
   },
   {
     timestamps: true /* Lo que hace es que agrega el campo de fecha de creacion y actualizacion */,
