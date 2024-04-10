@@ -43,7 +43,7 @@ function SolicitudPage() {
   useEffect(() => {
     const loadSolic = async () => {
       try {
-        const respuesta = await fetch("/api/solicitud");
+        const respuesta = await fetch("/api/solic");
         if (!respuesta.ok) {
           throw new Error("Error al obtener los datos");
         }
