@@ -59,6 +59,7 @@ link = https://docs.google.com/document/d/1YrU3uXa4NI2CqdpmaEU5DpTIev-Rzb6KtDuys
 [![image](https://github.com/aalan-aavalos/next-time00/assets/137373510/833f3a6a-6173-43a9-819d-58b0ebe24381)](https://docs.google.com/document/d/1ZXpi4wHfdCOIrhPTsFtNnE1EwB2f49Evh99Cj0NlXzs/edit?usp=sharing)
 
 ## Arquitectura MVC 
+[![image](https://github.com/aalan-aavalos/next-time00/assets/137373510/2ab107c6-9d71-4c94-968d-23a7106ffd73)](https://docs.google.com/document/d/1-dYpy_S81EusmHawb42spGyaorsE1QpmjpydnUTr_Fk/edit?usp=sharing)
 
 ## Diagrama de componentes.
 ![image](https://github.com/aalan-aavalos/next-time00/assets/137373510/188b690d-ab70-4ca7-8aba-92f22cbb3231)
@@ -75,6 +76,9 @@ link = https://docs.google.com/document/d/1YrU3uXa4NI2CqdpmaEU5DpTIev-Rzb6KtDuys
 
 
 Link=  https://docs.google.com/spreadsheets/d/1kCNH7c0r1Hqm9UTbE9whgmIDxtO5Cwm8/edit?usp=sharing&ouid=105183689852948364376&rtpof=true&sd=true
+
+
+1. Imagenes de evidencia de casos de prueba https://docs.google.com/document/d/1Cmer3Idsw2JSMu4KjplYvkwK5WEQ2z7vDGoYykZCZgQ/edit?usp=sharing
 
 ## Plan de iteraciones o Sprint a partir de la unidad 2 y hasta el cierre de la entrega final
 
