@@ -1,4 +1,4 @@
-import Solicitudes from "@/models/solicitudes";
+import Solicitudes from "@/models/turnos";
 import { connectDB } from "@/utils/mongoose";
 import { NextResponse } from "next/server";
 

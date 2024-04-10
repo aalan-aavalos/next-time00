@@ -18,13 +18,9 @@ export async function POST(request) {
     const data = await request.json(); // Parsea los datos de la peticion
 
     const newVacacion = new Vacacion(data); // Crea un objeto
-    
-    
     const newSolicitud = new Solicitudes(data);
 
-    
-    const savedVacacion = await newVacacion.save(); // Guarda ese objeto en db
-    
+    const savedVacacion = await newVacacion.save(); // Guarda ese objeto en db    
     await newSolicitud.save();
 
     return NextResponse.json(savedVacacion);
