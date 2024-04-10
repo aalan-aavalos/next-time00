@@ -127,6 +127,7 @@ function SolicitudPage() {
   };
 
   console.log("row", selectRow);
+  console.log("solic data", solicData)
   const filteredRows = solicData.filter((row) => {
     if (
       (estadoFilter === "" || row.estado === estadoFilter) &&
