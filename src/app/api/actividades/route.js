@@ -51,3 +51,18 @@ export async function GET() {
 
   return NextResponse.json(actividad);
 }
+
+export async function POST(request) {
+  try {
+    connectDB();
+    const data = await request.json(); // Parsea los datos de la peticion
+
+    const newActivity = new Actividades(data);
+
+    const savedActivity = await newActivity.save(); // Guarda ese objeto en db
+
+    return NextResponse.json(savedActivity);
+  } catch (error) {
+    return NextResponse.json(error.message, { status: 400 });
+  }
+}
