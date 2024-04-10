@@ -120,13 +120,13 @@ function SolicitudPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     selectRow.estado = solicitud.estado;
-    
+
     await sendEmail(selectRow);
     await updateSolic(selectRow._id, selectRow);
     setSolicitud(solictudModel);
   };
 
-  console.log(selectRow);
+  console.log("row", selectRow);
   const filteredRows = solicData.filter((row) => {
     if (
       (estadoFilter === "" || row.estado === estadoFilter) &&
@@ -155,7 +155,11 @@ function SolicitudPage() {
         onClick={handleAceptClick}
         p={1}
         style={{ fontSize: 20, marginBottom: "2vh", marginRight: "1vw" }}
-        disabled={!selectRow || selectRow.estado === "Aprovada" || selectRow.estado === "Rechazada"}
+        disabled={
+          !selectRow ||
+          selectRow.estado === "Aprovada" ||
+          selectRow.estado === "Rechazada"
+        }
       >
         <CheckIcon />
       </Fab>
@@ -167,7 +171,11 @@ function SolicitudPage() {
         onClick={handleRejectClick}
         p={1}
         style={{ fontSize: 20, marginBottom: "2vh", marginRight: "1vw" }}
-        disabled={!selectRow || selectRow.estado === "Aprovada" || selectRow.estado === "Rechazada"}
+        disabled={
+          !selectRow ||
+          selectRow.estado === "Aprovada" ||
+          selectRow.estado === "Rechazada"
+        }
       >
         <CloseIcon />
       </Fab>
