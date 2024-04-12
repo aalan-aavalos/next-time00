@@ -30,6 +30,10 @@ const solicitudSchema = new Schema(
       type: String,
       trim: true,
     },
+    turno: {
+      type: String,
+      trim: true,
+    },
   },
   {
     timestamps: true /* Lo que hace es que agrega el campo de fecha de creacion y actualizacion */,

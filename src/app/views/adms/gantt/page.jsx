@@ -99,6 +99,57 @@ export default function GanttPage() {
       },
     };
 
+    function generarObjetos(eCorreo, motivo, turno) {
+      if (!turno) {
+        console.error("La propiedad 'turno' no está definida correctamente.");
+        return [];
+      }
+
+      const fechaActual = DateTime.local();
+
+      const [diasTrabajo, diasDescanso] = turno
+        .split("/")
+        .map((item) => parseInt(item[0]));
+
+      const inicioMes = fechaActual.startOf("month");
+      const finMes = fechaActual.endOf("month");
+
+      const objetosTrabajo = [];
+      const objetosDescanso = [];
+
+      let fechaInicio = inicioMes;
+
+      while (fechaInicio <= finMes) {
+        const fechaInicioTrabajo = fechaInicio.startOf("day"); // Comienza a las 00:00
+        const fechaFinTrabajo = fechaInicio
+          .plus({ days: diasTrabajo - 1 })
+          .endOf("day"); // Termina a las 23:59
+        objetosTrabajo.push({
+          motivo: "Días de trabajo",
+          eCorreo,
+          tipo: "trabajo",
+          fechaInicio: fechaInicioTrabajo.toISO(),
+          fechaFin: fechaFinTrabajo.toISO(),
+        });
+
+        const fechaInicioDescanso = fechaFinTrabajo.plus({ seconds: 1 }); // Comienza un segundo después de terminar el trabajo
+        const fechaFinDescanso = fechaInicioDescanso
+          .plus({ days: diasDescanso - 1 })
+          .endOf("day"); // Termina a las 23:59
+        objetosDescanso.push({
+          motivo: "Días de descanso",
+          eCorreo,
+          tipo: "descanso",
+          fechaInicio: fechaInicioDescanso.toISO(),
+          fechaFin: fechaFinDescanso.toISO(),
+        });
+
+        fechaInicio = fechaFinDescanso.plus({ seconds: 1 }); // Comienza un segundo después de terminar el descanso
+      }
+
+      return [...objetosTrabajo, ...objetosDescanso];
+    }
+
     // Función para generar los items
     function generateRows() {
       /**
@@ -119,33 +170,55 @@ export default function GanttPage() {
 
     // Funcion para generar los items utilizando datos de la base de datos
     function generateItems() {
-      /**
-       * @type { import("gantt-schedule-timeline-calendar").Items }
-       */
       const items = {};
-      // @ts-ignore
 
       datosActivity.forEach((data, i) => {
-        // Convertir las fechas de MongoDB en objetos de fecha de JavaScript
-        let startDate = new Date(data.fechaI);
-        let endDate = new Date(data.fechaF);
+        if (data.tipo === "turno") {
+          // Si el tipo es "turno", generar los objetos utilizando la función generarObjetos
+          const turnos = generarObjetos(data.eCorreo, data.motivo, data.turno);
 
-        // Convertir las fechas de JavaScript en objetos de fecha de Luxon
-        let luxonStartDate = DateTime.fromJSDate(startDate);
-        let luxonEndDate = DateTime.fromJSDate(endDate);
+          // Iterar sobre los turnos generados y crear los ítems
+          turnos.forEach((turno, index) => {
+            const id = GSTC.api.GSTCID((i + index).toString());
+            const rowId = GSTC.api.GSTCID(turno.eCorreo);
 
-        const id = GSTC.api.GSTCID(i.toString());
-        const rowId = GSTC.api.GSTCID(data.eCorreo);
+            items[id] = {
+              id,
+              label: turno.motivo,
+              rowId,
+              time: {
+                start: new Date(turno.fechaInicio).getTime(),
+                end: new Date(turno.fechaFin).getTime(),
+              },
+              style: {
+                backgroundColor: turno.tipo === "trabajo" ? "green" : "orange",
+              },
+            };
+          });
+        } else {
+          // Si el tipo no es "turno", crear el ítem directamente
+          let startDate = new Date(data.fechaI);
+          let endDate = new Date(data.fechaF);
 
-        items[id] = {
-          id,
-          label: data.motivo,
-          rowId,
-          time: {
-            start: luxonStartDate.valueOf(),
-            end: luxonEndDate.valueOf(),
-          },
-        };
+          let luxonStartDate = DateTime.fromJSDate(startDate);
+          let luxonEndDate = DateTime.fromJSDate(endDate);
+
+          const id = GSTC.api.GSTCID(i.toString());
+          const rowId = GSTC.api.GSTCID(data.eCorreo);
+
+          items[id] = {
+            id,
+            label: `${data.tipo} : ${data.motivo}`,
+            rowId,
+            time: {
+              start: luxonStartDate.valueOf(),
+              end: luxonEndDate.valueOf(),
+            },
+            style: {
+              backgroundColor: data.tipo === "vacacion" ? "blue" : "red",
+            },
+          };
+        }
       });
 
       return items;
@@ -209,9 +282,9 @@ export default function GanttPage() {
     });
   }
 
-  const callback = useCallback((element) => {
+  const callback = (element) => {
     if (element) initializeGSTC(element);
-  });
+  };
 
   useEffect(() => {
     return () => {

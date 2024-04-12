@@ -17,11 +17,14 @@ export async function POST(request) {
   try {
     connectDB();
     const data = await request.json();
+
     const newTurno = new Turno(data);
     const newSolicitud = new Solicitudes(data);
-    const savedTurno = await newTurno.save();
-    await newSolicitud.save();
-    return NextResponse.json(savedTurno);
+
+    savedSolic = await newSolicitud.save();
+    //const savedTurno = await newTurno.save();
+
+    return NextResponse.json(savedSolic);
   } catch (error) {
     return NextResponse.json(error.message, { status: 400 });
   }

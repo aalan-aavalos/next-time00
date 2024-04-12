@@ -32,9 +32,25 @@ export async function PUT(request, { params }) {
     console.log(request, params);
 
     if (data.estado !== "Rechazada") {
-      const newActividad = new Actividades(data);
-      await newActividad.save();
+      const activitFound = await Actividades.findOne({
+        eCorreo: data.eCorreo,
+        tipo: "turno",
+      });
+
+      if (activitFound) {
+        const actividadUpdated = await Actividades.updateOne(
+          { eCorreo: data.eCorreo, tipo: "turno" },
+          {
+            turno: data.turno,
+          }
+        );
+        console.log(actividadUpdated);
+      } else {
+        const newActividad = new Actividades(data);
+        await newActividad.save();
+      }
     }
+
     const solicitudUpdated = await Solicitudes.findByIdAndUpdate(
       params.idU,
       data,

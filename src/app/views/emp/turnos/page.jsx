@@ -48,6 +48,16 @@ const TurnosPage = () => {
     loadContratos();
   }, []);
 
+  const createTurno = async (turno) => {
+    const response = await fetch("/api/turnos", {
+      method: "POST",
+      body: JSON.stringify(turno),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
     setNewTurno({
@@ -72,23 +82,12 @@ const TurnosPage = () => {
     event.preventDefault();
     try {
       await createTurno(newTurno);
+
       setOpen(false);
     } catch (error) {
       console.error("Error al solicitar turno:", error);
       // Mostrar mensaje de error al usuario
     }
-  };
-
-  const createTurno = async (turno) => {
-    const response = await fetch("/api/turnos", {
-      method: "POST",
-      body: JSON.stringify(turno),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await response.json();
-    setTurnos([...turnos, data]);
   };
 
   const columns = [

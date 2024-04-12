@@ -87,6 +87,16 @@ function SolicitudPage() {
     console.log("New email sent:", data);
   };
 
+  const updateUser = async (userData) => {
+    const response = await fetch(`/api/usrs`, {
+      method: "PUT",
+      body: JSON.stringify(userData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   // Constrolar el estado del filtro
   const handleEstadoFilterChange = (event) => {
     setEstadoFilter(event.target.value);
@@ -121,13 +131,16 @@ function SolicitudPage() {
     event.preventDefault();
     selectRow.estado = solicitud.estado;
 
+    if (selectRow.estado === "Aprovada")
+      await updateUser({ eCorreo: selectRow.eCorreo, uTurno: selectRow.turno });
+
     await sendEmail(selectRow);
     await updateSolic(selectRow._id, selectRow);
     setSolicitud(solictudModel);
   };
 
   console.log("row", selectRow);
-  console.log("solic data", solicData)
+  console.log("solic data", solicData);
   const filteredRows = solicData.filter((row) => {
     if (
       (estadoFilter === "" || row.estado === estadoFilter) &&

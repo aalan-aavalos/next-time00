@@ -1,6 +1,6 @@
 // src\models\turnos.js
 
-const { Schema, model } = require("mongoose");
+const { Schema, model, models } = require("mongoose");
 
 const turnoSchema = new Schema(
   {
@@ -30,4 +30,4 @@ const turnoSchema = new Schema(
   }
 );
 
-export default model("Turno", turnoSchema);
+export default models.Turno || model("Turno", turnoSchema);

@@ -38,6 +38,10 @@ const actividadesSchema = new Schema(
       type: String,
       trim: true,
     },
+    turno: {
+      type: String,
+      trim: true,
+    },
   },
   {
     timestamps: true,
