@@ -32,12 +32,22 @@ export async function PUT(request, { params }) {
     console.log(request, params);
 
     if (data.estado !== "Rechazada") {
+      if (data.tipo === "vacacion") {
+        const newActividad = new Actividades(data);
+        const actvitySave = await newActividad.save();
+        console.log(actvitySave);
+      }
+
       const activitFound = await Actividades.findOne({
         eCorreo: data.eCorreo,
         tipo: "turno",
       });
 
-      if (activitFound) {
+      if (!activitFound) {
+        const newActividad = new Actividades(data);
+        const actvitySave = await newActividad.save();
+        console.log(actvitySave);
+      } else {
         const actividadUpdated = await Actividades.updateOne(
           { eCorreo: data.eCorreo, tipo: "turno" },
           {
@@ -45,9 +55,6 @@ export async function PUT(request, { params }) {
           }
         );
         console.log(actividadUpdated);
-      } else {
-        const newActividad = new Actividades(data);
-        await newActividad.save();
       }
     }
 

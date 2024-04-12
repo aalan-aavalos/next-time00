@@ -131,7 +131,7 @@ function SolicitudPage() {
     event.preventDefault();
     selectRow.estado = solicitud.estado;
 
-    if (selectRow.estado === "Aprovada")
+    if (selectRow.estado === "Aprovada" && selectRow.tipo === "turno")
       await updateUser({ eCorreo: selectRow.eCorreo, uTurno: selectRow.turno });
 
     await sendEmail(selectRow);
