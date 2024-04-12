@@ -99,7 +99,7 @@ export default function GanttPage() {
       },
     };
 
-    function generarObjetos(eCorreo, motivo, turno) {
+    function generarObjetos(eCorreo, turno) {
       if (!turno) {
         console.error("La propiedad 'turno' no está definida correctamente.");
         return [];
@@ -175,7 +175,7 @@ export default function GanttPage() {
       datosActivity.forEach((data, i) => {
         if (data.tipo === "turno") {
           // Si el tipo es "turno", generar los objetos utilizando la función generarObjetos
-          const turnos = generarObjetos(data.eCorreo, data.motivo, data.turno);
+          const turnos = generarObjetos(data.eCorreo, data.turno);
 
           // Iterar sobre los turnos generados y crear los ítems
           turnos.forEach((turno, index) => {
