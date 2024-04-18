@@ -7,10 +7,54 @@ import "gantt-schedule-timeline-calendar/dist/style.css";
 
 let GSTC, gstc, state;
 
+// Creo una funcion para saber cuantos dias tiene el mes actual
+const daysInMonth = (year, month) => new Date(year, month, 0).getDate();
+
+// Creo la funcion para generar los turnos a objtos separados por todo el mes
+function generarObjetos(eCorreo, turno) {
+  const date = new Date();
+
+  const month = date.getMonth();
+  const year = date.getFullYear();
+
+  const daysPerMonth = daysInMonth(year, month + 1);
+
+  // Obtengo los dias de trabajo y dias libres
+  const [daysOnStr, daysOffStr] = turno.split("/");
+
+  // Los convierto a entero
+  const daysOn = parseInt(daysOnStr);
+  const daysOff = parseInt(daysOffStr);
+
+  // calculo la jornado total
+  const journey = daysOn + daysOff;
+
+  // Creo el arreglo que va a guardar los turnos
+  const daysOfMonth = [];
+
+  // Itero desde el 0 hasta el total de dias del mes
+  for (let i = 0; i < daysPerMonth; i++) {
+    // Si el modulo de el dia [i] sobre la jornada es menor o igual a los dias de trbajao menos 1 el tipo es trabajo
+    // Esta constante es para saber si se desncansa o no ya que si le pasas los dias de desancaso y de traajo te  lo calcula
+    const tipo = i % journey <= daysOn - 1 ? "trabalo" : "descanso";
+    // Crea un objeto con los datos
+    daysOfMonth.push({
+      eCorreo: eCorreo,
+      tipo: tipo,
+      turno: turno,
+      fechaI: new Date(year, month, i + 1, 2, 0, 0).toISOString(),
+      fechaF: new Date(year, month, i + 1, 23, 59, 59).toISOString(),
+    });
+  }
+
+  return daysOfMonth;
+}
+
 export default function GanttPage() {
   const [datosUsrs, setDatosUsrs] = useState([]);
   const [datosActivity, setatosActivity] = useState([]);
 
+  console.log("Uno", datosActivity);
   // Traer datos de usuario
   useEffect(() => {
     const loadDataUsers = async () => {
@@ -53,6 +97,9 @@ export default function GanttPage() {
     loadDataActivity();
   }, []);
 
+  // Aqui ejecuto la funcion por cada actividad del arreglo que sea turno
+
+  console.log("Dos", datosActivity);
   // Funcion para inicializar la libreria
   async function initializeGSTC(element) {
     GSTC = (await import("gantt-schedule-timeline-calendar")).default;
@@ -99,57 +146,6 @@ export default function GanttPage() {
       },
     };
 
-    function generarObjetos(eCorreo, turno) {
-      if (!turno) {
-        console.error("La propiedad 'turno' no está definida correctamente.");
-        return [];
-      }
-
-      const fechaActual = DateTime.local();
-
-      const [diasTrabajo, diasDescanso] = turno
-        .split("/")
-        .map((item) => parseInt(item[0]));
-
-      const inicioMes = fechaActual.startOf("month");
-      const finMes = fechaActual.endOf("month");
-
-      const objetosTrabajo = [];
-      const objetosDescanso = [];
-
-      let fechaInicio = inicioMes;
-
-      while (fechaInicio <= finMes) {
-        const fechaInicioTrabajo = fechaInicio.startOf("day"); // Comienza a las 00:00
-        const fechaFinTrabajo = fechaInicio
-          .plus({ days: diasTrabajo - 1 })
-          .endOf("day"); // Termina a las 23:59
-        objetosTrabajo.push({
-          motivo: "Días de trabajo",
-          eCorreo,
-          tipo: "trabajo",
-          fechaInicio: fechaInicioTrabajo.toISO(),
-          fechaFin: fechaFinTrabajo.toISO(),
-        });
-
-        const fechaInicioDescanso = fechaFinTrabajo.plus({ seconds: 1 }); // Comienza un segundo después de terminar el trabajo
-        const fechaFinDescanso = fechaInicioDescanso
-          .plus({ days: diasDescanso - 1 })
-          .endOf("day"); // Termina a las 23:59
-        objetosDescanso.push({
-          motivo: "Días de descanso",
-          eCorreo,
-          tipo: "descanso",
-          fechaInicio: fechaInicioDescanso.toISO(),
-          fechaFin: fechaFinDescanso.toISO(),
-        });
-
-        fechaInicio = fechaFinDescanso.plus({ seconds: 1 }); // Comienza un segundo después de terminar el descanso
-      }
-
-      return [...objetosTrabajo, ...objetosDescanso];
-    }
-
     // Función para generar los items
     function generateRows() {
       /**
@@ -172,55 +168,63 @@ export default function GanttPage() {
     function generateItems() {
       const items = {};
 
-      datosActivity.forEach((data, i) => {
+      datosActivity.forEach((data) => {
         if (data.tipo === "turno") {
-          // Si el tipo es "turno", generar los objetos utilizando la función generarObjetos
-          const turnos = generarObjetos(data.eCorreo, data.turno);
-
-          // Iterar sobre los turnos generados y crear los ítems
-          turnos.forEach((turno, index) => {
-            const id = GSTC.api.GSTCID((i + index).toString());
-            const rowId = GSTC.api.GSTCID(turno.eCorreo);
-
-            items[id] = {
-              id,
-              label: turno.motivo,
-              rowId,
-              time: {
-                start: new Date(turno.fechaInicio).getTime(),
-                end: new Date(turno.fechaFin).getTime(),
-              },
-              style: {
-                backgroundColor: turno.tipo === "trabajo" ? "green" : "orange",
-              },
-            };
+          const items = generarObjetos(data.eCorreo, data.turno);
+          // Aqui vuelvo a iterar para meter al arreglo cada activiada generada con la funcion
+          items.forEach((item) => {
+            datosActivity.push(item);
           });
-        } else {
-          // Si el tipo no es "turno", crear el ítem directamente
-          let startDate = new Date(data.fechaI);
-          let endDate = new Date(data.fechaF);
-
-          let luxonStartDate = DateTime.fromJSDate(startDate);
-          let luxonEndDate = DateTime.fromJSDate(endDate);
-
-          const id = GSTC.api.GSTCID(i.toString());
-          const rowId = GSTC.api.GSTCID(data.eCorreo);
-
-          items[id] = {
-            id,
-            label: `${data.tipo} : ${data.motivo}`,
-            rowId,
-            time: {
-              start: luxonStartDate.valueOf(),
-              end: luxonEndDate.valueOf(),
-            },
-            style: {
-              backgroundColor: data.tipo === "vacacion" ? "blue" : "red",
-            },
-          };
         }
       });
+      
+      // Itera en todos los objetos del arreglo que recibe de la base de datos
+      datosActivity.forEach((data, i) => {
+        let startDate = new Date(data.fechaI);
+        let endDate = new Date(data.fechaF);
 
+        let luxonStartDate = DateTime.fromJSDate(startDate);
+        let luxonEndDate = DateTime.fromJSDate(endDate);
+
+        const id = GSTC.api.GSTCID(i.toString());
+        const rowId = GSTC.api.GSTCID(data.eCorreo);
+
+        // Verifico el tipo para saber el;color de la actividad
+        let color;
+        switch (data.tipo) {
+          case "vacacion":
+            color = "blue";
+            break;
+          case "training":
+            color = "red";
+            break;
+          case "trabalo":
+            color = "green";
+            break;
+          case "descanso":
+            color = "orange";
+            break;
+          default:
+            break;
+        }
+
+        // Genero los items normalmente
+        items[id] = {
+          id,
+          label:
+            data.tipo === "turno"
+              ? `${data.tipo} : ${data.motivo}`
+              : `${data.tipo}`,
+          rowId,
+          time: {
+            start: luxonStartDate.valueOf(),
+            end: luxonEndDate.valueOf(),
+          },
+          style: {
+            backgroundColor: color,
+          },
+        };
+      });
       return items;
     }
 

@@ -74,7 +74,7 @@ const UsersPage = () => {
 
     loadUsers();
   }, []);
-  console.log(datos)
+  console.log(datos);
 
   useEffect(() => {
     const loadContratos = async () => {
@@ -352,12 +352,19 @@ const UsersPage = () => {
       </Fab>
 
       <FileUploader onDataLoad={handleDataLoad} />
-      <button onClick={handleSubmitUpload}>Mandarlos</button>
+      {/* <button onClick={handleSubmitUpload}>Mandarlos</button> */}
+      <Button
+        variant="contained"
+        onClick={handleSubmitUpload}
+        style={{ margin: "0.5rem 0" }}
+      >
+        Mandarlos
+      </Button>
       {/* <button onClick={() => setJsonData(null)}>Eliminar seleccion</button> */}
 
       {/** Tabla de datos */}
       <div style={{ width: "100%" }}>
-        <div style={{ height: "60vh", width: "100%" }}>
+        <div style={{ height: "50vh", width: "100%" }}>
           <DataGrid
             getRowId={(row) => row._id}
             rows={datos}
@@ -366,10 +373,17 @@ const UsersPage = () => {
             disableDensitySelector
             filterModel={filterModel}
             onFilterModelChange={setFilterModel}
-            hideFooter
             slots={{ toolbar: GridToolbar }}
             slotProps={{ toolbar: { showQuickFilter: true } }}
             onRowClick={handleRowClick}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
           />
         </div>
       </div>
