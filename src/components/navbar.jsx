@@ -87,10 +87,7 @@ function NavBarSAdm() {
         >
           <h2>Sobre Nosotros</h2>
         </Link>
-        <PersonIcon
-          sx={{ fontSize: "4.5rem", color: "white" }}
-          onClick={handleClick}
-        />
+        
       </Stack>
       <Menu
         id="basic-menu"
