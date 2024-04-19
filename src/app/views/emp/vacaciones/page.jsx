@@ -232,7 +232,7 @@ const VacacionesPage = () => {
       >
         <AddIcon />
       </Fab>
-      <Fab
+      {/* <Fab
         color="primary"
         aria-label="edit"
         onClick={handleEditClick}
@@ -268,7 +268,7 @@ const VacacionesPage = () => {
             onRowClick={handleRowClick}
           />
         </div>
-      </div>
+      </div> */}
 
       <Dialog
         open={open}
@@ -277,9 +277,6 @@ const VacacionesPage = () => {
         PaperProps={{
           component: "form",
           onSubmit: handleSubmit,
-          style: {
-            background: "#93A2B9",
-          },
         }}
       >
         <DialogTitle alignSelf="center">
@@ -298,6 +295,7 @@ const VacacionesPage = () => {
                 variant="outlined"
                 value={newUser.fechaI} // Add the value prop
                 onChange={handleChange}
+                InputLabelProps={{ shrink: true }} // Para que el label no se superponga después de seleccionar la fecha
               />
             </Grid>
             <Grid item xs={12}>
@@ -311,6 +309,7 @@ const VacacionesPage = () => {
                 variant="outlined"
                 value={newUser.fechaF} // Add the value prop
                 onChange={handleChange}
+                InputLabelProps={{ shrink: true }} // Para que el label no se superponga después de seleccionar la fecha
               />
             </Grid>
             <Grid item xs={12}>
